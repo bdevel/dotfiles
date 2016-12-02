@@ -1,0 +1,39 @@
+# ~/.gitconfig_local template
+#
+# [user]
+#   email =
+#   name =
+# [github]
+#   user =
+
+[core]
+  excludesfile = ~/.gitignore
+[include]
+  path = ~/.gitconfig_local
+[credential]
+  helper = osxkeychain
+[alias]
+  co = checkout
+  st = status
+  br = branch
+  unstage = reset HEAD --
+[apply]
+  whitespace = nowarn
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
+  pager = true
+[merge]
+  summary = true
+[push]
+  default = upstream
+[diff]
+  ignoresubmodules = untracked
+  compactionHeuristic = true
+[hub]
+  protocol = https
+[url "https://"]
+  insteadOf = git://

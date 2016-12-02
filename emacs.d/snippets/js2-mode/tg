@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: tg
+# key: tg
+# binding: direct-keybinding
+# --
+var $1 = this.get("$1");

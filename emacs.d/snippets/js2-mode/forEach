@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: forEach
+# key: for
+# --
+forEach(${1:item} => {
+  $0
+});

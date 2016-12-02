@@ -1,0 +1,12 @@
+[submodule "emacs.d/vendor/filladapt"]
+  path = emacs.d/vendor/filladapt
+  url = git://github.com/emacsmirror/filladapt.git
+[submodule "emacs.d/vendor/projectile"]
+	path = emacs.d/vendor/projectile
+	url = https://github.com/bbatsov/projectile.git
+[submodule "emacs.d/vendor/electric-align"]
+	path = emacs.d/vendor/electric-align
+	url = https://github.com/zk-phi/electric-align.git
+[submodule "emacs.d/vendor/ace-jump-mode"]
+	path = emacs.d/vendor/ace-jump-mode
+	url = https://github.com/winterTTr/ace-jump-mode.git
