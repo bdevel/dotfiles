@@ -17,3 +17,4 @@ emacs.d/personal/custom.el
 emacs.d/personal/private.el
 emacs.d/var
 *.elc
+emacs.d/eshell/*
