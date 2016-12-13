@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: this.set
+# key: ts
+# --
+this.set('$1', $1$0);

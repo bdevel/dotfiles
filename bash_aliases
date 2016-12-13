@@ -1,3 +1,4 @@
+#!/bin/bash
 # Adds an alias to the current shell and to this file.
 # Borrowed from Mislav (http://github.com/mislav/dotfiles/tree/master/bash_aliases)
 add-alias ()
@@ -13,9 +14,9 @@ add-alias ()
 ############################################################
 
 # alias cd..="cd .."
-# alias ..="cd .."
-# alias ...="cd ../../"
-# alias ....="cd ../../../"
+alias ..="cd .."
+alias ...="cd ../../"
+alias ....="cd ../../../"
 # alias .2="cd ../../"
 # alias .3="cd ../../../"
 # alias .4="cd ../../../../"

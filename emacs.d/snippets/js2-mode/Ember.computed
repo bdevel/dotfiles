@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Ember.computed
+# key: cp
+# --
+Ember.computed($1function(){
+  $0
+}),

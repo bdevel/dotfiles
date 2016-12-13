@@ -3,11 +3,10 @@
 
 (load "~/.emacs.d/personal/defuns")
 
-
 ;; elpa managed
 ;; ------------------
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")))
+       ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (when (not package-archive-contents) (package-refresh-contents))
 
@@ -15,66 +14,98 @@
 ;; (package 'ag)
 ;; (package 'browse-kill-ring+)
 ;; (package 'bundler)
-;; (package 'coffee-mode)
+
+;; key bindings and code colorization for Clojure
+;; https://github.com/clojure-emacs/clojure-mode
+(package 'clojure-mode)
+
+;; extra syntax highlighting for clojure
+(package 'clojure-mode-extra-font-locking)
+
+;; integration with a Clojure REPL
+;; https://github.com/clojure-emacs/cider
+(package 'cider)
+
 (package 'csv-mode)
-;; (package 'dired-details+)
+(package 'drag-stuff)
 (package 'dropdown-list)
-;; (package 'expand-region)
 (package 'exec-path-from-shell)
+(package 'expand-region)
 ;; (package 'feature-mode)
-;; (package 'flx-ido)
+
+;; (package 'expand-region)
 ;; (package 'flx-isearch)
-;; (package 'haml-mode)
+(package 'handlebars-mode)
 (package 'highlight-parentheses)
+(package 'hydra)
+;;(package 'ido-ubiquitous)
 ;; (package 'htmlize)
 (package 'json-mode)
 (package 'js2-mode)
 ;; (package 'lua-mode)
-;; (package 'magit)
+(package 'magit)
 ;; (package 'magit-gh-pulls)
 (package 'markdown-mode)
 ;; (package 'maxframe)
 ;; (package 'motion-mode)
-(package 'multiple-cursors)
+;;(package 'multiple-cursors)
 ;; (package 'powerline)
+
+;; makes handling lisp expressions much, much easier
+;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
+;;(package 'paredit)
+
 (package 'projectile)
 (package 'projectile-rails)
 (package 'sass-mode)
+(package 'smex)
 ;; (package 'shell-pop)
 ;; (package 'toggle-quotes)
-;; (package 'textile-mode)
+(package 'tabbar)
+
+(package 'tagedit)
 (package 'yaml-mode)
 (package 'yasnippet)
 
 
 ;; self managed
 ;; ------------------
-
+(personal 'theme);;make first as RYO looks for cursor color on setup
 (personal 'bindings)
-;(personal 'c)
+(personal 'clojure)
+(personal 'cider)
 (personal 'diff)
 (personal 'dired)
 (personal 'disabled)
-;;(personal 'flymake)
+(personal 'drag-stuff)
+(personal 'elisp)
+(personal 'expand-region)
 (personal 'fonts)
 (personal 'global)
 (personal 'grep)
 (personal 'highlight-parentheses)
+(personal 'hippy-expand)
+(personal 'hydra)
+;(personal 'ido)
+(personal 'idle-highlight)
 (personal 'javascript)
 (personal 'kbd-macros)
 (personal 'mac)
 (personal 'org)
-;;(personal 'private)
+(personal 'projectile)
 (personal 'recentf)
+
 ;;(personal 'rectangle)
 (personal 'ruby-mode)
 (personal 'saveplace)
 (personal 'scratch)
 (personal 'server-mode)
 (personal 'shell-mode)
+(personal 'smex)
 (personal 'tabs)
-(personal 'theme)
 (personal 'utf-8)
+
+;;(personal 'ryo)
 ;;(personal 'zoom) ; code folding
 
 
@@ -82,6 +113,8 @@
 ;; ------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 
-;;(vendor 'filladapt)
+(vendor 'align)
 (vendor 'revbufs       'revbufs)
-(vendor 'electric-align 'electric-align-mode)
+;;(vendor 'ryo-modal)
+
+;;(vendor 'electric-align 'electric-align-mode)

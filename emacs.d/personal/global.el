@@ -1,8 +1,7 @@
 ;;; Generic emacs settings I cannot live without
 
-;; Use command as the meta key; option key as super
-(setq ns-command-modifier 'meta)
-(setq ns-option-modifier  'super)
+
+(desktop-save-mode 1)
 
 ;; Don't show the startup screen
 (setq inhibit-startup-message t)
@@ -17,7 +16,7 @@
 
 ;; Display line and column numbers
 (setq line-number-mode    t)
-(setq column-number-mode  t)
+(setq column-number-mode  nil)
 
 ;; Modeline info
 ;(display-time-mode 1)
@@ -33,11 +32,25 @@
 ;; Line-wrapping
 (set-default 'fill-column 78)
 
+
+;; Make identifiers with hyphens to be one word
+;;(modify-syntax-entry ?_ "w" (standard-syntax-table))
+;;(modify-syntax-entry ?- "w" (standard-syntax-table))
+;(modify-syntax-entry ?- "w")
+;(modify-syntax-entry ?_ "w"); same for underscores
+
 ;; Prevent the annoying beep on errors
 ;; (setq visible-bell t)
 
 ;; Make sure all backup files only live in one place
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+;;(setq backup-directory-alist (concat user-emacs-directory ".backups"))
+;;(setq backup-directory-alist "~/.emacs.d/.backups")
+
+;; disable auto save
+(setq auto-save-default nil)
+
+;; No need for ~ files when editing
+(setq create-lockfiles nil)
 
 ;; Gotta see matching parens
 (show-paren-mode t)
@@ -47,14 +60,14 @@
 (setq truncate-partial-width-windows nil)
 
 ;; For emacsclient
-(server-start)
+;;(server-start)
 
 ;; Trailing whitespace is unnecessary
 (defvar whitespace-cleanup-on-save t)
 ;; (setq whitespace-cleanup-on-save nil)
 (add-hook 'before-save-hook
-          (lambda ()
-            (if whitespace-cleanup-on-save (whitespace-cleanup))))
+    (lambda ()
+      (if whitespace-cleanup-on-save (whitespace-cleanup))))
 
 ;; Trash can support
 (setq delete-by-moving-to-trash t)
@@ -64,5 +77,27 @@
 (setq ispell-list-command "list")
 (setq ispell-extra-args '("--sug-mode=ultra"))
 
+;; "When several buffers visit identically-named files,
+;; Emacs must give the buffers distinct names. The usual method
+;; for making buffer names unique adds ‘<2>’, ‘<3>’, etc. to the end
+;; of the buffer names (all but one of them).
+;; The forward naming method includes part of the file's directory
+;; name at the beginning of the buffer name
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
+
+;; fix weird os x kill error
+;; (defun ns-get-pasteboard ()
+;;   "Returns the value of the pasteboard, or nil for unsupported formats."
+;;   (condition-case nil
+;;       (ns-get-selection-internal 'CLIPBOARD)
+;;   (quit nil)))
+
+
+;; annoying
+(setq electric-indent-mode nil)
+
 ;; zap-up-to-char, forward-to-word, backward-to-word, etc
-(require 'misc)
+;(require 'misc)

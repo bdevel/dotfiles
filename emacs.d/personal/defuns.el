@@ -4,11 +4,13 @@
 (defun personal (library)
   (load (concat "~/.emacs.d/personal/" (symbol-name library)) 'noerror))
 
+
 ;; For loading packages from the Emacs Lisp Package Archive (ELPA)
 (defun package (package)
     (when (not (package-installed-p package))
       (package-install package))
     (personal package))
+
 
 ;; For loading libraries from the vendor directory
 ;; Modified from defunkt's original version to support autoloading.
@@ -28,6 +30,44 @@
             (autoload autoload-function (symbol-name library) nil t))
         (require library)))
     (personal library)))
+
+
+
+;; query-replace current word
+(defun mark-prev-symbol ()
+   (interactive)
+   ;;(isearch-backward-regexp )
+   (if (<= (point) (re-search-backward "[\s('\"]"))
+       (progn (backward-char) (mark-prev-symbol))
+     (progn
+       (re-search-forward "\\w")
+       (backward-char)
+       (set-mark (point))
+       (re-search-forward "[\s)'\"]")
+       (backward-char)
+       (exchange-point-and-mark)
+       ;;(kill-region) ) )
+       )))
+
+
+
+
+
+;; query-replace current word
+(defun qrc (replace-str)
+   (interactive "sDo query-replace current word with: ")
+   (forward-word)
+   (let ((end (point)))
+      (backward-word)
+      (kill-ring-save (point) end)
+      (query-replace (current-kill 0) replace-str) ))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;; Things that were in here already ;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;; Arrows are common, especially in ruby
 (defun insert-arrow ()

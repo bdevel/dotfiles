@@ -22,7 +22,6 @@ conditionally_prefix_path /usr/local/heroku/bin ### Added by the Heroku Toolbelt
 conditionally_prefix_path /Applications/Postgres.app/Contents/Versions/latest/bin/
 
 conditionally_prefix_path $HOME/.rvm/bin # Add RVM to PATH for scripting
-conditionally_prefix_path node_modules/.bin # See if there is a node_modules/.bin for node stuff
 
 #conditionally_prefix_path /usr/local/bin
 #conditionally_prefix_path /usr/local/sbin
@@ -33,8 +32,8 @@ conditionally_prefix_path node_modules/.bin # See if there is a node_modules/.bi
 #conditionally_prefix_path ~/bin
 #conditionally_prefix_path ~/bin/private
 
-
 PATH=.:./bin:${PATH}
+PATH=.:./node_modules/.bin:${PATH}
 
 ############################################################
 ## MANPATH
@@ -174,7 +173,7 @@ export EDITOR="emacsclient -nw"
 # sessions (weird that this is not enabled by default).
 shopt -s histappend
 
-export HISTIGNORE="&:pwd:ls:ll:lal:[bf]g:exit:rm*:sudo rm*"
+#export HISTIGNORE="&:p:exit"
 # remove duplicates from the history (when a new item is added)
 export HISTCONTROL=erasedups
 # increase the default size from only 1,000 items
