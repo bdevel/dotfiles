@@ -292,3 +292,4 @@ function fakefile {
 }
 
 ############################################################
+alias cde='cd ~/dotfiles/emacs.d'

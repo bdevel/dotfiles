@@ -34,20 +34,20 @@
 
 
 ;; query-replace current word
-(defun mark-prev-symbol ()
-   (interactive)
-   ;;(isearch-backward-regexp )
-   (if (<= (point) (re-search-backward "[\s('\"]"))
-       (progn (backward-char) (mark-prev-symbol))
-     (progn
-       (re-search-forward "\\w")
-       (backward-char)
-       (set-mark (point))
-       (re-search-forward "[\s)'\"]")
-       (backward-char)
-       (exchange-point-and-mark)
-       ;;(kill-region) ) )
-       )))
+;; (defun mark-prev-symbol ()
+;;    (interactive)
+;;    ;;(isearch-backward-regexp )
+;;    (if (<= (point) (re-search-backward "[\s('\"]"))
+;;        (progn (backward-char) (mark-prev-symbol))
+;;      (progn
+;;        (re-search-forward "\\w")
+;;        (backward-char)
+;;        (set-mark (point))
+;;        (re-search-forward "[\s)'\"]")
+;;        (backward-char)
+;;        (exchange-point-and-mark)
+;;        ;;(kill-region) ) )
+;;        )))
 
 
 

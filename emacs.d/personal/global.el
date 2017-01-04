@@ -1,7 +1,10 @@
 ;;; Generic emacs settings I cannot live without
 
+;; don't use desktop mode for terminal
+(when (display-graphic-p)
+  (desktop-save-mode 1); is x window
+  ())
 
-(desktop-save-mode 1)
 
 ;; Don't show the startup screen
 (setq inhibit-startup-message t)
@@ -23,8 +26,9 @@
 ;; (display-battery-mode 1)
 
 ;; Emacs gurus don't need no stinking scroll bars
-(when (fboundp 'toggle-scroll-bar)
-  (toggle-scroll-bar -1))
+;; (when (fboundp 'toggle-scroll-bar)
+;;   (toggle-scroll-bar -1))
+(toggle-scroll-bar nil)
 
 ;; Explicitly show the end of a buffer
 (set-default 'indicate-empty-lines t)

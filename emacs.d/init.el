@@ -35,7 +35,7 @@
 
 ;; (package 'expand-region)
 ;; (package 'flx-isearch)
-(package 'handlebars-mode)
+;(package 'haml-mode)
 (package 'highlight-parentheses)
 (package 'hydra)
 ;;(package 'ido-ubiquitous)
@@ -50,6 +50,7 @@
 ;; (package 'motion-mode)
 ;;(package 'multiple-cursors)
 ;; (package 'powerline)
+(package 'web-mode)
 
 ;; makes handling lisp expressions much, much easier
 ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
@@ -57,8 +58,9 @@
 
 (package 'projectile)
 (package 'projectile-rails)
-(package 'sass-mode)
+;;(package 'sass-mode)
 (package 'smex)
+(package 'sos)
 ;; (package 'shell-pop)
 ;; (package 'toggle-quotes)
 (package 'tabbar)
@@ -72,8 +74,8 @@
 ;; ------------------
 (personal 'theme);;make first as RYO looks for cursor color on setup
 (personal 'bindings)
-(personal 'clojure)
 (personal 'cider)
+(personal 'clojure)
 (personal 'diff)
 (personal 'dired)
 (personal 'disabled)
