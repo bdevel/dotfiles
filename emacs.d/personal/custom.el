@@ -49,4 +49,5 @@
  '(idle-highlight ((t (:underline t))))
  '(js2-object-property ((t (:foreground "wheat1"))))
  '(web-mode-block-control-face ((t (:inherit font-lock-keyword-face :slant italic))))
- '(web-mode-block-delimiter-face ((t (:inherit font-lock-keyword-face)))))
+ '(web-mode-block-delimiter-face ((t (:inherit font-lock-keyword-face))))
+ '(web-mode-html-tag-bracket-face ((t (:foreground "brightwhite")))))

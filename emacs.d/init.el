@@ -108,6 +108,7 @@
 (personal 'utf-8)
 
 ;;(personal 'ryo)
+(personal 'xkeys)
 ;;(personal 'zoom) ; code folding
 
 

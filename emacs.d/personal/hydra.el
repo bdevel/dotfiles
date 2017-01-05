@@ -34,122 +34,23 @@
   (setq cursor-type 'bar))
 
 
-;; https://www.emacswiki.org/emacs/AutoIndentation#toc3
-;; auto-indent on yank
-(dolist (command '(yank yank-pop))
-   (eval `(defadvice ,command (after indent-region activate)
-            (and (not current-prefix-arg)
-                 (member major-mode '(emacs-lisp-mode lisp-mode
-                                                      clojure-mode    scheme-mode
-                                                      haskell-mode    ruby-mode
-                                                      rspec-mode      python-mode
-                                                      c-mode          c++-mode
-                                                      objc-mode       latex-mode
-                                                      plain-tex-mode))
-                 (let ((mark-even-if-inactive transient-mark-mode))
-                   (indent-region (region-beginning) (region-end) nil))))))
 
-;; https://www.emacswiki.org/emacs/DeletingWhitespace
-(defun kill-whitespace ()
-  "Kill the whitespace between two non-whitespace characters"
-  (interactive "*")
-  (save-excursion
-    (save-restriction
-      (save-match-data
-        (progn
-          (re-search-backward "[^ \t\r\n]" nil t)
-          (re-search-forward "[ \t\r\n]+" nil t)
-          (replace-match "" nil nil))))))
+;; (defun my-next-symbol ()
+;;   "mark next symbol"
+;;   (interactive)
+;;   (forward-thing 'symbol)
+;;   (beginning-of-thing 'symbol)
+;;   (push-mark (point) t t)
+;;   (end-of-thing 'symbol)
+;;   ;;(next-visible-thing 'symbol)
+;;   ;;  (mark-thing 'symbol)
+;;   (temp-mark-thing)
+;;   )
+
+;; (global-set-key (kbd "C-3") 'my-next-symbol)
+;; (global-set-key (kbd "C-4") 'my-next-line)
 
 
-
-(require 'thingatpt)
-(defun my-next-line ()
-  "mark next line"
-  (interactive "^")
-  (next-line)
-  ;;(smart-line-beginning)
-  (move-beginning-of-line nil)
-  (push-mark (point) t t)
-  (move-end-of-line nil)
-  (temp-mark-thing)
-)
-
-(defun temp-mark-thing ()
-
-  ;; (let ((range (bounds-of-thing-at-point thing)))
-  ;;   (push-mark (nth 0 range) t t)
-  ;;   (goto-char (nth 1 range)))
-
-
-  (set-transient-map
-   ;; the keymap
-   (let ((map (make-sparse-keymap)))
-     (define-key map [switch-frame] #'ignore)
-     (define-key map [select-window] #'ignore)
-
-     map)
-
-   ;; t means stay active as long as a key they press is in our map
-   ;; the lambda is the exit
-   t (lambda ()
-       (deactivate-mark)
-       (pop-mark)))
-
-)
-
-
-(defun my-next-symbol ()
-  "mark next symbol"
-  (interactive)
-  (forward-thing 'symbol)
-  (beginning-of-thing 'symbol)
-  (push-mark (point) t t)
-  (end-of-thing 'symbol)
-  ;;(next-visible-thing 'symbol)
-  ;;  (mark-thing 'symbol)
-  (temp-mark-thing)
-  )
-
-(global-set-key (kbd "C-3") 'my-next-symbol)
-(global-set-key (kbd "C-4") 'my-next-line)
-
-
-(defun smart-line-beginning ()
-  "Move point to the beginning of text on the current line; if that is already
-the current position of point, then move it to the beginning of the line."
-  (interactive)
-  (let ((pt (point)))
-    (beginning-of-line-text)
-    (when (eq pt (point))
-      (beginning-of-line))))
-
-
-(defun kill-this-thing ()
-  "Cleanly kill thing under cursor"
-  (interactive)
-
-  ;;(message (string (following-char)) )
-  ;;(message (string (member (string  (following-char)) '("'" "\"" "{" "(")) ))
-
-  (if (use-region-p)
-      ();; do nothing
-    (if (member (string (following-char)) '("'" "\"" "{" "(") )
-        (progn (mark-sexp))
-      (er/mark-symbol)) )
-
-  (kill-region (region-beginning) (region-end))
-
-  ;; Move it it's own function to cleanup whitespace
-  ;; (kill-whitespace)
-  ;; ;;(string-match "[a-zA-Z'\"]" (string (following-char)))
-  ;; (if (member (string (preceding-char)) '("{" "(" ";") )
-  ;;     ();; do nothing
-  ;;   (if (member (string (following-char)) '("{" "}" "(" ")" ";") )
-  ;;       ();; do nothing
-  ;;     (just-one-space)))
-
-)
 
 
 
