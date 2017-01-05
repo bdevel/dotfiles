@@ -64,26 +64,62 @@ the current position of point, then move it to the beginning of the line."
 
 
 (require 'thingatpt)
+
+(defun ty-next-parens-outside ()
+  "goes to and marks the next parens"
+  (interactive)
+
+  (ty-exit-region-left)
+  (forward-char )
+  ;; (when (eq "(" (string (following-char)) )
+  ;;   (forward-char )
+  ;;   (forward-char )
+  ;;   (forward-char )
+  ;;   (message "at paren"))
+
+  (search-forward "(")
+  (backward-char)
+  (push-mark (point) t t)
+
+  (forward-list nil)
+  (exchange-point-and-mark)
+  )
+(global-set-key (kbd "C-4") 'ty-next-parens-outside)
+
+
+(defun ty-prev-parens-outside ()
+  "goes to previous or higher parens"
+  (interactive)
+
+  (ty-exit-region-left)
+  (backward-char )
+
+  (search-backward "(")
+  ;;(backward-char)
+  (push-mark (point) t t)
+
+  (forward-list nil)
+  (exchange-point-and-mark)
+  )
+(global-set-key (kbd "C-3") 'ty-prev-parens-outside)
+
+
+
 (defun ty-next-line ()
   "Goto next line, mark next line"
   (interactive )
-  ;;(next-line)
-  ;;(ty-mark-thing 'line)
-  ;;()
-  ;; (move-beginning-of-line nil)
-  ;; (re-search-forward "[^\n]+\n")
-  ;; (push-mark (match-beginning 0) t t)
-  ;; (goto-char (match-end 0))
 
-  (move-beginning-of-line nil)
+  (move-end-of-line nil)
   (push-mark (point) t t)
   (next-line)
+  (move-end-of-line nil)
 
-  ;(temp-mark-thing)
+  ;;(temp-mark-thing)
   )
 (global-set-key (kbd "C-2") 'ty-next-line)
 
 ;; 1 asdf asdf a;
+;; ((foo))
 ;; 2 asdf asdf
 ;; 3 asdf asf
 
