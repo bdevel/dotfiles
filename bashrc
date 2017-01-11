@@ -162,7 +162,8 @@ shopt -s cdspell
 shopt -s checkwinsize
 
 export PAGER="less"
-export EDITOR="emacsclient -nw"
+#export EDITOR="emacsclient -nw"
+export EDITOR="emacs"
 
 ############################################################
 ## History
@@ -177,7 +178,9 @@ shopt -s histappend
 # remove duplicates from the history (when a new item is added)
 export HISTCONTROL=erasedups
 # increase the default size from only 1,000 items
-export HISTSIZE=10000
+
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
 
 ############################################################
 ## Aliases

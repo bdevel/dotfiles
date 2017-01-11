@@ -10,7 +10,7 @@
 (package-initialize)
 (when (not package-archive-contents) (package-refresh-contents))
 
-(package 'ace-jump-mode)
+;;(package 'ace-jump-mode)
 ;; (package 'ag)
 ;; (package 'browse-kill-ring+)
 ;; (package 'bundler)
@@ -31,7 +31,7 @@
 (package 'dropdown-list)
 (package 'exec-path-from-shell)
 (package 'expand-region)
-;; (package 'feature-mode)
+(package 'fiplr)
 
 ;; (package 'expand-region)
 ;; (package 'flx-isearch)

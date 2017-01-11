@@ -180,8 +180,8 @@
 
 
    ;; REGISTER location
-   ("n" point-to-register "point-to-register":exit nil)
-   ("m" jump-to-register "jump-to-register" :exit nil)
+   ("n" point-to-register "point-to-register":exit t)
+   ("m" jump-to-register "jump-to-register" :exit t)
 
 
    ;; MARK location

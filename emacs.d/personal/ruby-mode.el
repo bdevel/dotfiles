@@ -1,5 +1,7 @@
 ;;; Ruby
 
+(add-hook 'ruby-mode-hook 'idle-highlight-mode)
+
 ;; Run the current ruby buffer
 (defun ruby-eval-buffer()
    "Evaluate the buffer with ruby."

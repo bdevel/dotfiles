@@ -14,7 +14,7 @@
     ("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "elpha")))
  '(package-selected-packages
    (quote
-    (helm-google sos web-mode handlebars-sgml-mode magit color-theme-sanityinc-tomorrow hydra drag-stuff handlebars-mode expand-region ryo-modal modalka ace-jump-mode projectile markdown-mode js2-mode json-mode exec-path-from-shell csv-mode)))
+    (fiplr find-file-in-repository helm-google sos web-mode handlebars-sgml-mode magit color-theme-sanityinc-tomorrow hydra drag-stuff handlebars-mode expand-region ryo-modal modalka ace-jump-mode projectile markdown-mode js2-mode json-mode exec-path-from-shell csv-mode)))
  '(ring-bell-function (quote ignore))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map

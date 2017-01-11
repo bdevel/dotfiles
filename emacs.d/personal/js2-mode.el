@@ -8,6 +8,8 @@
 
 
 (add-hook 'js2-mode-hook (lambda () (electric-pair-mode 1)))
+(add-hook 'js2-mode-hook 'idle-highlight-mode)
+
 
 ;; Special improvements using the mooz fork
 ;; https://github.com/mooz/js2-mode

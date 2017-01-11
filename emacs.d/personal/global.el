@@ -6,6 +6,7 @@
   ())
 
 ;; Add variables to desktop saving
+(add-to-list 'desktop-globals-to-save 'register-alist)
 ;;(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 ;; Don't show the startup screen
@@ -68,11 +69,11 @@
 ;;(server-start)
 
 ;; Trailing whitespace is unnecessary
-(defvar whitespace-cleanup-on-save t)
-;; (setq whitespace-cleanup-on-save nil)
-(add-hook 'before-save-hook
-    (lambda ()
-      (if whitespace-cleanup-on-save (whitespace-cleanup))))
+;; (defvar whitespace-cleanup-on-save t)
+;; ;; (setq whitespace-cleanup-on-save nil)
+;; (add-hook 'before-save-hook
+;;     (lambda ()
+;;       (if whitespace-cleanup-on-save (whitespace-cleanup))))
 
 ;; Trash can support
 (setq delete-by-moving-to-trash t)

@@ -14,9 +14,9 @@ add-alias ()
 ############################################################
 
 # alias cd..="cd .."
-alias ..="cd .."
-alias ...="cd ../../"
-alias ....="cd ../../../"
+alias ..="cd ..; ls"
+alias ...="cd ../../; ls"
+alias ....="cd ../../../; ls"
 # alias .2="cd ../../"
 # alias .3="cd ../../../"
 # alias .4="cd ../../../../"
@@ -42,8 +42,10 @@ else
   # For LS_COLORS template: $ dircolors /etc/DIR_COLORS
 fi
 
-alias cdim="cd ~/Code/ist-merlin"
-alias cdic="cd ~/Code/ist-client"
+alias cde='cd ~/dotfiles/emacs.d'
+alias cdc='clear; cd ~/Code; ls'
+alias cdim="clear; cd ~/Code/ist-merlin; git status"
+alias cdic="clear; cd ~/Code/ist-client; git status"
 
 #alias ls='ls -G'
 alias l="ls"
@@ -292,4 +294,3 @@ function fakefile {
 }
 
 ############################################################
-alias cde='cd ~/dotfiles/emacs.d'

@@ -1,81 +1,46 @@
-;; http://stackoverflow.com/questions/16298895/emacs-greedy-search-backward-regexp
-(defun ar-greedy-search-backward-regexp (regexp)
-  "Match backward the whole expression as search-forward would do. "
-  (interactive (list (read-from-minibuffer "Regexp: " (car kill-ring))))
-  (let (last)
-    (when (re-search-backward regexp nil t 1)
-      (push-mark)
-      (while (looking-at regexp)
-        (setq last (match-end 0))
-        (forward-char -1))
-      (forward-char 1)
-      (push-mark)
-      (goto-char last)
-      (exchange-point-and-mark))))
+;; ideas:
+;;  * use sticky keys for mac kbd.  c-1  c-9  or c-!  c-@  
+;;  * make a way to go see another area in the same buffer
+;;    by splitting the window in half and switch frames easily.
+;;  * Fwd/bwd defun/defn/def foo/function ()/etc... searches
+;;    then puts it at the top of the screen. Can scroll fast
+;;  * "return" button does M-j if in code, otherwise enter.
+;;  * Code is always formatted. Start first with aligning arguments.
+;;  * Duplicate key will copy & paste after the right of the region
+;;    If is an argument, wont add new line but will add space and comma
+;;    if nessisary. After duplicate, the selected region will stay selected
+;;    so that multiple dupications may be had.
+;;
+;; * Hitting enter will indent properly and may put in two newlines
+;;   if doing <enter> before a ) as to supply an argument
+
+;; Doing repeat -- see setvar
+;; (setq recenter-last-op
+;; (if (eq this-command last-command)
+;;     (car (or (cdr (member recenter-last-op recenter-positions))
+;;              recenter-positions))
+;;   (car recenter-positions)))
 
 
-(defun ryo-nothing (*args)
-  "Display a buffer of all bindings in `ryo-modal-mode'."
-  ()
+(setq ty-last-move nil)
+
+;;;;;;;;;;;;; Buffers ;;;;;;;;;;;;;;;;;;
+
+(defun ty-next-buffer ()
+    "goes to next buffer"
+    (setq ty-last-move 'ty-next-buffer)
+    (previous-buffer)
   )
 
 
-;;(setq ryo-modal-cursor-type 'block)
-
-;(ryo-modal-mode 1)
-
-;;(ryo-modal-bindings-list)
-
-;; :foo
-
-(defun smart-line-beginning ()
-  "Move point to the beginning of text on the current line; if that is already
-the current position of point, then move it to the beginning of the line."
-  (interactive)
-  (let ((pt (point)))
-    (beginning-of-line-text)
-    (when (eq pt (point))
-      (beginning-of-line))))
-
-
-(defun kill-this-thing ()
-  "Cleanly kill thing under cursor"
-  (interactive)
-
-  (if (use-region-p)
-      ();; already marked
-    (if (member (string (following-char)) '("'" "\"" "{" "(") )
-        (progn (mark-sexp))
-      (er/mark-symbol)) )
-
-  (kill-region (region-beginning) (region-end))
-
-  ;; Move it it's own function to cleanup whitespace
-  ;; (kill-whitespace)
-  ;; ;;(string-match "[a-zA-Z'\"]" (string (following-char)))
-  ;; (if (member (string (preceding-char)) '("{" "(" ";") )
-  ;;     ();; do nothing
-  ;;   (if (member (string (following-char)) '("{" "}" "(" ")" ";") )
-  ;;       ();; do nothing
-  ;;     (just-one-space)))
-
-  )
-
-
-
-(require 'thingatpt)
+;;;;;;;;;;;;; Parens ;;;;;;;;;;;;;;;;e;;
 
 (defun ty-next-parens-outside ()
   "goes to and marks the next parens"
   (interactive)
-
+  (setq ty-last-move 'ty-next-parens-outside)
   (ty-exit-region-left)
   (forward-char )
-  ;; (when (eq "(" (string (following-char)) )
-  ;;   (forward-char )
-  ;;   (forward-char )
-  ;;   (forward-char )
-  ;;   (message "at paren"))
 
   (search-forward "(")
   (backward-char)
@@ -83,13 +48,13 @@ the current position of point, then move it to the beginning of the line."
 
   (forward-list nil)
   (exchange-point-and-mark)
+  (ty-temp-mark-thing)
   )
-(global-set-key (kbd "C-4") 'ty-next-parens-outside)
-
 
 (defun ty-prev-parens-outside ()
   "goes to previous or higher parens"
   (interactive)
+  (setq ty-last-move 'ty-prev-parens-outside)
 
   (ty-exit-region-left)
   (backward-char )
@@ -100,60 +65,64 @@ the current position of point, then move it to the beginning of the line."
 
   (forward-list nil)
   (exchange-point-and-mark)
+
   )
-(global-set-key (kbd "C-3") 'ty-prev-parens-outside)
+;;(global-set-key (kbd "C-5") 'ty-prev-parens-outside)
+;;(global-set-key (kbd "C-6") 'ty-next-parens-outside)
 
 
+
+
+;;;;;;;;;;;;; Line ;;;;;;;;;;;;;;;;;;
 
 (defun ty-next-line ()
   "Goto next line, mark next line"
   (interactive )
-
+  (setq ty-last-move 'ty-next-line)
+  (unless (eolp);; point end of line
+      (previous-line))
   (move-end-of-line nil)
   (push-mark (point) t t)
   (next-line)
   (move-end-of-line nil)
 
-  ;;(temp-mark-thing)
-  )
-(global-set-key (kbd "C-2") 'ty-next-line)
+  ;; (move-end-of-line nil)
+  ;; (push-mark (point) t t)
+  ;; (next-line)
 
-;; 1 asdf asdf a;
-;; ((foo))
-;; 2 asdf asdf
-;; 3 asdf asf
+  (ty-temp-mark-thing)
+  )
+
 
 (defun ty-previous-line ()
   "Goto next line, mark next line"
   (interactive )
-  ;;(previous-line)
-  ;;(ty-mark-thing 'line)
-  ;; (move-end-of-line nil)
-  ;; (re-search-backward "\n[^\n]+\n")
-  ;; (push-mark (match-end 0) t t)
-  ;; (goto-char (match-beginning 0))
 
-  ;; (previous-line)
+  (setq ty-last-move 'ty-previous-line)
   (move-end-of-line nil)
   (push-mark (point) t t)
 
   (previous-line)
   (move-end-of-line nil)
 
-  ;(temp-mark-thing)
+  (ty-temp-mark-thing)
   )
-(global-set-key (kbd "C-1") 'ty-previous-line)
 
-;
-;;(setq ty-symbol-re )
-;;(setq ty-symbol-re "[\\(]['^@a-zA-Z0-9_\\/:-]+")
+
+
+;;;;;;;;;;;;; Symbol ;;;;;;;;;;;;;;;;;;
+
+
 
 (defun ty-forward-symbol ()
   "Regex forward for words plus colons, hyphens and underscores"
   (interactive)
   ;; search forward for boundry incase starting in the middle of a word/symbol
-  ;;(re-search-forward "\\_>")
-  ;;(re-search-backward "\\_>")
+  (setq ty-last-move 'ty-forward-symbol)
+  ;; if starting in middle of a symbol, go to begining of symbol first
+  (unless (string-match "[^'^@a-zA-Z0-9_\-!]" (string (following-char)))
+    (re-search-backward "[\s\\(\.\\s-\"]"))
+
 
   ;; look for a symbol
   (re-search-forward "[\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:-]*[a-zA-Z0-9]*")
@@ -162,15 +131,19 @@ the current position of point, then move it to the beginning of the line."
   (ty-temp-mark-thing)
   )
 
+;; foo_bar_BASS
 ;; ( :foo 'bar .bar  foo.bar )
 
 (defun ty-backward-symbol ()
   "Regex forward for words plus colons, hyphens and underscores"
   (interactive)
-  (re-search-backward "[\s\\(\.\"][\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:\-]*[a-zA-Z0-9]*")
+  (setq ty-last-move 'ty-backward-symbol)
+  ;; if starting in middle of a symbol, go to end of symbol first
+  (let ((sc "[^'^@a-zA-Z0-9_\-!]"))
+    (unless (string-match sc (string (preceding-char)) )
+      (re-search-forward sc)))
 
-  ;;(print (match-end 1))
-  ;;(print (match-beginning 1))
+  (re-search-backward "[\s\\(\.\"][\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:\-]*[a-zA-Z0-9]*")
 
   (push-mark (match-end 0) t t)
 
@@ -182,30 +155,26 @@ the current position of point, then move it to the beginning of the line."
   (ty-temp-mark-thing)
 )
 
-(global-set-key (kbd "C-3") 'ty-backward-symbol)
-(global-set-key (kbd "C-4") 'ty-forward-symbol)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;; thing ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun ty-mark-thing (thing-type)
-  "Marks a line, symbol, parens, etc."
-  (when (eq thing-type 'line)
-    ;;(smart-line-beginning)
-    (move-beginning-of-line nil)
-    (push-mark (point) t t)
-    (move-end-of-line nil)
-    )
+;;;;;;;;;;;;; args ;;;;;;;;;;;;;;;;;;
 
-  (when (eq thing-type 'symbol)
-    ()
-    )
-
-  (when (eq thing-type 'word)
-    (er/mark-word))
+(defun ty-next-arg ()
+  ""
+  (interactive )
 
   )
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;; Helpers  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ty-cleanup-around-here ()
+  "adds commas if nessiary, cleans up extra white space"
+  ;; TODO: do the rest of the code
+  (just-one-space)
+  )
 
 (defun ty-exit-region-left ()
   "If a buffer is active, then move point to beginning of region."
@@ -221,15 +190,76 @@ the current position of point, then move it to the beginning of the line."
       (goto-char (region-end) )
       (deactivate-mark)))
 
+;; (defun ty-temp-mark-thing ()
+  
+;;   (transient-mark-mode nil)
+  
+;;   (set-transient-map
+;;    ;; the keymap
+;;    ;; todo:a
+;;    (let ((map (make-sparse-keymap)))
+;;      ;;(define-key map [switch-frame] #'ignore)
+
+;;      (define-key map (kbd "<left>") 'ty-exit-region-left)
+;;      (define-key map (kbd "<right>") 'ty-exit-region-right)
+;;      (define-key map (kbd "<up>") 'ty-exit-region-left)
+;;      (define-key map (kbd "<down>") 'ty-exit-region-right)
+
+;;      (define-key map (kbd "C-/") (lambda () (print "undo") ))
+
+;;      ;; (define-key map (kbd "C-_") (lambda ()
+;;      ;;                               ;;(pop-mark)
+;;      ;;                               (print "quitting")
+;;      ;;                               (deactivate-mark)
+;;      ;;                               ;;(call-interactively 'keyboard-quit)
+;;      ;;                               ))
+     
+;;      ;; (define-key map "t" (lambda ()
+;;      ;;                        (message "pushed T")))
+;;      ;; (define-key map "k" kill-region)
+;;      ;; (define-key map "x" delete-region)
+;;      ;; (define-key map "w" kill-ring-save)
+;;      ;; (define-key map "n" copy-to-register) ;; "n" for name and m for move-to
+;;      map)
+
+;;      ;; r = replace
+
+;;      ;; n = next p = prev (need to pass in fn)
+
+;;      ;; nil means dont stay active as long as a key they press is in our map (can be t)
+;;      ;; the lambda is the exit
+
+;;      nil (lambda ()
+;;            (message "exiting tmp mark")
+;;            (deactivate-mark)
+;;            (transient-mark-mode t)
+;;            ;;(pop-mark)
+;;            )
+;;    )
+  
+;;;(global-set-key (kbd "H-/") (lambda (_) (print "undo") ))
+
 (defun ty-temp-mark-thing ()
   (set-transient-map
-   ;; the keymap
-   ;; todo:
+
    (let ((map (make-sparse-keymap)))
      ;;(define-key map [switch-frame] #'ignore)
-     ;;(define-key map (kbd "C-<left>") 'ty-exit-region-left)
-     ;;(define-key map (kbd "C-<right>") 'ty-exit-region-right)
+     (define-key map (kbd "<left>") 'ty-exit-region-left)
+     (define-key map (kbd "<right>") 'ty-exit-region-right)
+     (define-key map (kbd "<up>") 'ty-exit-region-left)
+     (define-key map (kbd "<down>") 'ty-exit-region-right)
+
+
+     ;; Able to undo outside of selected region..
+     ;; TODO
+     ;;   * bind to C-/  also
+     ;;   * Mark the undo text
+     (define-key map (kbd "C-_") (lambda ()
+                                   (interactive)
+                                   (deactivate-mark)))
+     
      ;;(define-key "<left>" ty-exit-region-left)
+
      ;; r = replace
      ;; k = kill
      ;; n = next
@@ -238,127 +268,252 @@ the current position of point, then move it to the beginning of the line."
 
    ;; nil means dont stay active as long as a key they press is in our map (can be t)
    ;; the lambda is the exit
-   t (lambda ()
-       ;;  (message "exiting tmp mark")
-       (deactivate-mark)
-       (pop-mark)))
+   ;; nil (lambda ()
+       
+   ;;     ;(message "exiting tmp mark")
+   ;;     (deactivate-mark)
+   ;;     ;(pop-mark)
+   ;;     ))
+   ;(setq deactivate-mark  nil)
+  )
+)
+
+
+
+(defun smart-line-beginning ()
+  "Move point to the beginning of text on the current line; if that is already
+the current position of point, then move it to the beginning of the line."
+  (interactive)
+  (let ((pt (point)))
+    (beginning-of-line-text)
+    (when (eq pt (point))
+      (beginning-of-line))))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;; Verbs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ty-kill-this-thing (start end)
+  "Cleanly kill region if active, else thing under cursor"
+  (interactive "r")
+
+  (unless (region-active-p);;use-region-p
+    (print "marking something")
+    (if (member (string (following-char)) '("'" "\"" "{" "(") )
+        (progn (mark-sexp))
+      (ty-forward-symbol)) )
+
+  ;; fn  delete-and-extract-region start end
+  ;;    the  between positions start and end in the current buffer, and returns a string containing the text just deleted.
+
+  ;;(call-interactively 'kill-region)
+  (kill-region start end)
+
+  (when ty-last-move
+    (funcall-interactively ty-last-move)
+    ;; todo: clean up white space if between symbols
+    (setq deactivate-mark  nil)
+    
+    )
 
   )
 
+ 
+
+(defun ty-duplicate (start end)
+  "Takes region or thing under cursor and duplicates it"
+  (interactive "r")
+  
+  (unless (region-active-p)
+    ;; todo : make smarter
+    (call-interactively 'ty-forward-symbol)
+    )
+
+  (setq exit-start (region-beginning))
+  (setq exit-end (region-end))
+  
+  (let ((to-paste (buffer-substring start end)))
+    (save-excursion
+      (ty-exit-region-right)
+      
+      ;; if end of line, make new line. Otherwize we need to add a new argument
+      ;; but for now just add one space. 
+      (if (eolp)
+          (unless (string-match "^\n" to-paste)
+            (electric-newline-and-maybe-indent))
+        (just-one-space));; TODO: might need a comma
+
+      (insert to-paste)
+      (ty-cleanup-around-here);; Here it might mush two symbols together. might need comma
+      )
+    );; together region-beginning and region-end
+  
+  (push-mark exit-start t t)
+  (goto-char exit-end)
+  (setq deactivate-mark  nil)
+  ;;(ty-temp-mark-thing ty-temp-mark-thingty-temp-mark-thing)
+)
+
+(defun ty-question ()
+    "Looks up documenation"
+  (interactive)
+  (call-interactively 'describe-function);; elisp mode
+  )
 
 
-
-(setq verb-calls '(
-                   ("u" undo)
-
-                   ;; noun related ;;
-                   ("k" kill-region)
-                   ("c" comment-region)
-                   ("r" (progn () )) ;; todo: copy region, replace in file, look for others other files
-                   ("r" eval-last-sexp)
-                   ("k" kill-region)
-                   ("g" rgrep)
-                   ;;("v" ) duplicate
-                   ("<up>" rgrep)
-
-                   ;; requires specific implementations ;;
-                   ;;("o" ) ("s" );; open/save the thing
-                   ;;("m" ) mark the thing
-
-                   ))
-
-
-(global-set-key (kbd "C-`") 'ryo-modal-mode)
-(ryo-modal-keys
-
- ;; Number row
- ("`" ryo-nothing)
- ("1" ryo-nothing)
- ("2" ryo-nothing)
- ("3" ryo-nothing)
- ("4" ryo-nothing)
- ("5" ryo-nothing)
- ("6" ryo-nothing)
- ("7" ryo-nothing)
- ("8" ryo-nothing)
- ("9" ryo-nothing)
- ("0" ryo-nothing)
- ("-" ryo-nothing)
- ("=" ryo-nothing)
-
- ;;;;; Navigation ;;;;;;;;;;;;;;;
- ("q" ryo-nothing)
- ("w" ryo-nothing)
- ("e" ryo-nothing)
- ("r" ryo-nothing)
-
- ("a" ryo-nothing)
-
- ;; ("s" ryo-nothing)
- ;; ("d" ryo-nothing)
- ;; ("f" ryo-nothing)
-
- ;; ("z" ryo-nothing)
- ;; ("x" ryo-nothing)
- ;; ("c" ryo-nothing)
- ;; ("v" ryo-nothing)
-
-
- ("t" ryo-nothing)
- ("y" ryo-nothing)
- ("u" ryo-nothing)
- ("i" ryo-nothing)
- ("o" ryo-nothing)
- ("p" ryo-nothing)
- ("[" ryo-nothing)
- ("]" ryo-nothing)
- ("\\" ryo-nothing)
-
-;;;;;;;;;;;;;; home row ;;;;;;;;;;;;;;;;;;
-
- ;; Grid, IE, windows
- ("g" (("0" ryo-nothing)
-       ("1" ryo-nothing)
-       ("2" ryo-nothing)
-       ("3" ryo-nothing)))
-
- ("h" ryo-nothing)
- ("j" ryo-nothing)
-
- ;; Killing
- ("k" (("a" ryo-nothing)
-       ("b" ryo-nothing)
-       ("k" ryo-nothing)
-
-
-                                        ; (("a" kill-word)
-       ("b" ryo-nothing)
-       ("k" ryo-nothing)
-       ("r" ryo-nothing)))
- ;;kill within quotes
- ;; kill bewteen space and )}
-
- ;; "Locate"
- ("l" ryo-nothing)
- (";" ryo-nothing)
- ("'" ryo-nothing)
-
-
-;;;;;;;;;;;;; bottom row ;;;;;;;;;;;;;;;;;;;;;
-
- ;; Buffers
- ("b" ryo-nothing)
-
- ;; Notes (Comments)
- ("n" ryo-nothing)
-
- ;;Macros
- ("m" ryo-nothing)
-
- ("," ryo-nothing)
- ("." ryo-nothing)
- ("/" ryo-nothing)
-
- ("SPC" ryo-nothing)
-
+(defun ty-close-or-save ()
+  "Saves "
+  ()
  )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;   SHORT CUTS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ty-make-shortcut (keys to-call)
+    "shortcut-helper"
+    (global-set-key (kbd keys) to-call))
+
+
+;; Disable this as caps has been remapped to home
+;;(global-unset-key (kbd "C-<home>"))
+;;(global-set-key (kbd "C-<home>") nil)
+;;(global-set-key (kbd "C-\]") nil)
+
+;; ;;(global-set-key (kbd "C-\\") nil)
+
+;; (global-set-key (kbd "C-;") nil)
+;; (global-set-key (kbd "C-'") nil)
+
+;; (global-set-key (kbd "C-d") nil)
+
+(progn
+  ;; using obscure shortcuts
+
+  ;; Noun movement
+  (ty-make-shortcut "H-1" 'ty-previous-line)
+  (ty-make-shortcut "H-2" 'ty-next-line)
+
+  (ty-make-shortcut "H-3"  'ty-backward-symbol)
+  (ty-make-shortcut "H-4" 'ty-forward-symbol)
+
+  (ty-make-shortcut "H-5" 'ty-prev-parens-outside)
+  (ty-make-shortcut "H-6" 'ty-next-parens-outside)
+
+  (ty-make-shortcut "H-7" 'previous-buffer)
+  (ty-make-shortcut "H-8" 'next-buffer)
+
+  
+  ;; Verbs
+  (ty-make-shortcut "H-x" 'ty-kill-this-thing)
+  ;;(ty-make-shortcut "H-k" 'kill-region)
+
+  (ty-make-shortcut "H-d" 'ty-duplicate)
+  
+  (ty-make-shortcut "H-;" 'point-to-register)
+  (ty-make-shortcut "H-'" 'jump-to-register)
+
+  (ty-make-shortcut "H-g" 'rgrep)
+
+
+  ;(ty-make-shortcut "H-" 'copy-to-register)
+
+
+  ;; Adverbs
+  (ty-make-shortcut "H-?" 'ty-question)
+
+)
+
+
+
+;; (defun ty-make-shortcuts (key-list &rest)
+;;   "sets global keys for functions"
+;;   (when key-list
+;;     (print "=============")
+;;     (print key-list)
+
+;;     ;; (let (item (car key-list))
+;;     ;;   (print item)
+;;     ;;   (global-set-key (kbd (car item)) (cdr item))
+;;     ;;   )
+
+;;     ;;(
+
+;;     (apply ty-make-shortcuts rest) ))
+
+
+;; (ty-make-shortcuts '("C-!" ty-previous-line)  '("C-@" kill-region))
+
+
+;;(car (car '(("C-!" ty-previous-line))))
+;; (car [1 2 4])
+
+
+;; (setq verb-calls '(
+;;                    ;;("v" ) duplicate
+
+;;                    ;; requires specific implementations ;;
+;;                    ;;("o" ) ("s" );; open/save the thing
+;;                    ;;("m" ) mark the thing
+
+;;                    ))
+
+;; ;; Noun navigation
+;; (global-set-key (kbd "C-`") 'ryo-modal-mode)
+;; (ryo-modal-keys
+
+;;  ;; line
+;;  ("l" (
+;;        ("<>"  ty-next-line     :exit t)
+;;        ("<>"   ty-previous-line :exit t)
+
+;;        ("<up>" ty-previous-line :exit t)
+;;        ("<down>" ty-next-line :exit t)
+
+;;        ))
+
+;;  ("s" ( ;append verb-calls
+;;        ("<left>"  ty-backward-symbol :exit t)
+;;        ("<right>" ty-forward-symbol :exit t)
+
+;;        ("<up>" ty-previous-line :exit t)
+;;        ("<down>" ty-next-line :exit t)
+
+;;        ))
+
+;;  ("p" (;append verb-calls
+;;        ("<left>"  ty-prev-parens-outside :exit t)
+;;        ("<right>" ty-next-parens-outside :exit t)
+
+;;        
+;;        
+
+;;        ))
+
+;; ;; region
+;;  ("r" (
+;;        
+;;        
+;;        ;; ;; todo: copy region, replace in file, look for others other files
+;;        ;; run
+;;        
+;;        ))
+
+;;  )
+
+
+;; (defun ty-mark-thing (thing-type)
+;;   "Marks a line, symbol, parens, etc."
+;;     (push-mark (point) t t)
+;;     (move-end-of-line nil)
+;;     )
+
+;;   (when (eq thing-type 'symbol)
+;;     ()
+;;     )
+
+;;   (when (eq thing-type 'word)
+;;     (er/mark-word))
+
+;;   )
