@@ -1,15 +1,9 @@
-;; ideas:
-;;  * use sticky keys for mac kbd.  c-1  c-9  or c-!  c-@  
-;;  * make a way to go see another area in the same buffer
-;;    by splitting the window in half and switch frames easily.
-;;  * Fwd/bwd defun/defn/def foo/function ()/etc... searches
-;;    then puts it at the top of the screen. Can scroll fast
-;;  * "return" button does M-j if in code, otherwise enter.
-;;  * Code is always formatted. Start first with aligning arguments.
-;;  * Duplicate key will copy & paste after the right of the region
-;;    If is an argument, wont add new line but will add space and comma
-;;    if nessisary. After duplicate, the selected region will stay selected
-;;    so that multiple dupications may be had.
+;; ideas: * use sticky keys for mac kbd.  c-1 c-9 or c-!  c-@ * make a way to
+;; go see another area in the same buffer by splitting the window in half and
+;; switch frames easily.  * Fwd/bwd defun/defn/def foo/function
+;; ()/etc... searches then puts it at the top of the screen. Can scroll fast *
+;; "return" button does M-j if in code, otherwise enter.  * Code is always
+;; formatted. Start first with aligning arguments.
 ;;
 ;; * Hitting enter will indent properly and may put in two newlines
 ;;   if doing <enter> before a ) as to supply an argument
@@ -23,6 +17,180 @@
 
 
 (setq ty-last-move nil)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;       Nouns
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun move-and-mark (next-fn prev-fn)
+  ""
+  ;; (let (start-point (point))
+  ;;   (apply prev-fn)
+  ;;   (push-mark (point) t t)
+  ;;   (apply next-fn)
+  ;;   ;; If in the same point where we started
+  ;;   (when (eq start-point (point))
+  ;;     (apply next-fn)
+  ;;     (apply prev-fn)
+  ;;     (push-mark (point) t t)
+  ;;     (apply next-fn)
+  ;;     )
+  ;;   )
+  ;;  (apply next-fn)
+  )
+
+
+
+;;;;;;;; Strings ;;;;;;;
+
+(defun what-face ()
+  "returns list of faces applied under point"
+  ;;(interactive)
+  ;; (let ((face (or (get-char-property (point) 'read-face-name)
+  ;;                 (get-char-property (point) 'face))))
+  ;;   (print face)
+  ;;   face)
+  (let ((face (get-char-property (point) 'face)))
+    (if  (listp face) face (list face) ))
+)
+
+
+(defun ty-mark-next-face (&rest ok-faces)
+  "asdf"
+  
+  ;; Move to beginning of in the middle
+  (if (cl-intersection ok-faces (what-face))
+      (while (cl-intersection ok-faces (what-face))
+        (backward-char))
+    )
+
+  ;; Move until start
+  (while
+      (not
+       (cl-intersection ok-faces (what-face)))
+    (forward-char))
+  
+  (push-mark (point) t t)
+
+  ;; Move until end
+  (while
+      (cl-intersection ok-faces (what-face))
+    (forward-char))
+  (ty-temp-mark-thing)
+  )
+
+(defun ty-mark-prev-face (&rest ok-faces)
+  "asdf"
+  
+  ;; Move to beginning of in the middle
+  (if (cl-intersection ok-faces (what-face))
+      (while (cl-intersection ok-faces (what-face))
+        (forward-char))
+      )
+
+  ;; Move until start
+  (while
+   (not
+    (cl-intersection ok-faces (what-face)))
+   (backward-char))
+  
+  (forward-char);; go forward to capture the quote
+  (push-mark (point) t t)
+
+  ;; ;; Move until end
+  (backward-char)
+  (while
+      (cl-intersection ok-faces (what-face))
+    (backward-char))
+  (forward-char);; Keep cursor on the edge of the quote
+  (ty-temp-mark-thing)
+
+  )
+
+(defun ty-next-quoted-string ()
+  "Looks forward for quoted string"
+  (interactive)
+
+  ;; (unless (string-match "[^'^@a-zA-Z0-9_\-!]" (string (following-char)))
+  ;;   (re-search-backward "[\s\\(\.\\s-\"]"))
+
+  ;; (ty-exit-region-right)
+
+  ;; ;; look for a symbol
+  ;; (re-search-forward (rx "\"" (group (0+ (or (1+ (not (any "\"" "\\"))) (seq "\\" anything)))) "\"") )
+  ;; (push-mark (match-beginning 0) t t)
+  ;; (goto-char (match-end 0))
+  ;; (ty-temp-mark-thing)
+  
+  (ty-mark-next-face 'font-lock-doc-face 'font-lock-string-face)
+
+
+  ;; (ty-exit-region-left)
+  ;; (forward-char)
+
+  ;; (search-forward "\"")
+  ;; (backward-char)
+  ;; (push-mark (point) t t)
+
+  ;; ;;(forward-list nil)
+  ;; ;;(exchange-point-and-mark)
+  ;; (mark-sexp)
+  ;; (ty-temp-mark-thing)
+
+
+  )
+
+(defun ty-prev-quoted-string ()
+  "Looks backward for quoted string"
+  (interactive)
+  
+  ;; (unless (string-match "[^'^@a-zA-Z0-9_\-!]" (string (following-char)))
+  ;;   (re-search-backward "[\s\\(\.\\s-\"]"))
+
+  ;; (ty-exit-region-left)
+
+  ;; ;; look for a symbol
+  ;; (re-search-backward (rx "\"" (group (0+ (or (1+ (not (any "\"" "\\" "\n"))) (seq "\\" anything)))) "\"") )
+  ;; (push-mark (match-end 0) t t)
+  ;; (goto-char (match-beginning 0))
+  ;; (ty-temp-mark-thing)
+  (ty-mark-prev-face 'font-lock-doc-face 'font-lock-string-face)
+
+  )
+
+
+(global-set-key (kbd "C-0") 'ty-next-quoted-string)
+(global-set-key (kbd "C-9") 'ty-prev-quoted-string)
+
+
+
+;;;;;;;;;;;; Paragraphs ;;;;;;;;;;;
+
+(defun ty-next-paragraph ()
+  "Goes to and marks the next paragraph"
+  (interactive)
+  (setq ty-last-move 'ty-next-paragraph)
+  
+  (ty-exit-region-right)
+  (forward-paragraph)
+  (push-mark (point) t t)
+  (backward-paragraph)
+  (exchange-point-and-mark)
+  (ty-temp-mark-thing)
+
+  )
+
+(defun ty-prev-paragraph ()
+  ""
+  (interactive)
+  (setq ty-last-move 'ty-prev-paragraph "foobar")
+  (ty-exit-region-left)
+  (backward-paragraph)
+  (push-mark (point) t t)
+  (forward-paragraph)
+  (exchange-point-and-mark)
+  (ty-temp-mark-thing)
+  ) 
 
 ;;;;;;;;;;;;; Buffers ;;;;;;;;;;;;;;;;;;
 
@@ -40,7 +208,7 @@
   (interactive)
   (setq ty-last-move 'ty-next-parens-outside)
   (ty-exit-region-left)
-  (forward-char )
+  (forward-char)
 
   (search-forward "(")
   (backward-char)
@@ -78,6 +246,7 @@
 (defun ty-next-line ()
   "Goto next line, mark next line"
   (interactive )
+
   (setq ty-last-move 'ty-next-line)
   (unless (eolp);; point end of line
       (previous-line))
@@ -298,7 +467,7 @@ the current position of point, then move it to the beginning of the line."
   (interactive "r")
 
   (unless (region-active-p);;use-region-p
-    (print "marking something")
+    ;;(print "marking something")
     (if (member (string (following-char)) '("'" "\"" "{" "(") )
         (progn (mark-sexp))
       (ty-forward-symbol)) )
@@ -309,17 +478,23 @@ the current position of point, then move it to the beginning of the line."
   ;;(call-interactively 'kill-region)
   (kill-region start end)
 
-  (when ty-last-move
-    (funcall-interactively ty-last-move)
-    ;; todo: clean up white space if between symbols
-    (setq deactivate-mark  nil)
-    
-    )
+  ;; (unless (member  ty-last-move '('ty-forward-symbol 'ty-backward-symbol) )
+  ;;   (funcall-interactively ty-last-move)
+  ;;   ;; todo: clean up white space if between symbols
+  ;;   (setq deactivate-mark  nil)    
+  ;;   )
 
   )
 
- 
+;; (defun ty-point-to-register ()
+;;     ""
+;;     (interactive)
+;;   (point-to-register "c")
 
+;;   )
+
+
+;; TODO: dup a function needs to make a new line
 (defun ty-duplicate (start end)
   "Takes region or thing under cursor and duplicates it"
   (interactive "r")
@@ -404,6 +579,9 @@ the current position of point, then move it to the beginning of the line."
   (ty-make-shortcut "H-7" 'previous-buffer)
   (ty-make-shortcut "H-8" 'next-buffer)
 
+  (ty-make-shortcut "H-9" 'ty-prev-paragraph)
+  (ty-make-shortcut "H-0" 'ty-next-paragraph)
+
   
   ;; Verbs
   (ty-make-shortcut "H-x" 'ty-kill-this-thing)
@@ -411,23 +589,42 @@ the current position of point, then move it to the beginning of the line."
 
   (ty-make-shortcut "H-d" 'ty-duplicate)
   
-  (ty-make-shortcut "H-;" 'point-to-register)
+  (ty-make-shortcut "H-;" (lambda () 
+                            (interactive)
+                            (call-interactively 'point-to-register)
+                            (message "Point Saved")))
   (ty-make-shortcut "H-'" 'jump-to-register)
 
   (ty-make-shortcut "H-g" 'rgrep)
 
+  (ty-make-shortcut "H-f" 'find-file)
+  (ty-make-shortcut "H-r" 'replace-string)
 
-  ;(ty-make-shortcut "H-" 'copy-to-register)
+  
+  ;; (ty-make-shortcut "H-p 1" (lambda () (interactive)(point-to-register "1") (message "saved") ))
+  ;; (ty-make-shortcut "H-p 1" (lambda () (interactive)(point-to-register "1") (message "saved") ))
 
 
   ;; Adverbs
   (ty-make-shortcut "H-?" 'ty-question)
 
+
+  ;; Windows
+  (ty-make-shortcut "H-w" (lambda () (interactive) (other-window 1)))
+  (ty-make-shortcut "H-W" (lambda () (interactive) (other-window -1))) 
+
 )
 
+;;(global-unset-key (kbd "C-<home>"))
+;;(global-set-key (kbd "C-<home>") nil)
+;;(global-unset-key (kbd "C-<home>"))
+;;(global-set-key (kbd "C-<home>") nil)
+;;(global-unset-key (kbd "C-<home>"))
+;;(global-set-key (kbd "C-<home>") nil)
+;;(global-unset-key (kbd "C-<home>"))
+;;(global-set-key (kbd "C-<home>") nil)
 
-
-;; (defun ty-make-shortcuts (key-list &rest)
+;; (defun  (key-list &rest)
 ;;   "sets global keys for functions"
 ;;   (when key-list
 ;;     (print "=============")

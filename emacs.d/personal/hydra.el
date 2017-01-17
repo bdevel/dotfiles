@@ -301,13 +301,16 @@
   ("d" cider-doc "Doc")
   ("b" cider-load-buffer "Exec Buffer")
   ("q" cider-quit "Quit REPL")
-  ("e" cider-eval-last-sexp-to-repl "Eval S-exp")
+  ("R" cider-jack-in "Start REPL")
+  
+  ("e" cider-eval-sexp-at-point "Eval S-exp")
+  ("f" cider-eval-defun-at-point "Eval defn")
 
   ;; barage/slurpage
-  ("r" paredit-forward-slurp-sexp "slurp fwd")
-  ("e" paredit-forward-barf-sexp "barf fwd")
-  ("w" paredit-backward-slurp-sexp "slurp bwd")
-  ("q" paredit-backward-barf-sexp "barf bwd")
+  ;; ("r" paredit-forward-slurp-sexp "slurp fwd")
+  ;; ("e" paredit-forward-barf-sexp "barf fwd")
+  ;; ("w" paredit-backward-slurp-sexp "slurp bwd")
+  ;; ("q" paredit-backward-barf-sexp "barf bwd")
 
   );;cider-eval-last-sexp
 
