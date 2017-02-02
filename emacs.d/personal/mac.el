@@ -1,5 +1,7 @@
 ;;; Cocoa!
 
+
+
 ;; Hide the tool bar
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode 0))
@@ -18,6 +20,10 @@
 ;;(global-set-key (kbd "<triple-wheel-right>") 'previous-buffer)
 ;;(global-set-key (kbd "<triple-wheel-left>") 'next-buffer)
 
+
+
+;; Disable killing to Mac clipboard
+(setq x-select-enable-clipboard nil)
 
 ;;;;;;;;;;;;; Make copy paste work at f1 f2 ;;;;;;;;
 (defun pbcopy ()

@@ -34,20 +34,36 @@
 
 
 ;; query-replace current word
-(defun mark-prev-symbol ()
-   (interactive)
-   ;;(isearch-backward-regexp )
-   (if (<= (point) (re-search-backward "[\s('\"]"))
-       (progn (backward-char) (mark-prev-symbol))
-     (progn
-       (re-search-forward "\\w")
-       (backward-char)
-       (set-mark (point))
-       (re-search-forward "[\s)'\"]")
-       (backward-char)
-       (exchange-point-and-mark)
-       ;;(kill-region) ) )
-       )))
+;; (defun mark-prev-symbol ()
+;;    (interactive)
+;;    ;;(isearch-backward-regexp )
+;;    (if (<= (point) (re-search-backward "[\s('\"]"))
+;;        (progn (backward-char) (mark-prev-symbol))
+;;      (progn
+;;        (re-search-forward "\\w")
+;;        (backward-char)
+;;        (set-mark (point))
+;;        (re-search-forward "[\s)'\"]")
+;;        (backward-char)
+;;        (exchange-point-and-mark)
+;;        ;;(kill-region) ) )
+;;        )))
+
+
+
+
+;; https://www.emacswiki.org/emacs/DeletingWhitespace
+(defun kill-whitespace ()
+  "Kill the whitespace between two non-whitespace characters"
+  (interactive "*")
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (progn
+          (re-search-backward "[^ \t\r\n]" nil t)
+          (re-search-forward "[ \t\r\n]+" nil t)
+          (replace-match "" nil nil))))))
+
 
 
 

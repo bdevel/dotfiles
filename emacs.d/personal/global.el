@@ -1,7 +1,12 @@
 ;;; Generic emacs settings I cannot live without
 
+;; don't use desktop mode for terminal
+(when (display-graphic-p)
+  (desktop-save-mode 1);; is x window
+  ())
 
-(desktop-save-mode 1)
+;; Add variables to desktop saving
+;;(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 ;; Don't show the startup screen
 (setq inhibit-startup-message t)
@@ -23,15 +28,15 @@
 ;; (display-battery-mode 1)
 
 ;; Emacs gurus don't need no stinking scroll bars
-(when (fboundp 'toggle-scroll-bar)
-  (toggle-scroll-bar -1))
+;; (when (fboundp 'toggle-scroll-bar)
+;;   (toggle-scroll-bar -1))
+(toggle-scroll-bar nil)
 
 ;; Explicitly show the end of a buffer
 (set-default 'indicate-empty-lines t)
 
 ;; Line-wrapping
 (set-default 'fill-column 78)
-
 
 ;; Make identifiers with hyphens to be one word
 ;;(modify-syntax-entry ?_ "w" (standard-syntax-table))
@@ -101,3 +106,19 @@
 
 ;; zap-up-to-char, forward-to-word, backward-to-word, etc
 ;(require 'misc)
+
+
+;; auto-indent on yank
+;; https://www.emacswiki.org/emacs/AutoIndentation#toc3
+(dolist (command '(yank yank-pop))
+  (eval `(defadvice ,command (after indent-region activate)
+           (and (not current-prefix-arg)
+                (member major-mode '(emacs-lisp-mode lisp-mode
+                                                     clojure-mode    scheme-mode
+                                                     haskell-mode    ruby-mode
+                                                     rspec-mode      python-mode
+                                                     c-mode          c++-mode
+                                                     objc-mode       latex-mode
+                                                     plain-tex-mode))
+                (let ((mark-even-if-inactive transient-mark-mode))
+                  (indent-region (region-beginning) (region-end) nil))))))
