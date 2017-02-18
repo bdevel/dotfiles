@@ -2,13 +2,16 @@
 (load custom-file 'noerror)
 
 (load "~/.emacs.d/personal/defuns")
-
 ;; elpa managed
 ;; ------------------
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
        ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (when (not package-archive-contents) (package-refresh-contents))
+
+
+(package 'auto-complete)
+(package 'ac-cider)
 
 ;;(package 'ace-jump-mode)
 ;; (package 'ag)
@@ -38,9 +41,10 @@
 ;(package 'haml-mode)
 (package 'highlight-parentheses)
 (package 'hydra)
-(package 'ido-ubiquitous)
+;;(package 'ido-ubiquitous)
 ;; (package 'htmlize)
-(package 'json-mode)
+(package 'neotree)
+(package 'json-mode) 
 (package 'js2-mode)
 ;; (package 'lua-mode)
 (package 'magit)
@@ -61,9 +65,10 @@
 ;;(package 'sass-mode)
 (package 'smex)
 (package 'sos)
+(package 'smartparens)
 ;; (package 'shell-pop)
 ;; (package 'toggle-quotes)
-(package 'tabbar)
+(package 'tabbar-ruler)
 
 (package 'tagedit)
 (package 'yaml-mode)
@@ -72,6 +77,7 @@
 
 ;; self managed
 ;; ------------------
+(personal 'auto-complete)
 (personal 'theme);;make first as RYO looks for cursor color on setup
 (personal 'bindings)
 (personal 'cider)
@@ -89,7 +95,7 @@
 (personal 'highlight-parentheses)
 (personal 'hippy-expand)
 (personal 'hydra)
-(personal 'ido)
+;;(personal 'ido)
 (personal 'idle-highlight)
 (personal 'javascript)
 (personal 'kbd-macros)
@@ -104,8 +110,10 @@
 (personal 'scratch)
 (personal 'server-mode)
 (personal 'shell-mode)
+(personal 'smartparens)
 (personal 'smex)
 (personal 'tabs)
+(personal 'tabbar-ruler)
 (personal 'utf-8)
 
 ;;(personal 'ryo)
@@ -113,12 +121,13 @@
 ;;(personal 'zoom) ; code folding
 
 
+
 ;; submodule managed
 ;; ------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 
-(vendor 'align)
-(vendor 'revbufs       'revbufs)
+(require 'align)
+;;(vendor 'revbufs 'revbufs)
 ;;(vendor 'ryo-modal)
-
 ;;(vendor 'electric-align 'electric-align-mode)
+

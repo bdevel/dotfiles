@@ -8,6 +8,12 @@
 ;; * Hitting enter will indent properly and may put in two newlines
 ;;   if doing <enter> before a ) as to supply an argument
 
+;; * + cursor button looks for marked region and adds cursor
+;; * Add macro based on last N command calls, show history, capture backwards
+
+;; go to last place edited
+;; https://github.com/camdez/goto-last-change.el
+
 ;; Doing repeat -- see setvar
 ;; (setq recenter-last-op
 ;; (if (eq this-command last-command)
@@ -16,6 +22,8 @@
 ;;   (car recenter-positions)))
 
 
+(require 'expand-region)
+;;(require 'move-text)
 (setq ty-last-move nil)
 
 
@@ -227,12 +235,12 @@
   (ty-exit-region-left)
   (backward-char )
 
-  (search-backward "(")
-  ;;(backward-char)
+  (search-backward ")")
+  (forward-char)
   (push-mark (point) t t)
 
-  (forward-list nil)
-  (exchange-point-and-mark)
+  (backward-list nil)
+  ;;(exchange-point-and-mark)
 
   )
 ;;(global-set-key (kbd "C-5") 'ty-prev-parens-outside)
@@ -359,6 +367,7 @@
       (goto-char (region-end) )
       (deactivate-mark)))
 
+
 ;; (defun ty-temp-mark-thing ()
   
 ;;   (transient-mark-mode nil)
@@ -405,8 +414,7 @@
 ;;            ;;(pop-mark)
 ;;            )
 ;;    )
-  
-;;;(global-set-key (kbd "H-/") (lambda (_) (print "undo") ))
+
 
 (defun ty-temp-mark-thing ()
   (set-transient-map
@@ -467,16 +475,18 @@ the current position of point, then move it to the beginning of the line."
   (interactive "r")
 
   (unless (region-active-p);;use-region-p
-    ;;(print "marking something")
-    (if (member (string (following-char)) '("'" "\"" "{" "(") )
-        (progn (mark-sexp))
-      (ty-forward-symbol)) )
-
-  ;; fn  delete-and-extract-region start end
-  ;;    the  between positions start and end in the current buffer, and returns a string containing the text just deleted.
+    (call-interactively 'er/expand-region)
+    ;; (if (member (string (following-char)) '("'" "\"" "{" "(") )
+    ;;     (progn
+    ;;       (message "@222")
+    ;;       (er/expand-region))
+    ;;   (progn
+    ;;     (messag "for sym")
+    ;;     (call-interactively 'ty-forward-symbol))) 
+    )
 
   ;;(call-interactively 'kill-region)
-  (kill-region start end)
+  (kill-region (region-beginning) (region-end))
 
   ;; (unless (member  ty-last-move '('ty-forward-symbol 'ty-backward-symbol) )
   ;;   (funcall-interactively ty-last-move)
@@ -501,17 +511,19 @@ the current position of point, then move it to the beginning of the line."
   
   (unless (region-active-p)
     ;; todo : make smarter
-    (call-interactively 'ty-forward-symbol)
+    (message "marking reg")
+    ;;(call-interactively 'ty-forward-symbol)
+    (call-interactively 'er/expand-region)
     )
 
   (setq exit-start (region-beginning))
   (setq exit-end (region-end))
   
-  (let ((to-paste (buffer-substring start end)))
+  (let ((to-paste (buffer-substring exit-start exit-end)))
     (save-excursion
       (ty-exit-region-right)
       
-      ;; if end of line, make new line. Otherwize we need to add a new argument
+      ;; if end of line, make new line. Otherwise we need to add a new argument
       ;; but for now just add one space. 
       (if (eolp)
           (unless (string-match "^\n" to-paste)
@@ -526,7 +538,7 @@ the current position of point, then move it to the beginning of the line."
   (push-mark exit-start t t)
   (goto-char exit-end)
   (setq deactivate-mark  nil)
-  ;;(ty-temp-mark-thing ty-temp-mark-thingty-temp-mark-thing)
+  (ty-temp-mark-thing)
 )
 
 (defun ty-question ()
@@ -582,6 +594,10 @@ the current position of point, then move it to the beginning of the line."
   (ty-make-shortcut "H-9" 'ty-prev-paragraph)
   (ty-make-shortcut "H-0" 'ty-next-paragraph)
 
+
+  (ty-make-shortcut "H-!" 'ty-prev-quoted-string)
+  (ty-make-shortcut "H-@" 'ty-next-quoted-string)
+
   
   ;; Verbs
   (ty-make-shortcut "H-x" 'ty-kill-this-thing)
@@ -594,6 +610,17 @@ the current position of point, then move it to the beginning of the line."
                             (call-interactively 'point-to-register)
                             (message "Point Saved")))
   (ty-make-shortcut "H-'" 'jump-to-register)
+
+  ;; todo make cm
+  ;;(ty-make-shortcut "H-[" 'copy-to-register)
+  (ty-make-shortcut "H-[" (lambda () 
+                            (interactive)
+                            (call-interactively 'copy-to-register)
+                            (activate-mark)
+                            (message "Saved")) )
+
+  (ty-make-shortcut "H-]" 'insert-register)
+  
 
   (ty-make-shortcut "H-g" 'rgrep)
 
@@ -612,6 +639,21 @@ the current position of point, then move it to the beginning of the line."
   ;; Windows
   (ty-make-shortcut "H-w" (lambda () (interactive) (other-window 1)))
   (ty-make-shortcut "H-W" (lambda () (interactive) (other-window -1))) 
+
+
+  ;; more/less
+  (ty-make-shortcut "H-`" 'er/expand-region)
+  (ty-make-shortcut "H-~" 'er/contract-region)
+
+
+
+  ;; sexp
+
+  (ty-make-shortcut "H-<right>" 'sp-forward-slurp-sexp)
+  (ty-make-shortcut "H-<left>"  'sp-forward-barf-sexp) 
+  (ty-make-shortcut "H-<up>"    'sp-splice-sexp) 
+  (ty-make-shortcut "H-<down>"  'sp-split-sexp)
+
 
 )
 

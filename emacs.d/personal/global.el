@@ -6,7 +6,7 @@
   ())
 
 ;; Add variables to desktop saving
-(add-to-list 'desktop-globals-to-save 'register-alist)
+;;(add-to-list 'desktop-globals-to-save 'register-alist)
 ;;(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 ;; Don't show the startup screen
@@ -32,6 +32,7 @@
 ;; (when (fboundp 'toggle-scroll-bar)
 ;;   (toggle-scroll-bar -1))
 (toggle-scroll-bar nil)
+(scroll-bar-mode 0)
 
 ;; Explicitly show the end of a buffer
 (set-default 'indicate-empty-lines t)

@@ -18,6 +18,11 @@
 ;; Wrap when navigating history.
 (setq cider-repl-wrap-history t)
 
+
+;; don't hyjack frames and buffers on startup
+(setq cider-repl-pop-to-buffer-on-connect nil)
+;;(setq cider-repl-pop-to-buffer-on-connect 'display-only)
+
 ;; enable paredit in your REPL
 ;;(add-hook 'cider-repl-mode-hook 'paredit-mode)
 

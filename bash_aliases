@@ -43,15 +43,30 @@ else
 fi
 
 alias cde='cd ~/dotfiles/emacs.d'
+alias cdd='cd ~/dotfiles'
 alias cdc='clear; cd ~/Code; ls'
 alias cdim="clear; cd ~/Code/ist-merlin; git status"
 alias cdic="clear; cd ~/Code/ist-client; git status"
+alias cdir='clear; cd ~/Code/ist-reliability; git status'
+
+# CD return, save location
+alias cdr="d0=\$(pwd); cd"
+alias cdr1="d1=\$(pwd); cd"
+alias cdr2="d2=\$(pwd); cd"
+# CD Back
+alias cdb="cd $d0"
+alias cdb1="cd $d1"
+alias cdb2="cd $d2"
+
+
 
 #alias ls='ls -G'
 alias l="ls"
 alias ll="ls -lh"
 alias la="ls -a"
 alias lal="ls -alh"
+
+
 
 ############################################################
 ## Git
@@ -63,9 +78,11 @@ alias gcam='git commit -am'
 alias gc='git commit'
 
 alias gco='git checkout'
-alias gcb='git checkout -b'
+alias gcom='git checkout master'
+alias gcob='git checkout -b'
 
 alias gm='git merge'
+alias gfum='git fetch upstream'
 alias gmum='git merge upstream/master'
 alias gb='git branch'
 alias gs='git status'
@@ -73,7 +90,7 @@ alias gl='git log'
 alias glp='git log -p'
 alias gls='git log -s'
 alias gd='git diff'
-alias gp='git push'
+alias gpo='git push'
 alias gpu='git push upstream'
 
 
@@ -107,6 +124,8 @@ alias gpu='git push upstream'
 
 # Get rid of those pesky .DS_Store files recursively
 alias dstore-clean='find . -type f -name .DS_Store -print0 | xargs -0 rm'
+
+alias ecu='find . | grep ~$ | xargs rm' # clean emacs backup files
 
 
 # Empty the Trash on all mounted volumes and the main HDD
@@ -152,7 +171,8 @@ function gemdoc {
   open `gemdir`/doc/`gemfind $1`/rdoc/index.html
 }
 
-
+alias rc="rails console"
+alias tg="thor -T | grep" # (rake -T; thor -T) | grep syn
 
 ############################################################
 ## Bundler

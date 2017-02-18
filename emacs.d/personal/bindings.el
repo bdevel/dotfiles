@@ -15,14 +15,6 @@
 ;;(global-set-key (kbd "C-x k") 'kill-this-buffer-dont-ask)
 (global-set-key (kbd "C-x k") (lambda ()(interactive) (kill-buffer (current-buffer)) ))
 
-;; make option key control
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier 'hyper)
-(setq mac-right-option-modifier 'control)
-
-;; C-SPC for right option get's hosed for some reason. Fixes that.
-(global-set-key (kbd "H-SPC") 'set-mark-command)
-
 ;; (kill-buffer (current-buffer))
 
 ;; don't ask if i want to save, just exit

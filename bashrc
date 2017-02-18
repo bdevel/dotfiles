@@ -182,6 +182,14 @@ export HISTCONTROL=erasedups
 export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
 
+promptFunc() {
+  # right before prompting for the next command, save the previous
+  # command in a file.
+  echo -e "$(gdate --rfc-2822)\t$(gdate +%s)\t$PWD\t$(history 1 | sed -E 's/^[ ]*[0-9]+[ ]*//')" >> ~/dotfiles/shell_history
+}
+PROMPT_COMMAND=promptFunc
+
+
 ############################################################
 ## Aliases
 ############################################################

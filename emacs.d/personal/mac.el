@@ -17,6 +17,15 @@
 ;;(global-set-key (kbd "<triple-wheel-left>") 'next-buffer)
 
 
+;; make option key control
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier 'hyper)
+(setq mac-right-option-modifier 'control)
+
+;; C-SPC for right option get's hosed for some reason. Fixes that.
+(global-set-key (kbd "H-SPC") 'set-mark-command)
+
+
 
 ;; Disable killing to Mac clipboard
 (setq x-select-enable-clipboard nil)

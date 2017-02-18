@@ -275,7 +275,6 @@
   ("<home>" hydra-tymode/body "" :exit t)
   ("o" other-window "Other")
   ("1" delete-other-windows "Kill-others")
-  ("l" delete-other-windows "Kill-others")
   ("k" delete-window "Kill-Window")
   ("v" split-window-right "Vertical")
   ("h" split-window-below "Horiz"))
