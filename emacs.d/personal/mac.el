@@ -13,6 +13,8 @@
 (global-set-key [C-wheel-down] 'text-scale-increase)
 (global-set-key [C-wheel-up] 'text-scale-decrease)
 
+(setq-default line-spacing 4)
+
 ;;(global-set-key (kbd "<triple-wheel-right>") 'previous-buffer)
 ;;(global-set-key (kbd "<triple-wheel-left>") 'next-buffer)
 

@@ -126,7 +126,8 @@
 ;; ------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 
-(require 'align)
+(load-library "align")
+
 ;;(vendor 'revbufs 'revbufs)
 ;;(vendor 'ryo-modal)
 ;;(vendor 'electric-align 'electric-align-mode)

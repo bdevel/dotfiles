@@ -314,3 +314,4 @@ function fakefile {
 }
 
 ############################################################
+alias cdip='cd ~/Code/ist-pcap-uploader'

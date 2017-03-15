@@ -2,6 +2,21 @@
 ;; Clojure
 ;;;;
 
+
+
+
+(defun cider-namespace-refresh ()
+  (interactive)
+  (cider-interactive-eval
+   "(require 'clojure.tools.namespace.repl)
+  (clojure.tools.namespace.repl/refresh)"))
+ 
+(define-key clojure-mode-map (kbd "C-c C-r") 'cider-namespace-refresh)
+
+
+
+
+
 ;; Enable paredit for Clojure
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
 

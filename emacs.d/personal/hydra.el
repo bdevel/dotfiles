@@ -69,10 +69,7 @@
 
   ("n" hydra-move/body "Nav")
 
-  ("p" (progn
-         (hydra-paredit/body)
-         (hydra-push '(hydra-tymode/body)))
-       "PAREDIT")
+  ("p" hydra-paredit/body "Parens")
 
   ("s" eshell "Shell")
   ("w" hydra-window/body "Window")
@@ -301,6 +298,7 @@
   ("b" cider-load-buffer "Exec Buffer")
   ("q" cider-quit "Quit REPL")
   ("R" cider-jack-in "Start REPL")
+  ("r" cider-namespace-refresh "reload namespace")
   
   ("e" cider-eval-sexp-at-point "Eval S-exp")
   ("f" cider-eval-defun-at-point "Eval defn")
@@ -316,8 +314,51 @@
 
 (defhydra hydra-paredit (:color blue
                          :columns 3
-                        :pre (hydra-enter)
-                        :post (hydra-exit))
-  ("A" cider-apropos-documentation "Apropos documentation")
-  ("E" cider-jump-to-compilation-error "Jump to compilation error")
-  ("R" cider-jump-to-resource "Jump to resource"))
+                         :exit nil)
+  
+  ;("A" cider-apropos-documentation "Apropos documentation")
+  ;("E" cider-jump-to-compilation-error "Jump to compilation error")
+  ;("R" cider-jump-to-resource "Jump to resource")
+
+
+
+  ;; ("<right>" (progn (sp-forward-sexp) (sp-mark-sexp)) "sp-forward-sexp" :exit nil) ;
+  ;; ("<left>" (progn (sp-backward-sexp) (sp-mark-sexp)) "sp-backward-sexp" :exit nil)
+  
+  ;; ("<down>" (progn (sp-down-sexp) (sp-mark-sexp)) "sp-down-sexp" :exit nil)
+  ;; ("<up>" (progn (sp-up-sexp) (sp-mark-sexp)) "sp-up-sexp" :exit nil)
+
+
+
+  ("<right>"  sp-forward-sexp "sp-forward-sexp" :exit nil)
+  ("<left>"  sp-backward-sexp "sp-backward-sexp" :exit nil)
+  ("<down>"  sp-down-sexp "sp-down-sexp" :exit nil)
+  ("<up>"  sp-up-sexp "sp-up-sexp" :exit nil)
+  ("m" sp-mark-sexp "sp-mark-sexp" :exit nil)
+  ("x" eval-last-sexp "eval-last-sexp" :exit nil)
+
+  ;;("" sp-backward-down-sexp "sp-backward-down-sexp" :exit nil)
+  ("a" sp-beginning-of-sexp "sp-beginning-of-sexp" :exit nil)
+  ("e" sp-end-of-sexp "sp-end-of-sexp" :exit nil)
+
+  ;;("" sp-backward-up-sexp "sp-backward-up-sexp" :exit nil)
+  ("t" sp-transpose-sexp "sp-transpose-sexp" :exit nil)
+
+  ("n" sp-next-sexp "sp-next-sexp" :exit nil)
+  ("p" sp-previous-sexp "sp-previous-sexp" :exit nil)
+
+  ("k" sp-kill-sexp "sp-kill-sexp" :exit nil)
+  ("c" sp-copy-sexp "sp-copy-sexp" :exit nil)
+
+  ;;("" sp-unwrap-sexp "sp-unwrap-sexp" :exit nil)
+  ;;("" sp-backward-unwrap-sexp "sp-backward-unwrap-sexp" :exit nil)
+
+  ("s" sp-forward-slurp-sexp "sp-forward-slurp-sexp" :exit nil)
+  ("b" sp-forward-barf-sexp "sp-forward-barf-sexp" :exit nil)
+  
+  ;;("" sp-backward-slurp-sexp "sp-backward-slurp-sexp" :exit nil)
+  ;;("" sp-backward-barf-sexp "sp-backward-barf-sexp" :exit nil)
+  ;;("" sp-splice-sexp "sp-splice-sexp" :exit nil)
+
+
+)
