@@ -115,11 +115,9 @@
 (personal 'tabs)
 (personal 'tabbar-ruler)
 (personal 'utf-8)
-
 ;;(personal 'ryo)
 (personal 'xkeys)
 ;;(personal 'zoom) ; code folding
-
 
 
 ;; submodule managed
@@ -128,6 +126,7 @@
 
 (load-library "align")
 
+(load "midi-kbd")
 ;;(vendor 'revbufs 'revbufs)
 ;;(vendor 'ryo-modal)
 ;;(vendor 'electric-align 'electric-align-mode)

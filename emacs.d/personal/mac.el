@@ -19,13 +19,12 @@
 ;;(global-set-key (kbd "<triple-wheel-left>") 'next-buffer)
 
 
+;; TODO: These don't seem to stick when reloading from desktop
 ;; make option key control
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'hyper)
 (setq mac-right-option-modifier 'control)
-
-;; C-SPC for right option get's hosed for some reason. Fixes that.
-(global-set-key (kbd "H-SPC") 'set-mark-command)
+(global-set-key (kbd "H-SPC") 'set-mark-command) ;; C-SPC for right option get's hosed for some reason. Fixes that.
 
 
 
@@ -48,11 +47,10 @@
   (delete-region (region-beginning) (region-end)))
 
 
-(global-set-key [f1] 'pbcopy)
-(global-set-key [f2] 'pbpaste)
+
+(global-set-key (kbd "H-c") 'pbcopy) ;; [f1]
+(global-set-key (kbd "H-v") 'pbpaste)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 
 ;; Prevent anti aliasing

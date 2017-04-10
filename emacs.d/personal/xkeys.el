@@ -289,7 +289,27 @@
 
 ;;;;;;;;;;;;; Symbol ;;;;;;;;;;;;;;;;;;
 
+(defun ty-mark-symbol ()
+  "Marks symbol under cursor"
+  (interactive)
 
+  ;; if starting in middle of a symbol, go to begining of symbol first
+  (unless (string-match "[^'^@a-zA-Z0-9_\-!]" (string (following-char)))
+    (re-search-backward "[\s\\(\.\\s-\"]"))
+
+  ;; look for a symbol
+  ;; Don't select words ending in colons, as in with javascript foo: function()
+
+  (if (member major-mode '(clojure-mode elisp-mode))
+      (re-search-forward "[\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:-]*[a-zA-Z0-9]+")
+    (re-search-forward "[\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:-]*[a-zA-Z0-9]+"))
+    
+  
+
+  (push-mark (match-beginning 0) t t)
+  (goto-char (match-end 0))
+  (ty-temp-mark-thing)
+  )
 
 (defun ty-forward-symbol ()
   "Regex forward for words plus colons, hyphens and underscores"

@@ -52,6 +52,7 @@
 
 
 
+
 ;; https://www.emacswiki.org/emacs/DeletingWhitespace
 (defun kill-whitespace ()
   "Kill the whitespace between two non-whitespace characters"

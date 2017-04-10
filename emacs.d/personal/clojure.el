@@ -23,7 +23,7 @@
 ;; This is useful for working with camel-case tokens, like names of
 ;; Java classes (e.g. JavaClassName)
 (add-hook 'clojure-mode-hook 'subword-mode)
-(add-hook 'clojure-mode-hook 'idle-highlight-mode)
+;;PL (add-hook 'clojure-mode-hook 'idle-highlight-mode)
 
 ;; don't show error popup in repl
 (setq cider-show-error-buffer nil)

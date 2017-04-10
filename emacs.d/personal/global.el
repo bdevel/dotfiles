@@ -20,6 +20,8 @@
 (setq transient-mark-mode t)
 (pending-delete-mode t)
 
+(recentf-mode 1)
+
 ;; Display line and column numbers
 (setq line-number-mode    t)
 (setq column-number-mode  nil)
@@ -58,9 +60,6 @@
 
 ;; No need for ~ files when editing
 (setq create-lockfiles nil)
-
-;; Gotta see matching parens
-(show-paren-mode t)
 
 ;; Don't truncate lines
 (setq truncate-lines t)

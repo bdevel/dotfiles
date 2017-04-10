@@ -315,3 +315,7 @@ function fakefile {
 
 ############################################################
 alias cdip='cd ~/Code/ist-pcap-uploader'
+alias grv='git remote -v'
+alias gf='git fetch'
+alias rdbm='rake db:migrate'
+alias gcl='git clone'

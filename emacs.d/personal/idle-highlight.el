@@ -43,7 +43,6 @@
 ;; (defun my-coding-hook ()
 ;;   (make-local-variable 'column-number-mode)
 ;;   (column-number-mode t)
-;;   (if window-system (hl-line-mode t))
 ;;   (idle-highlight-mode t))
 ;;
 ;; (add-hook 'emacs-lisp-mode-hook 'my-coding-hook)
@@ -60,7 +59,8 @@
  :group 'faces)
 
 (defface idle-highlight
- '((t (:inherit region)))
+  ;;'((t (:inherit region)))
+  '((t (:underline t :inherit nil)))
  "Face used to highlight other occurrences of the word at point."
  :group 'idle-highlight)
 

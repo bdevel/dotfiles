@@ -86,11 +86,13 @@
   ("`" nil "exit" :exit t)
   ("<home>" nil "exit" :exit t))
 
+
 (global-set-key (kbd "<home>") 'hydra-tymode/body)
+(global-set-key (kbd "<end>") 'smex)
 
 
 (defhydra hydra-file (:exit t
-                      :columns 3
+		      :columns 4
                       :pre (hydra-enter)
                       :post (hydra-exit))
 
@@ -100,22 +102,24 @@
    ("f" find-name-dired "Find")
    ("s" save-buffer "Save")
    ("g" rgrep "rgrep")
+   ("n" rename-file-and-buffer "reNAME file")
    ("r" recentf-open-files "recent"))
 
 
-
+;; TODO: Fix going to main hyra
+;; use ty-next line prev line using arrows.
 (defhydra hydra-mark (:exit nil
                       :columns 3
-                      :pre (hydra-enter)
+                      ;:pre (hydra-enter)
                       ;;:post (hydra-exit)
-                      :post (hydra-move/body)
+                      ;;:post (hydra-move/body)
                       )
   "Mark"
   ("SPC" er/expand-region "mark" :exit nil)
   ("l" (progn
-         (move-beginning-of-line)
-         (set-mark-command)
-         (move-end-of-line) ) "mark-line")
+         (move-beginning-of-line nil)
+	 (push-mark (point) t t)
+         (move-end-of-line nil) ) "mark-line")
 
   ("s" er/mark-symbol "mark-symbol")
   ("e" mark-sexp "mark-sexp")
@@ -124,11 +128,15 @@
   ("c" er/mark-comment "mark-comment")
 
   ("r" replace-string "Replace String")
+  ("g" (progn
+	 (ty-mark-symbol)
+	 (call-interactively 'rgrep)) "rgrep")
   ("w" kill-ring-save "Kill-Ring-Save")
-  ;;("y" yank "Yank")
+  ("y" yank "Yank")
   ("x" kill-region "Kill-Region")
 )
 
+(global-set-key (kbd "<H-f14>") 'hydra-mark/body)
 
 ;;;;; Navigation ;;;;;;;;;;;;;;;
 (defhydra hydra-move (:exit nil
@@ -141,7 +149,7 @@
 
    ("\\" isearch-backward "search bwd")
    ("/" isearch-forward "search fwd")
-
+   
    ;; UP / DOWN PAGES
    ("q" scroll-down-command  "scroll-down-command " :exit nil)
    ("z" scroll-up-command "scroll-up-command" :exit nil)

@@ -9,23 +9,23 @@
 
   (require 'tabbar-ruler)
   (tabbar-ruler-group-by-projectile-project)
-
-  (set-face-attribute 'tabbar-unselected nil 
-                      :foreground "#bbbbbb"
-                      :background "#666666"
-                      :bold nil)
-
-
-  (set-face-attribute 'tabbar-selected-modified nil 
-                      :foreground "#ff2222"
-                      :background "#0d4d8b"
-                      :bold nil)
-
+  
   ;; (set-face-attribute 'tabbara-default nil 
   ;;                     :foreground "#ffffff"
   ;;                     :background "#444444"
-  ;;                     :bold nil)
+  ;;                     :nil)
 
+  (global-unset-key (kbd "C-<left>"))
+  (global-unset-key (kbd "C-<right>"))
+  (global-unset-key (kbd "C-<up>"))
+  (global-unset-key (kbd "C-<down>"))
 
+  (global-set-key (kbd "C-<left>") 'tabbar-backward-tab)
+  (global-set-key (kbd "C-<right>") 'tabbar-forward-tab)
 
+  (global-set-key (kbd "C-<up>") 'tabbar-forward-group)
+  (global-set-key (kbd "C-<down>") 'tabbar-forward-group)
+
+  
 )
+ 
