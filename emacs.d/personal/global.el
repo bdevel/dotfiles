@@ -1,9 +1,16 @@
 ;;; Generic emacs settings I cannot live without
 
 ;; don't use desktop mode for terminal
-(when (display-graphic-p)
-  (desktop-save-mode 1);; is x window
-  ())
+(if (display-graphic-p)
+    (progn
+        (desktop-save-mode 1);; is x window
+        ;; For emacsclient
+        (server-start))
+  (progn
+      ;; no menu bar for terminal
+      (menu-bar-mode -1)) )
+
+
 
 ;; Add variables to desktop saving
 ;;(add-to-list 'desktop-globals-to-save 'register-alist)
@@ -65,8 +72,6 @@
 (setq truncate-lines t)
 (setq truncate-partial-width-windows nil)
 
-;; For emacsclient
-(server-start)
 
 ;; Trailing whitespace is unnecessary
 ;; (defvar whitespace-cleanup-on-save t)
@@ -102,8 +107,9 @@
 ;;   (quit nil)))
 
 
-;; annoying
+;; annoying!
 (setq electric-indent-mode nil)
+(setq electric-pair-mode nil)
 
 ;; zap-up-to-char, forward-to-word, backward-to-word, etc
 ;(require 'misc)
@@ -120,6 +126,7 @@
                                                      rspec-mode      python-mode
                                                      c-mode          c++-mode
                                                      objc-mode       latex-mode
+                                                     web-mode        js2-mode
                                                      plain-tex-mode))
                 (let ((mark-even-if-inactive transient-mark-mode))
                   (indent-region (region-beginning) (region-end) nil))))))
