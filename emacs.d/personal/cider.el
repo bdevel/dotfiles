@@ -2,6 +2,29 @@
 ;; Cider
 ;;;;
 
+
+(defun cider-namespace-refresh ()
+  (interactive)
+  (cider-interactive-eval
+   "(require 'clojure.tools.namespace.repl)
+  (clojure.tools.namespace.repl/refresh)"))
+
+(define-key clojure-mode-map (kbd "C-c C-r") 'cider-namespace-refresh)
+
+
+
+(add-hook 'cider-repl-mode-hook
+          (lambda () 
+            (define-key cider-repl-mode-map (kbd "<up>") 'cider-repl-previous-input)
+            (define-key cider-repl-mode-map (kbd "C-p") 'cider-repl-previous-input)
+            (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
+            (define-key cider-repl-mode-map (kbd "C-n") 'cider-repl-next-input)
+            (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
+            ))
+
+
+
+
 ;; provides minibuffer documentation for the code you're typing into the repl
 ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 

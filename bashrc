@@ -235,3 +235,5 @@ fi
 # export RUBY_GC_MALLOC_LIMIT=60000000
 # # export RUBY_FREE_MIN=200000 # Ruby <= 2.0
 # export RUBY_GC_HEAP_FREE_SLOTS=200000 # Ruby >= 2.1
+
+export PATH="$HOME/.yarn/bin:$PATH"

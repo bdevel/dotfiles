@@ -9,8 +9,10 @@
 
 ;; :after-exit => start caps mode again
 
-
 (personal 'hydra-buffers)
+
+;;(hydra-set-property 'hydra-lispy-x :verbosity 1)
+;;(setq hydra-is-helpful 1)
 
 ;;(customize-set-variable 'browse-kill-ring-separator "")
 
@@ -55,7 +57,7 @@
 
 
 (defhydra hydra-tymode (:color teal
-                        :columns 3
+                        ;;:columns 3
                         :exit t
                         :pre (hydra-enter)
                         :post (hydra-exit))
@@ -72,6 +74,7 @@
   ("p" hydra-paredit/body "Parens")
 
   ("s" eshell "Shell")
+  ("r" hydra-register "Registers")
   ("w" hydra-window/body "Window")
 
   ("/" isearch-forward "search fwd")
@@ -84,6 +87,7 @@
   ;;      "visit hydra-c")
   ;;("i" (message "I am a") :exit nil)
   ("`" nil "exit" :exit t)
+  ("\=" goto-last-change "goto-last-change" :exit nil)
   ("<home>" nil "exit" :exit t))
 
 
@@ -92,7 +96,7 @@
 
 
 (defhydra hydra-file (:exit t
-		      :columns 4
+		      ;;:columns 4
                       :pre (hydra-enter)
                       :post (hydra-exit))
 
@@ -109,7 +113,7 @@
 ;; TODO: Fix going to main hyra
 ;; use ty-next line prev line using arrows.
 (defhydra hydra-mark (:exit nil
-                      :columns 3
+                            ;;:columns 3
                       ;:pre (hydra-enter)
                       ;;:post (hydra-exit)
                       ;;:post (hydra-move/body)
@@ -138,9 +142,26 @@
 
 (global-set-key (kbd "<H-f14>") 'hydra-mark/body)
 
+
+(defhydra hydra-register (:exit t
+                          :pre (hydra-enter)
+                          :post (hydra-exit))
+
+  "(s Save) (i Insert)  (n  Name Point) (m  Move to)  (k kmacro-save)"
+
+  ("s" copy-to-register "Save")
+  ("i" insert-register "Insert")
+  ("n" point-to-register "Name Point")
+  ("m" jump-to-register "Move to")
+  
+  ("k" kmacro-to-register "Kmacro save")
+  ("e" jump-to-register "Kmacro run")
+  )
+(global-set-key (kbd "<H-f17>") 'hydra-register/body)
+
 ;;;;; Navigation ;;;;;;;;;;;;;;;
 (defhydra hydra-move (:exit nil
-                      :columns 3
+                            ;;:columns 3
                       :pre (hydra-enter)
                       :post (hydra-exit))
 
@@ -232,7 +253,7 @@
 ;;    set level: this/whole, container, extended
 ;;    set inside/outside
 (defhydra hydra-edit (:exit nil
-                      :columns 3
+                      ;;:columns 3
                       :pre (hydra-enter)
                       :post (hydra-exit))
   "EDIT"
@@ -257,7 +278,7 @@
 
 
 (defhydra hydra-buffer (:exit t
-                        :columns 3
+                        ;;:columns 3
                         :pre (hydra-enter)
                         :post (hydra-exit))
   "BUFFER"
@@ -272,7 +293,7 @@
 
 
 (defhydra hydra-window (:exit t
-                        :columns 3
+                        ;;:columns 3
                         ;;:post (hydra-tymode/body)
                         :pre (hydra-enter)
                         :post (hydra-exit))
@@ -295,7 +316,7 @@
     (paredit-comment-dwim)))
 
 (defhydra hydra-clojure (:exit nil
-                         :columns 3
+                         ;;:columns 3
                          :pre (hydra-enter)
                          :post (hydra-exit))
 

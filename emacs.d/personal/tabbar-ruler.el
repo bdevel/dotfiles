@@ -6,6 +6,7 @@
   (setq tabbar-ruler-popup-toolbar t) ; If you want a popup toolbar
   (setq tabbar-ruler-popup-scrollbar nil) ; If you want to only show the
                                         ; scroll bar when your mouse is moving.
+  (setq tabbar-ruler-use-mode-icons nil)
 
   (require 'tabbar-ruler)
   (tabbar-ruler-group-by-projectile-project)
@@ -24,7 +25,7 @@
   (global-set-key (kbd "C-<right>") 'tabbar-forward-tab)
 
   (global-set-key (kbd "C-<up>") 'tabbar-forward-group)
-  (global-set-key (kbd "C-<down>") 'tabbar-forward-group)
+  (global-set-key (kbd "C-<down>") 'tabbar-backward-group)
 
   
 )

@@ -4,42 +4,44 @@
 (add-to-list 'load-path (concat user-emacs-directory "themes"))
 
 (defun lcd-monitor-mode ()
+ (setq color-theme-is-global t)
   (interactive)
-  (load-theme 'wombat)
+  (load-theme 'ty-lcd t)
 
   (set-face-attribute 'default nil
                       :height 130
                       :font "Courier New")
 
 
-  (set-background-color "#0d4d8b")
-  (set-face-background 'fringe "#0d4d8b")
+  ;; (set-background-color "#0d4d8b")
+  ;; (set-face-background 'fringe "#0d4d8b")
 
-  (set-cursor-color "#ffff00")
+  ;; (set-cursor-color "#ffff00")
   (set-default 'cursor-type 'bar)
   (blink-cursor-mode t)
 
-  (set-face-attribute 'region nil :background "#2a67a2")
+  ;; (set-face-attribute 'region nil :background "#2a67a2")
 
   (linum-mode t)
   ;;(idle-highlight-mode t)
   (setq linum-format "%4d")
-  (set-face-attribute
-   'linum nil :background "#093d6f" :foreground "#aaaaaa" :height 0.8)
+  ;; (set-face-attribute
+  ;;  'linum nil :background "#093d6f" :foreground "#aaaaaa" :height 0.8)
 
 
-  (set-face-attribute 'font-lock-function-name-face nil
-		      :weight 'normal
-		      )
-  (set-face-attribute 'font-lock-type-face nil
-                      :weight     'normal
-                      :foreground "grey70")
+  ;; (set-face-attribute 'font-lock-function-name-face nil
+	;; 	      :weight 'normal
+	;; 	      )
 
-  (set-face-attribute 'font-lock-keyword-face nil
-                      :weight     'normal)
-  (set-face-attribute 'font-lock-variable-name-face nil
-                      :weight     'normal
-                      :foreground "#c4e454")
+  ;; (set-face-attribute 'font-lock-type-face nil
+  ;;                     :weight     'normal
+  ;;                     :foreground "grey70")
+
+  ;; (set-face-attribute 'font-lock-keyword-face nil
+  ;;                     :weight     'normal)
+  ;; (set-face-attribute 'font-lock-variable-name-face nil
+  ;;                     :weight     'normal
+  ;;                     :foreground "#c4e454")
 
   ;; (set-face-attribute 'tabbar-unselected nil 
   ;;                     :foreground "#bbbbbb"
@@ -63,27 +65,25 @@
 ;;   * Make a mode that is a bar 
 (defun paperlike-mode ()
   (interactive)
-  (load-theme 'tao-yang)
+  (load-theme 'paperlike t)
   ;;(load-theme 'whiteboard)
 
   (set 'a2-grey "grey80")
 
-  (set-background-color "#ffffff")
-  (set-face-background 'fringe a2-grey)
+  ;;(set-background-color "#ffffff")
+  ;; (set-face-background 'fringe a2-grey)
 
-  (set-cursor-color "#000000")
+  ;;(set-cursor-color "#000000")
   (set-default 'cursor-type '(hbar . 2))
   (blink-cursor-mode 0)
   
   (set-face-attribute 'default nil
-                      :height 180
+                      :height 160
                       :font "OCR A Std:antialias=none" ;Inconsolata
                       :foreground "#000000"
-                      :
-                      weight 'normal
+                      :weight 'normal
                       )
-  (set-face-attribute 'font-lock-keyword-face nil
-                      :weight     'bold)
+
   ;;(linum-mode 0)
   ;;(setq linum-format "%4d")
 

@@ -1,17 +1,25 @@
 (setq custom-file "~/.emacs.d/personal/custom.el")
 (load custom-file 'noerror)
 
+(add-to-list 'load-path "~/.emacs.d/vendor/")
+(load "~/.emacs.d/vendor/use-package")
 (load "~/.emacs.d/personal/defuns")
-;; elpa managed
+
+;; submodule managed
 ;; ------------------
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-       ("melpa" . "http://melpa.milkbox.net/packages/")))
+(add-to-list 'load-path "~/.emacs.d/vendor/")
+
+
+;; ------------------
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 (when (not package-archive-contents) (package-refresh-contents))
 
 
 (package 'auto-complete)
-(package 'ac-cider)
+;;(package 'ac-cider)
 
 ;;(package 'ace-jump-mode)
 ;; (package 'ag)
@@ -27,7 +35,7 @@
 
 ;; integration with a Clojure REPL
 ;; https://github.com/clojure-emacs/cider
-(package 'cider)
+;;(package 'cider)
 
 (package 'csv-mode)
 (package 'drag-stuff)
@@ -52,7 +60,7 @@
 (package 'markdown-mode)
 ;; (package 'maxframe)
 ;; (package 'motion-mode)
-;;(package 'multiple-cursors)
+(package 'multiple-cursors)
 ;; (package 'powerline)
 (package 'web-mode)
 
@@ -80,8 +88,10 @@
 (personal 'auto-complete)
 (personal 'theme);;make first as RYO looks for cursor color on setup
 (personal 'bindings)
-(personal 'cider)
-(personal 'clojure)
+
+;;(personal 'clojure)
+;;(personal 'cider)
+
 (personal 'diff)
 (personal 'dired)
 (personal 'disabled)
@@ -92,6 +102,7 @@
 (personal 'fiplr)
 (personal 'global)
 (personal 'grep)
+(personal 'goto-last-change)
 (personal 'highlight-parentheses)
 (personal 'hippy-expand)
 (personal 'hydra)
@@ -100,6 +111,7 @@
 (personal 'javascript)
 (personal 'kbd-macros)
 (personal 'mac)
+(personal 'multiple-cursors)
 (personal 'org)
 (personal 'projectile)
 (personal 'recentf)
@@ -120,13 +132,12 @@
 ;;(personal 'zoom) ; code folding
 
 
-;; submodule managed
-;; ------------------
-(add-to-list 'load-path "~/.emacs.d/vendor/")
 
 (load-library "align")
 
 (load "midi-kbd")
+
+
 ;;(vendor 'revbufs 'revbufs)
 ;;(vendor 'ryo-modal)
 ;;(vendor 'electric-align 'electric-align-mode)

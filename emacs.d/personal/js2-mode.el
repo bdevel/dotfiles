@@ -7,7 +7,7 @@
 (setq js2-bounce-indent-p nil)
 
 
-(add-hook 'js2-mode-hook (lambda () (electric-pair-mode 1)))
+;(add-hook 'js2-mode-hook (lambda () (electric-pair-mode 1)))
 (add-hook 'js2-mode-hook 'idle-highlight-mode)
 
 

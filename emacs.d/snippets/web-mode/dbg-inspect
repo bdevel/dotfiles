@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dbg-inspect
+# key: dbg
+# --
+{{ist-debug-inspect $1}}
