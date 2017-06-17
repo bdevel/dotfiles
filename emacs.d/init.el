@@ -1,30 +1,41 @@
-(setq custom-file "~/.emacs.d/personal/custom.el")
-(load custom-file 'noerror)
-
-(add-to-list 'load-path "~/.emacs.d/vendor/")
-(load "~/.emacs.d/vendor/use-package")
-(load "~/.emacs.d/personal/defuns")
 
 ;; submodule managed
 ;; ------------------
-(add-to-list 'load-path "~/.emacs.d/vendor/")
 
+(setq custom-file "~/.emacs.d/personal/custom.el")
+(load custom-file)
+
+(add-to-list 'load-path "/Users/tyler/.emacs.d/vendor")
+
+(load "~/.emacs.d/personal/defuns")
 
 ;; ------------------
 (require 'package)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+             '("melpa-dev" . "https://melpa.org/packages/"))
+;;(add-to-list 'package-archives
+;;             '("melpa" . "https://stable.melpa.org/packages/"))
+
 (package-initialize)
+;;(package-refresh-contents)
 (when (not package-archive-contents) (package-refresh-contents))
 
 
-(package 'auto-complete)
+;;(require 'package)
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.org/packages/") t)
+;;(package-initialize)
+
+
+;;(package 'auto-complete)
 ;;(package 'ac-cider)
 
 ;;(package 'ace-jump-mode)
 ;; (package 'ag)
 ;; (package 'browse-kill-ring+)
 ;; (package 'bundler)
+(package 'aggressive-indent)
 
 ;; key bindings and code colorization for Clojure
 ;; https://github.com/clojure-emacs/clojure-mode
@@ -39,7 +50,7 @@
 
 (package 'csv-mode)
 (package 'drag-stuff)
-(package 'dropdown-list)
+;;(package 'dropdown-list)
 (package 'exec-path-from-shell)
 (package 'expand-region)
 (package 'fiplr)
@@ -85,13 +96,13 @@
 
 ;; self managed
 ;; ------------------
-(personal 'auto-complete)
+;;(personal 'auto-complete)
 (personal 'theme);;make first as RYO looks for cursor color on setup
 (personal 'bindings)
 
+(personal 'align)
 ;;(personal 'clojure)
 ;;(personal 'cider)
-
 (personal 'diff)
 (personal 'dired)
 (personal 'disabled)
@@ -99,7 +110,6 @@
 (personal 'elisp)
 (personal 'expand-region)
 (personal 'fonts)
-(personal 'fiplr)
 (personal 'global)
 (personal 'grep)
 (personal 'goto-last-change)
@@ -127,8 +137,11 @@
 (personal 'tabs)
 (personal 'tabbar-ruler)
 (personal 'utf-8)
+(personal 'web-mode)
 ;;(personal 'ryo)
 (personal 'xkeys)
+(personal 'yasnippet)
+
 ;;(personal 'zoom) ; code folding
 
 

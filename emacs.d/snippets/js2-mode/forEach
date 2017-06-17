@@ -1,7 +1,6 @@
-# -*- mode: snippet -*-
+# key: forEach
 # name: forEach
-# key: for
 # --
-forEach(${1:item} => {
+forEach(($1)=>{
   $0
 });

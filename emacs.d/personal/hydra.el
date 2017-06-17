@@ -9,7 +9,6 @@
 
 ;; :after-exit => start caps mode again
 
-(personal 'hydra-buffers)
 
 ;;(hydra-set-property 'hydra-lispy-x :verbosity 1)
 ;;(setq hydra-is-helpful 1)

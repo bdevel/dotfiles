@@ -32,6 +32,7 @@
 ;; Display line and column numbers
 (setq line-number-mode    t)
 (setq column-number-mode  nil)
+(global-linum-mode t)
 
 ;; Modeline info
 ;(display-time-mode 1)
@@ -59,7 +60,7 @@
 ;; (setq visible-bell t)
 
 ;; Make sure all backup files only live in one place
-;;(setq backup-directory-alist (concat user-emacs-directory ".backups"))
+;;(setq backup-directory-alist nil); (concat user-emacs-directory ".backups"))
 ;;(setq backup-directory-alist "~/.emacs.d/.backups")
 
 ;; disable auto save
