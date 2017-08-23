@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: link-to
+# key: link
+# --
+{{#link-to "$1.show"}}$0{{/link-to}}

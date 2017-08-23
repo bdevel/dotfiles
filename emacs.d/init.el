@@ -8,6 +8,8 @@
 (add-to-list 'load-path "/Users/tyler/.emacs.d/vendor")
 
 (load "~/.emacs.d/personal/defuns")
+(load "~/.emacs.d/vendor/init-use-package")
+
 
 ;; ------------------
 (require 'package)
@@ -65,6 +67,7 @@
 (package 'neotree)
 (package 'json-mode) 
 (package 'js2-mode)
+(package 'jsx-mode)
 ;; (package 'lua-mode)
 (package 'magit)
 ;; (package 'magit-gh-pulls)
@@ -119,6 +122,7 @@
 ;;(personal 'ido)
 (personal 'idle-highlight)
 (personal 'javascript)
+(personal 'jsx-mode)
 (personal 'kbd-macros)
 (personal 'mac)
 (personal 'multiple-cursors)

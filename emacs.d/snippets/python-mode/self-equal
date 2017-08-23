@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: self-equal
+# key: s=
+# --
+self.$1 = $1

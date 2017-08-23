@@ -18,7 +18,7 @@ function conditionally_prefix_path {
 }
 
 conditionally_prefix_path /usr/local/bin/git
-conditionally_prefix_path /usr/local/heroku/bin ### Added by the Heroku Toolbelt
+#conditionally_prefix_path /usr/local/heroku/bin ### Added by the Heroku Toolbelt
 conditionally_prefix_path /Applications/Postgres.app/Contents/Versions/latest/bin/
 
 conditionally_prefix_path $HOME/.rvm/bin # Add RVM to PATH for scripting
@@ -74,7 +74,7 @@ CDPATH=.:${CDPATH}
 ## General development configurations
 ###########################################################
 
-export NVM_DIR="~/.nvm"
+export NVM_DIR=$HOME/.nvm
 if [ -f $NVM_DIR/nvm.sh ]; then
   . $NVM_DIR/nvm.sh
 fi
@@ -237,3 +237,4 @@ fi
 # export RUBY_GC_HEAP_FREE_SLOTS=200000 # Ruby >= 2.1
 
 export PATH="$HOME/.yarn/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
