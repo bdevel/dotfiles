@@ -1,3 +1,12 @@
+TODO:
+- indent whole function
+- new s express
+- mark s, with greater,greater scope
+- move s exp up down
+- clear all sourounding white space
+- fix comment
+
+
 emacs
   quit
   edit configs

@@ -9,8 +9,8 @@
   (load-theme 'ty-lcd t)
 
   (set-face-attribute 'default nil
-                      :height 130
-                      :font "Courier New")
+                      :height 210
+                      :font "Ubuntu Mono")
 
 
   ;; (set-background-color "#0d4d8b")

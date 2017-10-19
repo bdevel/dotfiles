@@ -59,7 +59,7 @@
 
 ;; (package 'expand-region)
 ;; (package 'flx-isearch)
-;(package 'haml-mode)
+(package 'haml-mode)
 (package 'highlight-parentheses)
 (package 'hydra)
 ;;(package 'ido-ubiquitous)
@@ -104,8 +104,8 @@
 (personal 'bindings)
 
 (personal 'align)
-;;(personal 'clojure)
-;;(personal 'cider)
+(personal 'clojure)
+(personal 'cider)
 (personal 'diff)
 (personal 'dired)
 (personal 'disabled)
@@ -116,6 +116,7 @@
 (personal 'global)
 (personal 'grep)
 (personal 'goto-last-change)
+(personal 'haml-mode)
 (personal 'highlight-parentheses)
 (personal 'hippy-expand)
 (personal 'hydra)

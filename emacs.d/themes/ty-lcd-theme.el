@@ -11,25 +11,25 @@
 
 (custom-theme-set-faces
  'ty-lcd
- `(default ((t (:family "Courier New"
+ `(default ((t (:family "Ubuntu Mono"
                 :foundry "nil" 
                 :width normal
-                :height 140 
+                :height 210
                 :weight normal 
                 :slant normal 
                 :underline nil 
                 :overline nil 
                 :strike-through nil 
                 :box nil 
-                :inverse-video nil 
+                :inverse-videyo nil 
                 :foreground "#f6f3e8" 
                 :background ,default-bg
                 :stipple nil 
                 :inherit nil))))
 
  '(cursor ((t (:background "#ffff00"))))
- '(fixed-pitch ((t (:family "Monospace"))))
- '(variable-pitch ((((type w32)) (:font "-outline-Arial-normal-normal-normal-sans-*-*-*-*-p-*-iso8859-1")) (t (:family "Sans Serif"))))
+;; '(fixed-pitch ((t (:family "Monospace"))))
+;; '(variable-pitch ((((type w32)) (:font "-outline-Arial-normal-normal-normal-sans-*-*-*-*-p-*-iso8859-1")) (t (:family "Sans Serif"))))
  '(escape-glyph ((t (:weight bold :foreground "#ddaa6f"))))
  '(minibuffer-prompt ((t (:foreground "#e5786d"))))
  '(highlight ((t (:underline (:color foreground-color :style line) :foreground "#ffffff" :background "#454545"))))
@@ -53,7 +53,7 @@
  '(font-lock-variable-name-face ((t (:weight normal :foreground "#c4e454"))))
  '(font-lock-warning-face ((t (:foreground "#ccaa8f"))))
  '(button ((t (:foreground "#f6f3e8" :background "#333333"))))
- '(linum ((t (:background "#093d6f" :foreground "#aaaaaa" :height 0.8))))
+ '(linum ((t (:background "#093d6f" :foreground "#aaaaaa" :height 0.6))))
  '(link ((t (:underline (:color foreground-color :style line) :foreground "#8ac6f2"))))
  '(link-visited ((t (:underline (:color foreground-color :style line) :foreground "#e5786d"))))
  '(fringe ((t (:background "#0d4d8b"))))

@@ -21,10 +21,14 @@
 ;; A little more syntax highlighting
 ;;(require 'clojure-mode-extra-font-locking)
 
+(setq clojure-align-forms-automatically t)
+
 ;; syntax hilighting for midje
 (add-hook 'clojure-mode-hook
           (lambda ()
             (setq inferior-lisp-program "lein repl")
+            (customize-set-variable 'clojure-indent-style :align-arguments)
+            (customize-set-variable 'clojure-align-forms-automatically t)
             (font-lock-add-keywords
              nil
              '(("(\\(facts?\\)"

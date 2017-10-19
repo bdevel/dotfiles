@@ -11,25 +11,31 @@
   (setq cider-repl-wrap-history t
         cider-repl-history-size 1000
         cider-repl-history-file (f-expand ".cider-history" user-emacs-directory)
+
         ;; Don't know what these do yet
         ;; cider-auto-select-error-buffer t
         ;; cider-repl-pop-to-buffer-on-connect nil
         ;; cider-repl-use-clojure-font-lock t
         ;; cider-show-error-buffer t
-        ;; nrepl-hide-special-buffers t
+        nrepl-hide-special-buffers t
         ;; nrepl-popup-stacktraces nil
         
-        ;; go right to the REPL buffer when it's finished connecting
-        cider-repl-pop-to-buffer-on-connect t
-
         ;; When there's a cider error, show its buffer and switch to it
-        cider-show-error-buffer t
-        cider-auto-select-error-buffer t
-
+        cider-show-error-buffer            nil
+        cider-auto-select-error-buffer nil
         
+        ;; go right to the REPL buffer when it's finished connecting
         ;; don't hyjack frames and buffers on startup
-        cider-repl-pop-to-buffer-on-connect nil
-        ;;cider-repl-pop-to-buffer-on-connect 'display-only
+        ;;cider-repl-pop-to-buffer-on-connect nil
+        cider-repl-pop-to-buffer-on-connect 'display-only
+
+        ;; Change how CIDER starts a cljs-lein-repl
+        ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
+        cider-cljs-lein-repl
+        "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel!)
+           (figwheel-sidecar.repl-api/cljs-repl))"
+        
         )
 
   ;; provides minibuffer documentation for the code you're typing into the repl
@@ -39,15 +45,15 @@
 
   
   :bind (:map clojure-mode-map
-         ("C-c C-r" . cider-namespace-refresh)
+              ("C-c C-r" . cider-namespace-refresh)
 
-         :map cider-repl-mode-map
-         ("<up>" . cider-repl-previous-input)
-         ("C-p" . cider-repl-previous-input)
-         ("<down>" . cider-repl-next-input)
-         ("C-n" . cider-repl-next-input)
-         ("C-l" . cider-repl-clear-buffer)
-         )
+              :map cider-repl-mode-map
+              ("<up>" . cider-repl-previous-input)
+              ("C-p" . cider-repl-previous-input)
+              ("<down>" . cider-repl-next-input)
+              ("C-n" . cider-repl-next-input)
+              ("C-l" . cider-repl-clear-buffer)
+              )
 
   :config ;;runs after package is loaded
 
@@ -60,10 +66,10 @@
               (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
               (define-key cider-repl-mode-map (kbd "C-n") 'cider-repl-next-input)
               (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
-            ))
+              ))
 
   
-)
+  )
 
 ;;================================================
 

@@ -24,8 +24,10 @@
   (global-set-key (kbd "C-<left>") 'tabbar-backward-tab)
   (global-set-key (kbd "C-<right>") 'tabbar-forward-tab)
 
-  (global-set-key (kbd "C-<up>") 'tabbar-forward-group)
-  (global-set-key (kbd "C-<down>") 'tabbar-backward-group)
+  ;; This is annoying because fat fingers. plus it never goes
+  ;; where you expect it to
+  ;;(global-set-key (kbd "C-<up>") 'tabbar-forward-group)
+  ;;(global-set-key (kbd "C-<down>") 'tabbar-backward-group)
 
   
 )
