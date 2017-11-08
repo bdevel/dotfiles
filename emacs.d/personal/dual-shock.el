@@ -17,16 +17,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;(setq ds-last-region nil);; maybe used for undo
-(defun ds-temp-mark-region (start end)
-  "Enables exiting region left or right by using arrow keys."
-  ;;(setq ds-last-region (cons (region-beginning) (region-end) ))
-  (push-mark start t t)
-  (goto-char end)
-  (activate-mark);; tt should activate it though..
-  
+(defun ds-temp-region ()
+  "Enables exiting region left or right by using arrow keys. Also allows buffer undo with active region."
   (set-transient-map
-
    (let ((map (make-sparse-keymap)))
      ;;(define-key map [switch-frame] #'ignore)
      (define-key map (kbd "<left>") 'ds-exit-region-left)
@@ -40,17 +33,16 @@
      (define-key map (kbd "C-x u") 'ds-undo)
 
      map)
-
-   ;; nil means dont stay active as long as a key they press is in our map (can be t)
-   ;; the lambda is the exit
-   ;; nil (lambda ()
-   
-   ;;     ;(message "exiting tmp mark")
-   ;;     (deactivate-mark)
-   ;;     ;(pop-mark)
-   ;;     ))
-                                        ;(setq deactivate-mark  nil)
    )
+  )
+
+(defun ds-temp-mark-region (start end)
+  "Marks an active region, then calls ds-temp-region"
+  ;;(setq ds-last-region (cons (region-beginning) (region-end) ))
+  (push-mark start t t)
+  (goto-char end)
+  (activate-mark);; tt should activate it though..
+  (ds-temp-region)
   )
 
 
@@ -96,9 +88,6 @@
   
   (ds-temp-mark-region (match-beginning 0)
                        (match-end 0))
-  ;;(push-mark (match-beginning 0) t t)
-  ;;(goto-char (match-end 0))
-  ;;(ds-temp-mark-thing)
   )
 
 (defun ds-forward-symbol ()
@@ -136,7 +125,6 @@
                           (+ 1 (match-beginning 0)) 
                           ))
   )
-
 
 
 
@@ -216,79 +204,89 @@ or a marker."
 ;;       (push-mark (point) t t)
 ;;       (goto-char (+ (point)
 ;;                     (- (cdr src) (car src))  ))
-;;       (ds-temp-mark-thing)
 ;;       );;when
     
 ;;     ))
 
-;; (defun ds-drag-region-forward ()
-;;   "Drags selected region forward"
-;;   (drag-stuff-region-right 1)  ;; (let* ((to-move (delete-and-extract-region (region-beginning)
-;;   ;;                                            (region-end)))
-;;   ;;        )
-    
-;;   ;;   ;; go to next ( for lisp
-    
-;;   ;;   )
-;;   )
+(setq ds-last-drag nil)
+(defun ds-same-drag-from-last ()
+    "Determines if the current region is the thing that was dragged last."
+    (eq ds-last-drag
+       (cons (region-beginning)
+             (region-end))))
 
-;; (defun ds-drag-region-backward ()
-;;   "Drags selected region backward"
-;;   (drag-stuff-region-l 1)  ;; (let* ((to-move (delete-and-extract-region (region-beginning)
-;;   ;;                                            (region-end)))
-;;   ;;        )
-  
-;;   ;;   ;; go to next ( for lisp
-  
-;;   ;;   )
-;;   )
-
-(defun ds-drag-region-to-move (move-fn)
+(defun ds-drag-region-to-move (move-fn &optional cleanup-from-cut)
   ""
   ;; cut the text
   ;; move to point
   ;; insert text
   ;; mark region again
+  
   (let* ((deactivate-mark nil)
-         (to-paste (delete-and-extract-region (region-beginning)
-                                              (region-end) ))
-         (reg-beg (progn (call-interactively move-fn)
-                         (point)))
+         ;; (from (region-beginning))
+         ;; (to (region-end))
+         
+         (to-paste (prog1 (delete-and-extract-region (region-beginning)
+                                                     (region-end) )
+                     (if cleanup-from-cut
+                         (funcall cleanup-from-cut)
+                       (progn (fixup-whitespace)
+                              (indent-for-tab-command)))))
+
+         
+         (paste-start (progn (funcall move-fn)                           
+                             (indent-for-tab-command)
+                             (point)))
          )
-    
-    
+
     (insert to-paste)
-    ;;(save-excursion
-    ;; (let  ((deactivate-mark))
-    ;;   (insert to-paste)))
-   ;; (push-mark reg-beg t t)
-    ;;(print reg-beg)
-    ;;(print (point))
-    (ds-temp-mark-region reg-beg
+    (fixup-whitespace)
+    
+    (ds-temp-mark-region paste-start
                          (point))
     
+    ;; clean up both sides after paste
+    ;; 
+    ;; (exchange-point-and-mark)
+    ;; (fixup-whitespace)
+    ;; (exchange-point-and-mark)
+
+    ;; set this so when we call again we know if it's a repeat move
+    ;; of the same text
+    ;;(setq ds-last-drag (cons (region-beginning)
+    ;;                         (region-end)))
     ))
-   r as  fa      dfsdf
+
 
 (defun ds-drag-region-up ()
   ""
   (interactive)
-  (ds-drag-region-to-move 'previous-line))
+  ;; todo: remove line if it's blank after cut
+  (ds-drag-region-to-move (lambda ()
+                            (previous-line)
+                            (beginning-of-line-text)
+                            )
+                          ;;'delete-blank-lines
+                          ))
+
 (defun ds-drag-region-down ()
   ""
   (interactive)
-  (ds-drag-region-to-move 'next-line))
+  (ds-drag-region-to-move (lambda ()
+                            (next-line)
+                            (beginning-of-line-text)
+                            (indent-for-tab-command)
+                            )))
 
 (defun ds-drag-region-left ()
   ""
   (interactive)
-  (ds-drag-region-to-move 'backward-char)
-  )
+  (ds-drag-region-to-move 'ds-backward-symbol))
 
 (defun ds-drag-region-right ()
   ""
   (interactive)
-  (ds-drag-region-to-move 'forward-char))
+  (ds-drag-region-to-move 'ds-forward-symbol))
 
 
 
@@ -397,13 +395,13 @@ or a marker."
   (ds-make-shortcut "H-`" (lambda () 
                             (interactive)
                             (call-interactively 'er/expand-region)
-                            (ds-temp-mark-thing)))
+                            (ds-temp-region)))
 
   ;; Right
   (ds-make-shortcut "H-~" (lambda () 
                             (interactive)
                             (call-interactively 'er/contract-region)
-                            (ds-temp-mark-thing)))
+                            (ds-temp-region)))
 
 
   

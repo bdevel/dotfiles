@@ -2,4 +2,5 @@
 # name: console.log
 # key: cl
 # --
-(js/console.log "$0 $1" $1)
+(js/console.log "$1" $1)
+$0

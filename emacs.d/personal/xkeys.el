@@ -23,8 +23,10 @@
 
 
 (require 'expand-region)
-;;(require 'move-text)
-(setq ty-last-move nil)
+;;(require 'move-text) ; only up down
+;;(require 'drag-stuff);; not very smart about sexp
+;;(require 'smart-shift)
+(ty setq-last-move nil)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -662,17 +664,49 @@ the current position of point, then move it to the beginning of the line."
 
 
   ;; more/less
-  (ty-make-shortcut "H-`" 'er/expand-region)
-  (ty-make-shortcut "H-~" 'er/contract-region)
+  ;;(ty-make-shortcut "H-`" 'er/expand-region)
+  ;;(ty-make-shortcut "H-~" 'er/contract-region)
+  (ty-make-shortcut "H-`" (lambda () 
+                            (interactive)
+                            (call-interactively 'er/expand-region)
+                            (ty-temp-mark-thing)))
+  
+  (ty-make-shortcut "H-~" (lambda () 
+                            (interactive)
+                            (call-interactively 'er/contract-region)
+                            (ty-temp-mark-thing)))
 
 
+  ;; moving text
+  ;;(ty-make-shortcut "H-," 'move-text-up)
+  ;;(ty-make-shortcut "H-." 'move-text-down)
+  ;;(ty-make-shortcut "H-<" ')
+
+  ;; (ty-make-shortcut "H-," (lambda () 
+  ;;                           (interactive)
+  ;;                           (call-interactively 'move-text-up)
+  ;;                           (ty-temp-mark-thing)))
+
+  ;; (ty-make-shortcut "H-." (lambda () 
+  ;;                           (interactive)
+  ;;                           (call-interactively 'move-text-down)
+  ;;                           (ty-temp-mark-thing)))
+  
+  (ty-make-shortcut "H-<" (lambda () 
+                            (interactive)
+                            (smart-shift-right 1)
+                            ))
+  (ty-make-shortcut "H->" (lambda () 
+                            (interactive)
+                            (smart-shift-left 1)
+                            ))
 
   ;; sexp
 
-  (ty-make-shortcut "H-<right>" 'sp-forward-slurp-sexp)
-  (ty-make-shortcut "H-<left>"  'sp-forward-barf-sexp) 
-  (ty-make-shortcut "H-<up>"    'sp-splice-sexp) 
-  (ty-make-shortcut "H-<down>"  'sp-split-sexp)
+  ;; (ty-make-shortcut "H-<right>" 'sp-forward-slurp-sexp)
+  ;; (ty-make-shortcut "H-<left>"  'sp-forward-barf-sexp) 
+  ;; (ty-make-shortcut "H-<up>"    'sp-splice-sexp) 
+  ;; (ty-make-shortcut "H-<down>"  'sp-split-sexp)
 
 
 )

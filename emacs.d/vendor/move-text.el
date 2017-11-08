@@ -92,6 +92,8 @@
   (interactive "*p")
   (move-text-internal (- arg)))
 
+
+
 ;; (defun move-text-default-bindings ()
 ;;   "Bind `move-text-up' and `move-text-down' to M-up and M-down."
 ;;   (global-set-key [M-up] 'move-text-up)

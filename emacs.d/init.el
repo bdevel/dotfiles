@@ -144,7 +144,8 @@
 (personal 'utf-8)
 (personal 'web-mode)
 ;;(personal 'ryo)
-(personal 'xkeys)
+;;(personal 'xkeys)
+(personal 'dual-shock)
 (personal 'yasnippet)
 
 ;;(personal 'zoom) ; code folding
