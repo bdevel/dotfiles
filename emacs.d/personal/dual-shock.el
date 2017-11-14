@@ -233,6 +233,21 @@
   (ds-temp-region)
   )
 
+(defun ds-exit-region-left ()
+  "If a buffer is active, then move point to beginning of region."
+  (interactive)
+  (when (use-region-p)
+    (goto-char (region-beginning) )
+    (deactivate-mark)))
+
+(defun ds-exit-region-right ()
+  "If a buffer is active, then move point to end of region."
+  (interactive)
+  (when (use-region-p)
+    (goto-char (region-end) )
+    (deactivate-mark)))
+
+
 
 (defun ds-undo ()
   "Undos without reguards to active region. Goes back and marks previously selected region."
@@ -324,33 +339,33 @@
 ;; Down => forward
 
 
-(defun ds-sexp-up ()
-  ""
-  (interactive)
-  ;;"Finds next string () {}. Automaticaly steps into and out of expressions."
-  ;;(call-interactively 'sp-forward-sexp);; Move forward across one balanced expression.
+;; (defun ds-sexp-up ()
+;;   ""
+;;   (interactive)
+;;   ;;"Finds next string () {}. Automaticaly steps into and out of expressions."
+;;   ;;(call-interactively 'sp-forward-sexp);; Move forward across one balanced expression.
 
-  (ds-exit-region-left)
-  (call-interactively 'sp-previous-sexp);; Move forward to the beginning of next balanced expression.
-  (call-interactively 'er/expand-region)
-  (ds-temp-region)
-  )
+;;   (ds-exit-region-left)
+;;   (call-interactively 'sp-previous-sexp);; Move forward to the beginning of next balanced expression.
+;;   (call-interactively 'er/expand-region)
+;;   (ds-temp-region)
+;;   )
 
 
-(defun ds-sexp-down ()
-  ""
-  (interactive)
-  ;;"Finds next string () {}. Automaticaly steps into and out of expressions."
-  ;;(call-interactively 'sp-forward-sexp);; Move forward across one balanced expression.
+;; (defun ds-sexp-down ()
+;;   ""
+;;   (interactive)
+;;   ;;"Finds next string () {}. Automaticaly steps into and out of expressions."
+;;   ;;(call-interactively 'sp-forward-sexp);; Move forward across one balanced expression.
 
-  (ds-exit-region-right)
- ;; (goto-nearest-next '(sp-forward-sexp sp-next-sexp))
-  ;;(call-interactively 'sp-next-sexp);; Move forward to the beginning of next balanced expression.
-  ;;(call-interactively 'sp-forward-parallel-sexp)
-  (call-interactively 'sp-beginning-of-next-sexp)
-  (call-interactively 'er/expand-region)
-  (ds-temp-region)
-  )
+;;   (ds-exit-region-right)
+;;  ;; (goto-nearest-next '(sp-forward-sexp sp-next-sexp))
+;;   ;;(call-interactively 'sp-next-sexp);; Move forward to the beginning of next balanced expression.
+;;   ;;(call-interactively 'sp-forward-parallel-sexp)
+;;   (call-interactively 'sp-beginning-of-next-sexp)
+;;   (call-interactively 'er/expand-region)
+;;   (ds-temp-region)
+;;   )
 
 
 
@@ -361,7 +376,7 @@
        (if (and (not (eobp)) (cl-intersection (what-face) skip-faces)) ;; todo: may need to check if 
            (progn (goto-char (match-end 0))
                   (ds-point-of-re-search-forward-skip-faces r skip-faces))
-         (point))
+         (match-end 0))
      nil)
    ))
 
@@ -372,34 +387,13 @@
        (if (and (not (bobp)) (cl-intersection (what-face) skip-faces)) ;; todo: may need to check if 
            (progn (goto-char (match-beginning 0))
                   (ds-point-of-re-search-backward-skip-faces r skip-faces))
-         (point))
+         (match-beginning 0))
      nil)
    ))
 
 
-;; (defun ds-goto-nearest-re-search-forward (re-list)
-;;     ""
-;;     (let* ((skip-faces '(font-lock-doc-face font-lock-string-face font-lock-comment-face))
-;;            (move-locs (remove-if-not (lambda (l) (or (equal l nil) (> l (point))))
-;;                                      (mapcar (lambda (r) (save-mark-and-excursion
-;;                                                           (if (re-search-forward r nil t 1)
-;;                                                               (if (cl-intersection (what-face) skip-faces)
-;;                                                                   nil
-;;                                                                 (match-beginning 0))
-;;                                                             nil)))
-;;                                              re-list)))
-;;            (nearest-loc (if (< 0 (length move-locs))
-;;                             (apply 'min move-locs)
-;;                           nil)))
-;;       ;; (print move-locs)
-;;       ;; (print nearest-loc)
-;;       (if nearest-loc
-;;           (goto-char nearest-loc)
-;;         nil)
-;;       ))
-
 (defun ds-goto-nearest-re-search-forward (re-list)
-  "-)" 
+  "" 
   (let* ((skip-faces '(font-lock-doc-face font-lock-string-face font-lock-comment-face))
          (move-locs (remove-if-not (lambda (l) (or (not (equal l nil)) )) ;; (< l (point)
                                    (mapcar (lambda (r) (ds-point-of-re-search-forward-skip-faces r skip-faces))
@@ -417,13 +411,8 @@
     ))
 
 
-
-;;(ds-point-of-re-search-backward-skip-faces "\)" '(font-lock-doc-face font-lock-string-face font-lock-comment-face))
-
-
-
 (defun ds-goto-nearest-re-search-backward (re-list)
-  "-)" 
+  "" 
   (let* ((skip-faces '(font-lock-doc-face font-lock-string-face font-lock-comment-face))
          (move-locs (remove-if-not (lambda (l) (or (not (equal l nil)) )) ;; (< l (point)
                                    (mapcar (lambda (r) (ds-point-of-re-search-backward-skip-faces r skip-faces))
@@ -441,32 +430,29 @@
     ))
 
 
-
-(ds-goto-nearest-re-search-backward (list "\)"))
-
-(re-search-backward "\)" nil t)
-
-(save-mark-and-excursion
- )
-
-(setq re-list '("\)"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SEXP Movement ;;;;;;;;;;;;;;;;;;
 
 (defun ds-forward-sexp ()
   ""
   (interactive)
   (ds-exit-region-left)
   (forward-char)
-  (ds-goto-nearest-re-search-forward (append (list (regexp-quote "(")
+  (if (ds-goto-nearest-re-search-forward (append (list (regexp-quote "(")
                                                    (regexp-quote "'(")
                                                    (regexp-quote "{")
                                                    (regexp-quote "#{")
                                                    (regexp-quote "#(")
                                                    (regexp-quote "#'(")
                                                    )
-                                             (list "\b\"" ) ));; todo: add matcher for 'foo'
-  (call-interactively 'er/expand-region)
-  (ds-temp-region)
-  (ds-point-to-start-region)
+                                                 (list "\b\"" ) ));; todo: add matcher for 'foo'
+      (progn
+        (backward-char)
+        (call-interactively 'er/expand-region)
+        (ds-temp-region)
+        (ds-point-to-start-region))
+    (progn
+      (backward-char))
+    )
   )
 
 (defun ds-backward-sexp ()
@@ -494,6 +480,7 @@
 
 
 
+
 ;; (defun ds-sexp-left ()
 ;;   ""
 ;;   (interactive)
@@ -513,14 +500,6 @@
 ;;   (ds-temp-region)
 ;;   )
 
-
-(bar barz adf)
-
-(cond ((region-is-paragraph) 'next-paragraph)
-     ((region-is-item) 'sp-swap-item-foward)
-     ((region-is-sexp) 'forward-sexp)
-
-     )
 
 
 
@@ -645,15 +624,16 @@ or a marker."
   "Use for inserting something at beginning of list."
   (let* ((deactivate-mark)
          (undo-inhibit-record-point t)
-         (to-paste (delete-and-extract-region (region-beginning) (region-end)))
+         (to-paste (prog1 (delete-and-extract-region (region-beginning) (region-end))
+                     (fixup-whitespace)))
          (start-loc (save-excursion (call-interactively select-fn)
                                     (ds-exit-region-left)
                                     (point))))
     
     (goto-char start-loc)
-      (insert to-paste)
-      (just-one-space)
-      (ds-temp-mark-region start-loc (+ start-loc (length to-paste)))
+    (insert to-paste)
+    (just-one-space)
+    (ds-temp-mark-region start-loc (+ start-loc (length to-paste)))
     
     nil
     ))
@@ -674,52 +654,68 @@ or a marker."
     ))
 
 
-(defun ds-swap-symbol-foward ()
-  "Assuming marked region is an item, swap with forward item."
-  (interactive)
-  (let* ((move-fn 'ds-forward-symbol)
-         (do-other (save-mark-and-excursion
+(defun ds-swap-foward-selection (move-fn)
+  "Assuming an active region, swap with selection from move-fn. Handles forward moves."
+  (let* ((do-other (save-mark-and-excursion
                     (call-interactively move-fn)
                     (ds-region-at-start-of-list)
-                     ;;(cond ;;((ds-region-at-start-of-list) 'ds-move-region-after-next-selection)
-                    ;; ((ds-region-at-end-of-list) #'ds-move-region-before-next-selection)
-                   ;;  (t #'ds-swap-region-with-next-selection))
-                    )
-                   ))
-    (if do-other
-        (ds-move-region-before-next-selection move-fn)
-      (ds-swap-region-with-next-selection move-fn)
-        )
-    ))
-
-(defun ds-swap-symbol-backward ()
-  "Assuming marked region is an item, swap with forward item."
-  (interactive)
-  (let* ((move-fn 'ds-backward-symbol)
-         (do-other (save-mark-and-excursion
-                    (call-interactively move-fn)
-                    (ds-region-at-start-of-list)
-                    ;;(cond ;;((ds-region-at-start-of-list) 'ds-move-region-after-next-selection)
-                    ;; ((ds-region-at-end-of-list) #'ds-move-region-before-next-selection)
-                    ;;  (t #'ds-swap-region-with-next-selection))
                     )
                    ))
     (print "do other")
     (print do-other)
+    (if do-other;; new selection is at start of list
+        (ds-move-region-before-next-selection move-fn);; insert infront of the new selection
+      (ds-swap-region-with-next-selection move-fn);; safe to actually swap
+        )
+    ))
 
-    (if do-other
-        (ds-move-region-after-next-selection move-fn)
-      (ds-swap-region-with-prev-selection move-fn)
+(defun ds-swap-backward-selection (move-fn)
+  "Assuming an active region, swap with selection from move-fn. Handles backward moves."
+  (let* ((do-other (save-mark-and-excursion
+                    (call-interactively move-fn)
+                    (ds-region-at-end-of-list)
+                    )))
+    (if do-other;; new selection is at end of list
+        (ds-move-region-after-next-selection move-fn);; move region to end of next selection
+      (ds-swap-region-with-prev-selection move-fn);; else, swap into other sexp
       )
     ))
 
+(defun ds-swap-forward-symbol ()
+  (interactive)
+  (ds-swap-foward-selection 'ds-forward-symbol))
 
+(defun ds-swap-backward-symbol ()
+  (interactive)
+  (ds-swap-backward-selection 'ds-backward-symbol))
+
+(defun ds-swap-forward-sexp ()
+  (interactive)
+  (ds-swap-foward-selection 'ds-forward-sexp)
+  nil)
+
+(defun ds-swap-backward-sexp ()
+  (interactive)
+  (ds-swap-backward-selection 'ds-backward-sexp)
+  nil)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Dragging ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ds-drag-region-down ()
+  "Determines what is selected, the does appropriate moveing and swaping of thing."
+  (cond
+   ((ds-region-is-item) (ds-swap-symbol-forward))
+   ((ds-region-is-sexp) (ds-swap-symbol-forward))
+   
+   (t nil)
+   ))
 
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;   SHORT CUTS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;   Keyboard Map ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun ds-make-shortcut (keys to-call)
@@ -811,12 +807,11 @@ or a marker."
   ;; (ds-make-shortcut "H->" 'ds-drag-region-right)
 
   
-  (ds-make-shortcut "H-," 'ds-backward-sexp)
-  
-  (ds-make-shortcut "H-." 'ds-forward-sexp)
+  (ds-make-shortcut "H-," 'ds-swap-backward-symbol)
+  (ds-make-shortcut "H-." 'ds-swap-forward-sexp)
 
-  (ds-make-shortcut "H-<" nil)
-  (ds-make-shortcut "H->" nil)
+  (ds-make-shortcut "H-<" 'ds-swap-backward-symbol)
+  (ds-make-shortcut "H->" 'ds-swap-forward-symbol)
 
   
 
