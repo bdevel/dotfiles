@@ -649,6 +649,7 @@ or a marker."
     (ds-exit-region-right)
     (just-one-space)
     (ds-insert-activate-region to-paste)
+    (fixup-whitespace)
     (ds-point-to-start-region)
     nil
     ))
@@ -669,17 +670,33 @@ or a marker."
         )
     ))
 
+
+;; (defun ds-swap-foward-selection (move-fn)
+;;   "Assuming an active region, swap with selection from move-fn. Handles forward moves."
+;;     (if (ds-region-at-end-of-list);; new selection is at start of list
+;;         (ds-move-region-before-next-selection move-fn);; insert infront of the new selection
+;;       (ds-swap-region-with-next-selection move-fn);; safe to actually swap
+;;       )
+;;     )
+
+
 (defun ds-swap-backward-selection (move-fn)
   "Assuming an active region, swap with selection from move-fn. Handles backward moves."
-  (let* ((do-other (save-mark-and-excursion
-                    (call-interactively move-fn)
-                    (ds-region-at-end-of-list)
-                    )))
-    (if do-other;; new selection is at end of list
+  (let* ((do-other (ds-region-at-start-of-list)))
+    (if do-other;; current selection is at start of list
         (ds-move-region-after-next-selection move-fn);; move region to end of next selection
       (ds-swap-region-with-prev-selection move-fn);; else, swap into other sexp
       )
     ))
+
+;; (defun ds-swap-backward-selection (move-fn)
+;;   "Assuming an active region, swap with selection from move-fn. Handles backward moves."
+;;     (if (ds-region-at-start-of-list);; current selection is at start of list
+;;         (ds-move-region-after-next-selection move-fn);; move region to end of next selection
+;;       (ds-swap-region-with-prev-selection move-fn);; else, swap into other sexp
+;;       )
+;;     )
+
 
 (defun ds-swap-forward-symbol ()
   (interactive)
@@ -713,14 +730,68 @@ or a marker."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;; Inserting ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ds-clean-insert-selected (to-paste)
+  "Inserts to-paste. Fixes any formatting. Also temp activates region."
+  ;; (let* ((deactivate-mark))
+  ;;   )
+
+  ;; TODO: maybe a new line, indent
+  (let* ((deactivate-mark)
+         (start-loc (progn (just-one-space) (point))))
+
+    (insert to-paste)
+    (fixup-whitespace)
+    (goto-char start-loc);; go back and cleanup before paste incase of double space or unneeded space
+    (fixup-whitespace)
+    (re-search-forward "[^\s\n]") (backward-char);; fucking fixup-whitespace move the point
+    (ds-temp-mark-region (point) (+ (point) (length to-paste)))
+    )
+  
+  ;;(ds-insert-activate-region to-paste)
+  ;; (save-excursion
+  ;;   (ds-exit-region-left)
+  ;;   (fixup-whitespace))
+  ;; (save-excursion
+  ;;   (ds-exit-region-right)
+  ;;   (fixup-whitespace))
+  )
+
+(setq ds-yank-nth 0)
+(defun ds-insert-yank-cycle ()
+  "Cleanly Inserts yank. Tap again to cycle through yank-pop"
+  (interactive)
+  ;; TODO: Would be nice if undo doesn't cycle through all changes.
+  ;; adding (undo-inhibit-record-point t) doesn't work here.  
+  (let* ((deactivate-mark))
+    
+    
+    (if (equal last-command this-command)
+        (setq ds-yank-nth (+ ds-yank-nth 1))
+      (setq ds-yank-nth 0))
+
+    ;; cycle back
+    (if (>= ds-yank-nth (length kill-ring))
+        (setq ds-yank-nth 0))
+    
+    (if (region-active-p)
+        (call-interactively 'delete-region))
+
+    
+    (ds-clean-insert-selected (nth ds-yank-nth kill-ring))
+
+    ;; not sure of another way to do this.
+    ;; Also not sure why i have to set real-last-command here and then check for (equal last-command this-command)
+    (setq real-last-command this-command)
+    ))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;   Keyboard Map ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun ds-make-shortcut (keys to-call)
-  "shortcut-helper"
-  (global-set-key (kbd keys) to-call))
 
 
 ;; Disable this as caps has been remapped to home
@@ -735,84 +806,107 @@ or a marker."
 
 ;; (global-set-key (kbd "C-d") nil)
 
+
+(defun ds-call-unless-other-needed (f kbd-fallback)
+  "Calls f interactively, unless minibuffer active. In that case, use keyboard fallback."
+  (if (active-minibuffer-window)
+      (execute-kbd-macro (kbd kbd-fallback))
+    (progn
+      (call-interactively f))))
+
+
+(defun ds-left-joy-up ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed (lambda () 
+                                 (interactive)
+                                 (call-interactively 'er/expand-region)
+                                 (ds-temp-region)) "<up>"))
+
+(defun ds-left-joy-down ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed (lambda () 
+                                 (interactive)
+                                 (call-interactively 'er/contract-region)
+                                 (ds-temp-region)) "<down>"))
+
+(defun ds-left-joy-left ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-backward-symbol "<left>"))
+
+(defun ds-left-joy-right ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-forward-symbol "<right>"))
+
+
+;; Cancel/Kill Button
+(defun ds-cross ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed (lambda () 
+                                 (interactive)
+                                 (call-interactively 'kill-region)
+                                 (fixup-whitespace))
+                               "C-g"))
+
+;; Confirm/Insert/Enter button
+(defun ds-circle ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-insert-yank-cycle
+                               "<return>"))
+
+
+(defun ds-square ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-insert-yank-cycle
+                               "<return>"))
+
+
+(defun ds-triangle ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-insert-yank-cycle
+                               "<return>"))
+
+
+
+
+(defun ds-make-shortcut (keys to-call)
+  "shortcut-helper"
+  (global-set-key (kbd keys) to-call))
+
 (progn
   ;; using obscure shortcuts
 
-  ;; Up Down
-  (ds-make-shortcut "H-3"  'ds-backward-symbol)
-  (ds-make-shortcut "H-4" 'ds-forward-symbol)
-
-  ;;(ds-make-shortcut "H-3"  'ds-prev-thing)
-  ;;(ds-make-shortcut "H-4" 'ds-next-thing)  
-  
-  
-  
-  ;; Up
-  ;; Left
-  (ds-make-shortcut "H-`" (lambda () 
-                            (interactive)
-                            (call-interactively 'er/expand-region)
-                            (ds-temp-region)))
-
-  ;; Right
-  (ds-make-shortcut "H-~" (lambda () 
-                            (interactive)
-                            (call-interactively 'er/contract-region)
-                            (ds-temp-region)))
-
-  ;; (ds-make-shortcut "H-<" (lambda () 
-  ;;                           (interactive)
-  ;;                           (ds-drag-region-to-move 'ds-backward-symbol)
-  ;;                           ;;(smart-shift-right 1)
-  ;;                           ))
-  
-
-
-  ;; (ds-make-shortcut "H-3" (lambda () 
-  ;;                           (interactive)
-  ;;                           (call-interactively 'ds-exit-region-left)
-  ;;                           (call-interactively 'sp-up-sexp)
-  ;;                           (call-interactively 'er/expand-region)
-  ;;                           (ds-temp-region)))
-
-  ;; (ds-make-shortcut "H-4" (lambda () 
-  ;;                           (interactive)
-  ;;                           (call-interactively 'ds-exit-region-right)
-  ;;                           (call-interactively 'sp-down-sexp)
-  ;;                           (call-interactively 'er/expand-region)
-  ;;                           (exchange-point-and-mark)
-  ;;                           (ds-temp-region)))
-
-  ;; (ds-make-shortcut "H-`" (lambda () 
-  ;;                           (interactive)
-  ;;                           (call-interactively 'ds-exit-region-left)
-  ;;                           (call-interactively 'sp-backward-sexp)
-  ;;                           (call-interactively 'er/expand-region)
-  ;;                           (ds-temp-region)))
-
-  ;; (ds-make-shortcut "H-~" (lambda () 
-  ;;                           (interactive)
-  ;;                           (call-interactively 'ds-exit-region-right)
-  ;;                           (call-interactively 'sp-forward-sexp)
-  ;;                           (call-interactively 'er/expand-region)
-  ;;                           (exchange-point-and-mark)
-  ;;                           (ds-temp-region)))
-
-
-  ;; RIGHT JOYSTICK
-  ;; (ds-make-shortcut "H-," 'ds-drag-region-up)
-  ;; (ds-make-shortcut "H-." 'ds-drag-region-down)
-
-  ;; (ds-make-shortcut "H-<" 'ds-drag-region-left)
-  ;; (ds-make-shortcut "H->" 'ds-drag-region-right)
+  ;; LEFT JOY
+  (ds-make-shortcut "H-3" 'ds-left-joy-up)
+  (ds-make-shortcut "H-4" 'ds-left-joy-down)
+  (ds-make-shortcut "H-`" 'ds-left-joy-left)
+  (ds-make-shortcut "H-~" 'ds-left-joy-right)
 
   
-  (ds-make-shortcut "H-," 'ds-swap-backward-symbol)
-  (ds-make-shortcut "H-." 'ds-swap-forward-sexp)
+  (ds-make-shortcut "H-," 'ds-swap-backward-sexp);; UP
+  (ds-make-shortcut "H-." 'ds-swap-forward-sexp); DOWN
 
-  (ds-make-shortcut "H-<" 'ds-swap-backward-symbol)
-  (ds-make-shortcut "H->" 'ds-swap-forward-symbol)
+  (ds-make-shortcut "H-<" 'ds-swap-backward-symbol) ;; LEFT
+  (ds-make-shortcut "H->" 'ds-swap-forward-symbol);; RIGHT
 
+
+  ;; X btn
+  (ds-make-shortcut "H-x" 'ds-cross)
+  (ds-make-shortcut "H-o" 'ds-circle)
+  (ds-make-shortcut "H-b" 'ds-square)
+  (ds-make-shortcut "H-t" 'ds-triangle)
   
 
   )
+
+
+
+
+
