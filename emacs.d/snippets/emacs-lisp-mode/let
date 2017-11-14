@@ -1,5 +1,8 @@
-# key: let
+# -*- mode: snippet -*-
 # name: let
+# key: let
 # --
-(let* (($1 $2))
-  $0)
+(let* (($1 $2)
+       $3)
+  $0
+)

@@ -13,7 +13,7 @@
 (global-set-key [C-wheel-down] 'text-scale-increase)
 (global-set-key [C-wheel-up] 'text-scale-decrease)
 
-(setq-default line-spacing 4)
+;;(setq-default line-spacing 2);; this hoses up the hydra status bar
 
 ;;(global-set-key (kbd "<triple-wheel-right>") 'previous-buffer)
 ;;(global-set-key (kbd "<triple-wheel-left>") 'next-buffer)

@@ -1,4 +1,6 @@
-
+(defmacro comment (&rest body)
+  "Comment out one or more s-expressions."
+  nil)
 ;; submodule managed
 ;; ------------------
 
@@ -80,7 +82,7 @@
 
 ;; makes handling lisp expressions much, much easier
 ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-;;(package 'paredit)
+(package 'paredit)
 
 (package 'projectile)
 (package 'projectile-rails)
@@ -111,6 +113,7 @@
 (personal 'disabled)
 (personal 'drag-stuff)
 (personal 'elisp)
+;;(personal 'ergodox)
 (personal 'expand-region)
 (personal 'fonts)
 (personal 'global)
@@ -122,10 +125,10 @@
 (personal 'hydra)
 ;;(personal 'ido)
 (personal 'idle-highlight)
-(personal 'javascript)
+(personal 'js2-mode)
 (personal 'jsx-mode)
-(personal 'kbd-macros)
 (personal 'mac)
+
 (personal 'multiple-cursors)
 (personal 'org)
 (personal 'projectile)
@@ -152,9 +155,8 @@
 
 
 
-(load-library "align")
 
-(load "midi-kbd")
+;;(load "midi-kbd")
 
 
 ;;(vendor 'revbufs 'revbufs)

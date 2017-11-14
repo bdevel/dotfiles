@@ -7,7 +7,7 @@
  '(clojure-indent-style :align-arguments)
  '(package-selected-packages
    (quote
-    (haml-mode jsx-mode cider use-package aggressive-indent clojure-mode)))
+    (paredit haml-mode jsx-mode cider use-package aggressive-indent clojure-mode)))
  '(ring-bell-function (quote ignore)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

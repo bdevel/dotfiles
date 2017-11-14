@@ -116,5 +116,8 @@
 
 
 ;;(add-hook 'prog-mode-hook (lambda () (idle-highlight-mode t)))
+(add-hook 'ruby-mode-hook (lambda () (idle-highlight-mode t)))
+(add-hook 'js2-mode-hook (lambda () (idle-highlight-mode t)))
+(add-hook 'elisp-mode-hook (lambda () (idle-highlight-mode t)))
 (add-hook 'clojure-mode-hook (lambda () (idle-highlight-mode t)))
 (add-hook 'js2-mode-hook (lambda () (idle-highlight-mode t)))

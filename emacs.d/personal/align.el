@@ -5,6 +5,7 @@
 ;; use rx function http://www.emacswiki.org/emacs/rx
 
 
+(load-library "align")
 ;; https://danconnor.com/posts/5028ac91e8891a000000111f/align_and_columnize_key_value_data_in_emacs
 (defun align-to-colon (beg end)
   "Align region to colon (:) signs"
