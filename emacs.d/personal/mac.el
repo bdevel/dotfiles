@@ -48,10 +48,15 @@
 
 
 
+;; Macbook keyboard
 (global-set-key (kbd "H-c") 'pbcopy) ;; [f1]
 (global-set-key (kbd "H-v") 'pbpaste)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+;; Turn off bell warnings.
+;; https://www.emacswiki.org/emacs/AlarmBell
+(setq ring-bell-function 'ignore)
 
 ;; Prevent anti aliasing
 ;; (setq mac-allow-anti-aliasing nil)
@@ -60,3 +65,21 @@
 ;; Full screen mode
 ;; (mac-hide-menu-bar)
 ;; (mac-show-menu-bar)
+
+
+;; Adds rectable selection with mouse. Hold down shift.
+;; TODO: Make work with multiple cursors
+;; https://emacs.stackexchange.com/questions/7244/enable-emacs-column-selection-using-mouse
+(defun mouse-start-rectangle (start-event)
+  (interactive "e")
+  (deactivate-mark)
+  (mouse-set-point start-event)
+  (rectangle-mark-mode +1)
+  (let ((drag-event))
+    (track-mouse
+      (while (progn
+               (setq drag-event (read-event))
+               (mouse-movement-p drag-event))
+        (mouse-set-point drag-event)))))
+
+(global-set-key (kbd "S-<down-mouse-1>") #'mouse-start-rectangle)

@@ -74,13 +74,6 @@
 (setq truncate-partial-width-windows nil)
 
 
-;; Trailing whitespace is unnecessary
-;; (defvar whitespace-cleanup-on-save t)
-;; ;; (setq whitespace-cleanup-on-save nil)
-;; (add-hook 'before-save-hook
-;;     (lambda ()
-;;       (if whitespace-cleanup-on-save (whitespace-cleanup))))
-
 ;; Trash can support
 (setq delete-by-moving-to-trash t)
 

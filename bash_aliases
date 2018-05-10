@@ -314,15 +314,12 @@ function fakefile {
 }
 
 ############################################################
-alias cdip='cd ~/Code/ist-pcap-uploader'
+alias cdss='cd ~/Code/marketly/scrubm-social'
 alias grv='git remote -v'
 alias gf='git fetch'
 alias rdbm='rake db:migrate'
 alias gcl='git clone'
 alias ec='emacsclient'
-alias ec='emacsclient'
-alias cdiu='cd ~/Code/ist-ui;clear;'
-alias cdiu='cd ~/Code/ist-ui;clear;ls'
 alias gshl='git stash list'
 alias gshs='git stash save'
 alias gsh='git stash '

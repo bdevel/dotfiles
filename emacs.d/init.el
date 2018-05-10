@@ -82,7 +82,7 @@
 
 ;; makes handling lisp expressions much, much easier
 ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-(package 'paredit)
+;;(package 'paredit)
 
 (package 'projectile)
 (package 'projectile-rails)
@@ -103,7 +103,7 @@
 ;; ------------------
 ;;(personal 'auto-complete)
 (personal 'theme);;make first as RYO looks for cursor color on setup
-(personal 'bindings)
+
 
 (personal 'align)
 (personal 'clojure)
@@ -121,7 +121,7 @@
 (personal 'goto-last-change)
 (personal 'haml-mode)
 (personal 'highlight-parentheses)
-(personal 'hippy-expand)
+;;(personal 'hippy-expand)
 (personal 'hydra)
 ;;(personal 'ido)
 (personal 'idle-highlight)
@@ -153,8 +153,8 @@
 
 ;;(personal 'zoom) ; code folding
 
-
-
+;; needs to go last for overrides
+(personal 'bindings)
 
 ;;(load "midi-kbd")
 

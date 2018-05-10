@@ -47,7 +47,6 @@
 (defun ds-kill-this-thing (start end)
   "Cleanly kill region if active, else thing under cursor"
   (interactive "r")
-
   (unless (region-active-p);;use-region-p
     (call-interactively 'er/expand-region)
     ;; (if (member (string (following-char)) '("'" "\"" "{" "(") )
@@ -71,14 +70,14 @@
   )
 
 
-(defun what-face ()
-  "returns list of faces applied under point"
+(defun what-face (&optional p)
+  "returns list of faces applied under point. Pass char"
   ;;(interactive)
   ;; (let ((face (or (get-char-property (point) 'read-face-name)
   ;;                 (get-char-property (point) 'face))))
   ;;   (print face)
   ;;   face)
-  (let ((face (get-char-property (point) 'face)))
+  (let ((face (get-char-property (or p (point)) 'face)))
     (if  (listp face) face (list face) ))
   )
 
@@ -252,7 +251,6 @@
 (defun ds-undo ()
   "Undos without reguards to active region. Goes back and marks previously selected region."
   (interactive)
-  (print "Doing DS Undo")
   (deactivate-mark)
   (undo)
 
@@ -320,12 +318,14 @@
       (re-search-forward sc)))
 
   (re-search-backward "[\s\n\\(\.\"][\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:\-]*[a-zA-Z0-9]*")
+  ;;(ds-goto-nearest-re-search-forward "[\s\n\\(\.\"][\.\\:'@a-zA-Z0-9]['^@a-zA-Z0-9_\\/:\-]*[a-zA-Z0-9]*")
 
   (ds-temp-mark-region  (match-end 0)
                         (if (member (string (following-char)) '(".") )
                             (+ 0 (match-beginning 0) );; dont forward one if it's a .something
                           (+ 1 (match-beginning 0)) 
                           ))
+  (ds-point-to-start-region)
   )
 
 
@@ -370,10 +370,11 @@
 
 
 (defun ds-point-of-re-search-forward-skip-faces (r skip-faces)
-  "Search backwards,"
+  "Search backwards. Skips searching inside skip-faces."
   (save-mark-and-excursion
    (if (re-search-forward r nil t 1)
-       (if (and (not (eobp)) (cl-intersection (what-face) skip-faces)) ;; todo: may need to check if 
+       (if (and (not (eobp)) (cl-intersection (what-face (match-beginning 0))
+                                              skip-faces)) ;; todo: may need to check if 
            (progn (goto-char (match-end 0))
                   (ds-point-of-re-search-forward-skip-faces r skip-faces))
          (match-end 0))
@@ -384,7 +385,9 @@
   "Search backwards, ignoring things with skip-faces"
   (save-mark-and-excursion
    (if (re-search-backward r nil t 1)
-       (if (and (not (bobp)) (cl-intersection (what-face) skip-faces)) ;; todo: may need to check if 
+       ;; bug, need to check what face for start of re match
+       (if (and (not (bobp)) (cl-intersection (what-face (match-beginning 0))
+                                              skip-faces)) ;; todo: may need to check if 
            (progn (goto-char (match-beginning 0))
                   (ds-point-of-re-search-backward-skip-faces r skip-faces))
          (match-beginning 0))
@@ -394,7 +397,7 @@
 
 (defun ds-goto-nearest-re-search-forward (re-list)
   "" 
-  (let* ((skip-faces '(font-lock-doc-face font-lock-string-face font-lock-comment-face))
+  (let* ((skip-faces '(font-lock-doc-face font-lock-comment-face)) ;; font-lock-string-face 
          (move-locs (remove-if-not (lambda (l) (or (not (equal l nil)) )) ;; (< l (point)
                                    (mapcar (lambda (r) (ds-point-of-re-search-forward-skip-faces r skip-faces))
                                            re-list)))
@@ -403,8 +406,6 @@
                           (apply 'min move-locs)
                         nil)))
     
-    (print move-locs)
-    (print nearest-loc)
     (if nearest-loc
         (goto-char nearest-loc)
       nil)
@@ -413,7 +414,7 @@
 
 (defun ds-goto-nearest-re-search-backward (re-list)
   "" 
-  (let* ((skip-faces '(font-lock-doc-face font-lock-string-face font-lock-comment-face))
+  (let* ((skip-faces '(font-lock-doc-face font-lock-comment-face)) ;;  font-lock-string-face
          (move-locs (remove-if-not (lambda (l) (or (not (equal l nil)) )) ;; (< l (point)
                                    (mapcar (lambda (r) (ds-point-of-re-search-backward-skip-faces r skip-faces))
                                            re-list)))
@@ -422,8 +423,6 @@
                           (apply 'max move-locs)
                         nil)))
     
-    (print move-locs)
-    (print nearest-loc)
     (if nearest-loc
         (goto-char nearest-loc)
       nil)
@@ -437,14 +436,15 @@
   (interactive)
   (ds-exit-region-left)
   (forward-char)
-  (if (ds-goto-nearest-re-search-forward (append (list (regexp-quote "(")
-                                                   (regexp-quote "'(")
-                                                   (regexp-quote "{")
-                                                   (regexp-quote "#{")
-                                                   (regexp-quote "#(")
-                                                   (regexp-quote "#'(")
-                                                   )
-                                                 (list "\b\"" ) ));; todo: add matcher for 'foo'
+  (if (ds-goto-nearest-re-search-forward (list
+                                          (regexp-quote "(")
+                                          (regexp-quote "'(")
+                                          (regexp-quote "{")
+                                          (regexp-quote "#{")
+                                          (regexp-quote "#(")
+                                          (regexp-quote "#'(")
+                                          "^\""
+                                          "\s\"" ));; todo: add matcher for 'foo'
       (progn
         (backward-char)
         (call-interactively 'er/expand-region)
@@ -460,10 +460,9 @@
   (interactive)
   (ds-exit-region-right)
   (backward-char)
-  (if (ds-goto-nearest-re-search-backward (append (list "\)";;(regexp-quote ")")
-                                                        "\}" ;;(regexp-quote "}")
-                                                        )
-                                                  (list "\"\b") ))
+  (if (ds-goto-nearest-re-search-backward(list "\)"
+                                               "\}"
+                                               "\"\b"))
       (progn
         (forward-char)
         (call-interactively 'er/expand-region)
@@ -472,10 +471,13 @@
         )
     (progn
       ;; Go back to where they were
-      (forward-char)
+      (call-interactively 'ds-forward-sexp)
+      ;; (ds-exit-region-left)
+      ;; (forward-char)
+      
       ;; (call-interactively 'er/expand-region)
       ;; (ds-temp-region)
-      ;; (ds-point-to-start-region))
+      ;; (ds-point-to-end-region)
       )))
 
 
@@ -662,8 +664,6 @@ or a marker."
                     (ds-region-at-start-of-list)
                     )
                    ))
-    (print "do other")
-    (print do-other)
     (if do-other;; new selection is at start of list
         (ds-move-region-before-next-selection move-fn);; insert infront of the new selection
       (ds-swap-region-with-next-selection move-fn);; safe to actually swap
@@ -704,7 +704,8 @@ or a marker."
 
 (defun ds-swap-backward-symbol ()
   (interactive)
-  (ds-swap-backward-selection 'ds-backward-symbol))
+  (ds-swap-backward-selection 'ds-backward-symbol)
+  (ds-point-to-start-region))
 
 (defun ds-swap-forward-sexp ()
   (interactive)
@@ -787,6 +788,48 @@ or a marker."
     ))
 
 
+(defun ds-line-has-just-one-item ()
+  ""
+  (save-mark-and-excursion
+   (call-interactively 'move-beginning-of-line)
+   (re-search-forward "[^\s\n]")
+   (backward-char)
+   (call-interactively 'er/expand-region)
+   (let* ((to-paste (delete-and-extract-region (region-beginning) (region-end)))
+          (is-now-empty (ds-delete-if-empty-line)))
+     (insert to-paste)
+     )))
+
+
+
+
+(defun ds-delete-if-empty-line ()
+  ""
+  (let* ((start (location-after-move 'move-beginning-of-line))
+         (end   (location-after-move 'move-end-of-line))
+         (line-text (buffer-substring-no-properties start end))
+         )
+    (if (string-match "[^\s]" line-text)
+        nil
+      (delete-region start (+ end 1)))
+    ))
+
+
+;; if beginning of line, an
+
+(defun ds-fixup-whitespace ()
+  ""
+  (fixup-whitespace)
+  (indent-for-tab-command)
+  (ds-delete-if-empty-line))
+
+
+(defun ds-kill-region ()
+  ""
+  (interactive)
+  (call-interactively 'kill-region)
+  (ds-fixup-whitespace))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;   Keyboard Map ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -810,13 +853,14 @@ or a marker."
 (defun ds-call-unless-other-needed (f kbd-fallback)
   "Calls f interactively, unless minibuffer active. In that case, use keyboard fallback."
   (if (active-minibuffer-window)
-      (execute-kbd-macro (kbd kbd-fallback))
+      ;;(execute-kbd-macro (kbd kbd-fallback))
+      (setq unread-command-events (listify-key-sequence (kbd kbd-fallback)))
     (progn
       (call-interactively f))))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;; LEFT JOYSTICK ;;;;;;;;;;;;;;;;;;;;;
 (defun ds-left-joy-up ()
-  "Command to run when cross button is pushed"
+  ""
   (interactive)
   (ds-call-unless-other-needed (lambda () 
                                  (interactive)
@@ -824,7 +868,7 @@ or a marker."
                                  (ds-temp-region)) "<up>"))
 
 (defun ds-left-joy-down ()
-  "Command to run when cross button is pushed"
+  ""
   (interactive)
   (ds-call-unless-other-needed (lambda () 
                                  (interactive)
@@ -832,43 +876,64 @@ or a marker."
                                  (ds-temp-region)) "<down>"))
 
 (defun ds-left-joy-left ()
-  "Command to run when cross button is pushed"
+  ""
   (interactive)
   (ds-call-unless-other-needed 'ds-backward-symbol "<left>"))
 
 (defun ds-left-joy-right ()
-  "Command to run when cross button is pushed"
+  ""
   (interactive)
   (ds-call-unless-other-needed 'ds-forward-symbol "<right>"))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; RIGHT JOYSTICK  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Cancel/Kill Button
-(defun ds-cross ()
+(defun ds-right-joy-up ()
   "Command to run when cross button is pushed"
   (interactive)
-  (ds-call-unless-other-needed (lambda () 
-                                 (interactive)
-                                 (call-interactively 'kill-region)
-                                 (fixup-whitespace))
-                               "C-g"))
+  (ds-call-unless-other-needed 'ds-swap-backward-sexp "<up>"))
+
+(defun ds-right-joy-down ()
+  "Command to run when cross button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-swap-forward-sexp "<down>"))
+
+
+(defun ds-right-joy-left ()
+  ""
+  (interactive)
+  (ds-call-unless-other-needed 'ds-swap-backward-symbol "<left>"))
+
+(defun ds-right-joy-right ()
+  ""
+  (interactive)
+  (ds-call-unless-other-needed 'ds-swap-forward-symbol "<right>"))
+
+
+;;;;;;;;;;;;;;;;;;;; BUTTONS ;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Cancel/Kill Button
+(defun ds-ex ()
+  "Command to run when X button is pushed"
+  (interactive)
+  (ds-call-unless-other-needed 'ds-kill-region "C-g"))
 
 ;; Confirm/Insert/Enter button
 (defun ds-circle ()
-  "Command to run when cross button is pushed"
+  "Command to run when circle button is pushed"
   (interactive)
   (ds-call-unless-other-needed 'ds-insert-yank-cycle
                                "<return>"))
 
 
 (defun ds-square ()
-  "Command to run when cross button is pushed"
+  "Command to run when square button is pushed"
   (interactive)
   (ds-call-unless-other-needed 'ds-insert-yank-cycle
                                "<return>"))
 
 
 (defun ds-triangle ()
-  "Command to run when cross button is pushed"
+  "Command to run when triangle button is pushed"
   (interactive)
   (ds-call-unless-other-needed 'ds-insert-yank-cycle
                                "<return>"))
@@ -890,15 +955,15 @@ or a marker."
   (ds-make-shortcut "H-~" 'ds-left-joy-right)
 
   
-  (ds-make-shortcut "H-," 'ds-swap-backward-sexp);; UP
-  (ds-make-shortcut "H-." 'ds-swap-forward-sexp); DOWN
+  (ds-make-shortcut "H-," 'ds-right-joy-up);; UP
+  (ds-make-shortcut "H-." 'ds-right-joy-down); DOWN
 
-  (ds-make-shortcut "H-<" 'ds-swap-backward-symbol) ;; LEFT
-  (ds-make-shortcut "H->" 'ds-swap-forward-symbol);; RIGHT
+  (ds-make-shortcut "H-<" 'ds-right-joy-left) ;; LEFT
+  (ds-make-shortcut "H->" 'ds-right-joy-right);; RIGHT
 
 
   ;; X btn
-  (ds-make-shortcut "H-x" 'ds-cross)
+  (ds-make-shortcut "H-x" 'ds-ex)
   (ds-make-shortcut "H-o" 'ds-circle)
   (ds-make-shortcut "H-b" 'ds-square)
   (ds-make-shortcut "H-t" 'ds-triangle)

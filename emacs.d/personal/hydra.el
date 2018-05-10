@@ -1,57 +1,11 @@
-;; (global-set-key
-;;  (kbd "C-n")
-;;  )
-
-;; (defmacro  ()
-;;     (list 'defhydra ()  ))
-
-;; Change cursor on in and out
-
-;; :after-exit => start caps mode again
-
-
-;;(hydra-set-property 'hydra-lispy-x :verbosity 1)
-;;(setq hydra-is-helpful 1)
 
 ;;(customize-set-variable 'browse-kill-ring-separator "")
-
-;; https://github.com/abo-abo/hydra/wiki/Nesting-Hydras
-(defvar hydra-stack nil)
-
-(defun hydra-push (expr)
-  (push `(lambda () ,expr) hydra-stack))
-
-(defun hydra-pop ()
-  (interactive)
-  (let ((x (pop hydra-stack)))
-    (when x
-      (funcall x))))
-
 
 (defun hydra-enter ()
   (setq cursor-type "block"))
 
 (defun hydra-exit ()
   (setq cursor-type 'bar))
-
-
-
-;; (defun my-next-symbol ()
-;;   "mark next symbol"
-;;   (interactive)
-;;   (forward-thing 'symbol)
-;;   (beginning-of-thing 'symbol)
-;;   (push-mark (point) t t)
-;;   (end-of-thing 'symbol)
-;;   ;;(next-visible-thing 'symbol)
-;;   ;;  (mark-thing 'symbol)
-;;   (temp-mark-thing)
-;;   )
-
-;; (global-set-key (kbd "C-3") 'my-next-symbol)
-;; (global-set-key (kbd "C-4") 'my-next-line)
-
-
 
 
 
@@ -251,29 +205,49 @@
 ;;  Better way:
 ;;    set level: this/whole, container, extended
 ;;    set inside/outside
+
+;; ("d" (progn (kill-whole-line)
+;;             (yank)
+;;             (yank)
+;;             (previous-line)
+;;             (smart-line-beginning)) "Duplicate line")
+
 (defhydra hydra-edit (:exit nil
                       ;;:columns 3
                       :pre (hydra-enter)
                       :post (hydra-exit))
   "EDIT"
   ("<home>" hydra-tymode/body "" :exit t)
-  ("c" comment-region "Comment region")
-  ("d" (progn (kill-whole-line)
-              (yank)
-              (yank)
-              (previous-line)
-              (smart-line-beginning)) "Duplicate line")
-  ("SPC" er/expand-region "Expand Region")
 
-  ("n" hydra-move/body "Nav" :exit t)
+  ("c" comment-region "Comment region")
+
+  ("g" right-char "Right")
+  ("h" left-char "Left")
+  
+  ("d" ds-left-joy-left "Back")
+  ("f" ds-left-joy-right "Foward")
+  
+  ("j" ds-right-joy-left "Drag Back")
+  ("k" ds-right-joy-right "Drag Foward")
+  
+  ("u" ds-right-joy-up "Drag Up")
+  ("n" ds-right-joy-down "Drag Down")
+
+  ("x" ds-ex "Cut")
+  ("v" ds-circle "Paste")
+  
+  ("SPC" er/expand-region "Expand Region")
+  ("S-SPC" er/contract-region "Shrink Region")
+
   ("r" replace-string "Replace String")
   ("w" kill-ring-save "Kill-Ring-Save")
-  ("y" yank "Yank")
-  ("x" kill-region "Kill-Region")
-  ("u" undo "undo")
+  
+  
+  ("z" ds-undo "undo")
   ;("Y" (dropdown-list ('yank-menu)) "Yank Next")
   ;("Y" yank-pop "yank-pop")
-  ("Y" (progn (dropdown-list (subseq (delq nil (delete-duplicates kill-ring)) 0 15) )) "yank-menu")  )
+  ;;("Y" (progn (dropdown-list (subseq (delq nil (delete-duplicates kill-ring)) 0 15) )) "yank-menu")
+  )
 
 
 (defhydra hydra-buffer (:exit t

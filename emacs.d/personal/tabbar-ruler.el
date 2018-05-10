@@ -10,11 +10,14 @@
 
   (require 'tabbar-ruler)
   (tabbar-ruler-group-by-projectile-project)
+
   
-  ;; (set-face-attribute 'tabbara-default nil 
-  ;;                     :foreground "#ffffff"
-  ;;                     :background "#444444"
-  ;;                     :nil)
+  
+  ;; (set-face-attribute 'tabbar-button nil
+  ;;                     :height 0.6
+  ;;                     ;;:foreground "#ffffff"
+  ;;                     ;;:background "#444444"
+  ;;                     )
 
   (global-unset-key (kbd "C-<left>"))
   (global-unset-key (kbd "C-<right>"))

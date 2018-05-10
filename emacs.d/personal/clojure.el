@@ -5,15 +5,19 @@
 
 (require 'clojure-mode)
 
-
+;; Stop overriding { and } keys!
+(defun clojure-paredit-setup ()
+  )
 
 ;; Enable paredit for Clojure
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
+;;(add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(remove-hook 'clojure-mode-hook 'enable-paredit-mode)
 
 ;; This is useful for working with camel-case tokens, like names of
 ;; Java classes (e.g. JavaClassName)
 (add-hook 'clojure-mode-hook 'subword-mode)
-;;PL (add-hook 'clojure-mode-hook 'idle-highlight-mode)
+(add-hook 'clojure-mode-hook 'electric-indent-mode)
+(add-hook 'clojure-mode-hook 'idle-highlight-mode)
 
 ;; don't show error popup in repl
 (setq cider-show-error-buffer nil)
@@ -45,3 +49,6 @@
 (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
+
+
+(add-hook 'clojure-mode-hook 'show-paren-mode)
