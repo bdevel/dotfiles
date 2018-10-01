@@ -7,7 +7,7 @@
  '(clojure-indent-style :align-arguments)
  '(package-selected-packages
    (quote
-l    (helm-google sos web-mode handlebars-sgml-mode magit color-theme-sanityinc-tomorrow hydra drag-stuff handlebars-mode expand-region ryo-modal modalka ace-jump-mode projectile markdown-mode js2-mode json-mode exec-path-from-shell csv-mode)))
+    (helm-google sos web-mode handlebars-sgml-mode magit color-theme-sanityinc-tomorrow hydra drag-stuff handlebars-mode expand-region ryo-modal modalka ace-jump-mode projectile markdown-mode js2-mode json-mode exec-path-from-shell csv-mode)))
 
  '(ring-bell-function (quote ignore))
  '(vc-annotate-background nil)
