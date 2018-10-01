@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ember-constants
+# key: ec
+# --
+const {get} = Ember;

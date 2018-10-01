@@ -5,11 +5,12 @@
 ;; use rx function http://www.emacswiki.org/emacs/rx
 
 
-(defun align-to-colon (begin end)
+(load-library "align")
+;; https://danconnor.com/posts/5028ac91e8891a000000111f/align_and_columnize_key_value_data_in_emacs
+(defun align-to-colon (beg end)
   "Align region to colon (:) signs"
   (interactive "r")
-  (align-regexp begin end
-                (rx (group (zero-or-more (syntax whitespace))) ":") 1 1 ))
+  (align-regexp beg end ":\\(\\s-*\\)" 1 1 t))
 
 (defun align-to-comma (begin end)
   "Align region to comma signs"

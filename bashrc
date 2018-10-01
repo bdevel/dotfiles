@@ -18,7 +18,7 @@ function conditionally_prefix_path {
 }
 
 conditionally_prefix_path /usr/local/bin/git
-conditionally_prefix_path /usr/local/heroku/bin ### Added by the Heroku Toolbelt
+#conditionally_prefix_path /usr/local/heroku/bin ### Added by the Heroku Toolbelt
 conditionally_prefix_path /Applications/Postgres.app/Contents/Versions/latest/bin/
 
 conditionally_prefix_path $HOME/.rvm/bin # Add RVM to PATH for scripting
@@ -74,7 +74,7 @@ CDPATH=.:${CDPATH}
 ## General development configurations
 ###########################################################
 
-export NVM_DIR="~/.nvm"
+export NVM_DIR=$HOME/.nvm
 if [ -f $NVM_DIR/nvm.sh ]; then
   . $NVM_DIR/nvm.sh
 fi
@@ -162,7 +162,8 @@ shopt -s cdspell
 shopt -s checkwinsize
 
 export PAGER="less"
-export EDITOR="emacsclient -nw"
+#export EDITOR="emacsclient -nw"
+export EDITOR="emacs"
 
 ############################################################
 ## History
@@ -177,7 +178,17 @@ shopt -s histappend
 # remove duplicates from the history (when a new item is added)
 export HISTCONTROL=erasedups
 # increase the default size from only 1,000 items
-export HISTSIZE=10000
+
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+
+promptFunc() {
+  # right before prompting for the next command, save the previous
+  # command in a file.
+  echo -e "$(gdate --rfc-2822)\t$(gdate +%s)\t$PWD\t$(history 1 | sed -E 's/^[ ]*[0-9]+[ ]*//')" >> ~/dotfiles/shell_history
+}
+PROMPT_COMMAND=promptFunc
+
 
 ############################################################
 ## Aliases
@@ -224,3 +235,8 @@ fi
 # export RUBY_GC_MALLOC_LIMIT=60000000
 # # export RUBY_FREE_MIN=200000 # Ruby <= 2.0
 # export RUBY_GC_HEAP_FREE_SLOTS=200000 # Ruby >= 2.1
+
+export PATH="$HOME/.yarn/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH=/Users/tyler/.local/bin:$PATH

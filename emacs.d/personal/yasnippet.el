@@ -1,6 +1,6 @@
 ;;; Snippets make typing fun
 
-(require 'dropdown-list)
+;;(require 'dropdown-list)
 
 (yas-global-mode 1)
 

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: actions-hash
+# key: actions
+# --
+actions: {
+  $1($2){
+    $0
+  }
+}

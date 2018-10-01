@@ -1,5 +1,6 @@
 ;;; Ruby
 
+
 ;; Run the current ruby buffer
 (defun ruby-eval-buffer()
    "Evaluate the buffer with ruby."
@@ -17,10 +18,11 @@
 (add-hook 'ruby-mode-hook
           (lambda ()
             ;; (ruby-electric-mode)
+            (electric-indent-mode t)
             (local-set-key [(control c) (control e)] 'ruby-insert-end)
             (local-set-key [(control meta f1)] 'xmp) ;; gem install rcodetools
             (local-set-key [(control meta shift f1)] 'ruby-eval-buffer)
-            (local-set-key (kbd "TAB") 'smart-tab)
+            ;;(local-set-key (kbd "TAB") 'smart-tab)
             ))
 
 

@@ -1,0 +1,72 @@
+TODO:
+- indent whole function
+- new s express
+- mark s, with greater,greater scope
+- move s exp up down
+- clear all sourounding white space
+- fix comment
+
+
+emacs
+  quit
+  edit configs
+
+
+Macro
+  start
+  stop
+  replay
+  save to
+
+Find
+  fwd
+  bkwd
+  rgrep
+  next-error
+
+comment
+  region
+  line
+  function
+  expr
+
+align
+  colon
+  equal
+  regex
+
+
+navigating
+M-b : back one word
+M-f : foward one word
+C-a : beginning of line
+C-e : end of line
+C-n : next line
+C-p : previous line
+M-< : beginning of buffer
+M-> : end of buffer
+
+
+Code
+  indent
+
+files
+  find
+  recent
+
+buffer
+  save
+  close
+
+
+
+Window
+    C-x ^ make selected window taller
+    C-x } make selected window wider
+    C-x - shrink window if larger than buffer
+
+mark
+  mark-
+  save-mark
+
+help

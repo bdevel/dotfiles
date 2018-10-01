@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: with-meta
+# key: wm
+# --
+(with-meta $1
+           {:$0 $0})

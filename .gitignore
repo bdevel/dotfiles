@@ -21,3 +21,5 @@ emacs.d/cider-history
 emacs.d/.emacs.desktop
 emacs.d/.emacs.desktop.lock
 emacs.d/desktop
+eshell/
+.yas-*

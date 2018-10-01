@@ -1,11 +1,19 @@
 ;;; Generic emacs settings I cannot live without
 
 ;; don't use desktop mode for terminal
-(when (display-graphic-p)
-  (desktop-save-mode 1);; is x window
-  ())
+(if (display-graphic-p)
+    (progn
+        (desktop-save-mode 1);; is x window
+        ;; For emacsclient
+        (server-start))
+  (progn
+      ;; no menu bar for terminal
+      (menu-bar-mode -1)) )
+
+
 
 ;; Add variables to desktop saving
+;;(add-to-list 'desktop-globals-to-save 'register-alist)
 ;;(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 ;; Don't show the startup screen
@@ -19,9 +27,12 @@
 (setq transient-mark-mode t)
 (pending-delete-mode t)
 
+(recentf-mode 1)
+
 ;; Display line and column numbers
 (setq line-number-mode    t)
 (setq column-number-mode  nil)
+(global-linum-mode t)
 
 ;; Modeline info
 ;(display-time-mode 1)
@@ -31,6 +42,7 @@
 ;; (when (fboundp 'toggle-scroll-bar)
 ;;   (toggle-scroll-bar -1))
 (toggle-scroll-bar nil)
+(scroll-bar-mode 0)
 
 ;; Explicitly show the end of a buffer
 (set-default 'indicate-empty-lines t)
@@ -48,7 +60,7 @@
 ;; (setq visible-bell t)
 
 ;; Make sure all backup files only live in one place
-;;(setq backup-directory-alist (concat user-emacs-directory ".backups"))
+;;(setq backup-directory-alist nil); (concat user-emacs-directory ".backups"))
 ;;(setq backup-directory-alist "~/.emacs.d/.backups")
 
 ;; disable auto save
@@ -57,22 +69,10 @@
 ;; No need for ~ files when editing
 (setq create-lockfiles nil)
 
-;; Gotta see matching parens
-(show-paren-mode t)
-
 ;; Don't truncate lines
 (setq truncate-lines t)
 (setq truncate-partial-width-windows nil)
 
-;; For emacsclient
-;;(server-start)
-
-;; Trailing whitespace is unnecessary
-(defvar whitespace-cleanup-on-save t)
-;; (setq whitespace-cleanup-on-save nil)
-(add-hook 'before-save-hook
-    (lambda ()
-      (if whitespace-cleanup-on-save (whitespace-cleanup))))
 
 ;; Trash can support
 (setq delete-by-moving-to-trash t)
@@ -101,8 +101,9 @@
 ;;   (quit nil)))
 
 
-;; annoying
+;; annoying!
 (setq electric-indent-mode nil)
+(setq electric-pair-mode nil)
 
 ;; zap-up-to-char, forward-to-word, backward-to-word, etc
 ;(require 'misc)
@@ -119,6 +120,7 @@
                                                      rspec-mode      python-mode
                                                      c-mode          c++-mode
                                                      objc-mode       latex-mode
+                                                     web-mode        js2-mode
                                                      plain-tex-mode))
                 (let ((mark-even-if-inactive transient-mark-mode))
                   (indent-region (region-beginning) (region-end) nil))))))

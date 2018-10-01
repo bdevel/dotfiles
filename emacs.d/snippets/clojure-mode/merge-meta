@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: merge-meta
+# key: mm
+# --
+(merge (meta $1)
+             (meta $2)
+             {:$3 $3
+              :$4 $4})

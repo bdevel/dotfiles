@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: attr-fn
+# key: af
+# --
+$1($2) {
+  $0
+},
