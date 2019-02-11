@@ -5,6 +5,9 @@
 (add-to-list 'auto-mode-alist '("\\.md\\.erb$" . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.text$"     . gfm-mode))
 
+(add-hook 'markdown-mode-hook 'auto-fill-mode)
+
+
 ;; Original premise borrowed from https://gist.github.com/siancu/4542778
 (defun marked-markdown-preview ()
   "run Marked on the current file if Marked is installed;
@@ -19,3 +22,4 @@ otherwise fallback to markdown-preview"
 (eval-after-load 'markdown-mode
   '(progn
      (define-key markdown-mode-map (kbd "C-c C-v") 'marked-markdown-preview)))
+

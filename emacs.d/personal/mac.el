@@ -2,9 +2,21 @@
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode 0))
 
+;; Mouse Wheel stuff
 ;; Slow down the mouse wheel acceleration
-(when (boundp 'mouse-wheel-scroll-amount)
-  (setq mouse-wheel-scroll-amount '(0.001)))
+;; (when (boundp 'mouse-wheel-scroll-amount)
+;;   (setq mouse-wheel-scroll-amount '(0.2)))
+
+;; (setq scroll-step 1)
+;; (setq scroll-conservatively 101)
+;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+;; (setq mouse-wheel-progressive-speed nil)
+;; (setq mouse-wheel-follow-mouse t)
+
+
+(setq scroll-conservatively 101) ;; move minimum when cursor exits view, instead of recentering
+(setq mouse-wheel-scroll-amount '(2)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
+(setq mouse-wheel-progressive-speed nil) ;; on a long mouse scroll keep scrolling by 1 line
 
 
 ;; C- mouse wheel to change font size. Can't get zoom to work
@@ -52,6 +64,14 @@
 (global-set-key (kbd "H-c") 'pbcopy) ;; [f1]
 (global-set-key (kbd "H-v") 'pbpaste)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(global-set-key (kbd "C-z") nil)
+(global-set-key (kbd "M-z") 'undo)
+(global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-c") 'copy-region-dont-deactivate)
+(global-set-key (kbd "M-v") 'yank)
+(global-set-key (kbd "M-a") 'er/expand-region)
 
 
 ;; Turn off bell warnings.

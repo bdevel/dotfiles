@@ -48,7 +48,17 @@
 
 
 
-
+(defun copy-region-dont-deactivate (beg end &optional region)
+  "Save the region to kill-ring, don't kill it, keep region active."
+  (interactive (list (mark) (point)
+		                 (prefix-numeric-value current-prefix-arg)))
+  (let ((str (if region
+                 (funcall region-extract-function nil)
+               (filter-buffer-substring beg end))))
+    (if (eq last-command 'kill-region)
+        (kill-append str (< end beg))
+      (kill-new str)))
+  nil)
 
 
 ;; query-replace current word

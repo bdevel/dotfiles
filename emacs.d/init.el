@@ -17,7 +17,8 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-             '("melpa-dev" . "https://melpa.org/packages/"))
+             ;;'("melpa-dev" . "https://melpa.org/packages/")
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
 ;;(add-to-list 'package-archives
 ;;             '("melpa" . "https://stable.melpa.org/packages/"))
 
@@ -52,6 +53,7 @@
 ;; https://github.com/clojure-emacs/cider
 ;;(package 'cider)
 
+(package 'company) ;; completion
 (package 'csv-mode)
 (package 'drag-stuff)
 ;;(package 'dropdown-list)
@@ -63,6 +65,7 @@
 ;; (package 'flx-isearch)
 (package 'haml-mode)
 (package 'highlight-parentheses)
+(package 'helm)
 (package 'hydra)
 ;;(package 'ido-ubiquitous)
 ;; (package 'htmlize)
@@ -86,6 +89,10 @@
 
 (package 'projectile)
 (package 'projectile-rails)
+(package 'helm-projectile)
+(package 'robe) ;; ruby auto-complete and docs
+(package 'enh-ruby-mode)
+(package 'rvm)
 ;;(package 'sass-mode)
 (package 'smex)
 (package 'sos)
@@ -98,7 +105,6 @@
 (package 'yaml-mode)
 (package 'yasnippet)
 
-
 ;; self managed
 ;; ------------------
 ;;(personal 'auto-complete)
@@ -108,6 +114,7 @@
 (personal 'align)
 (personal 'clojure)
 (personal 'cider)
+(personal 'company-mode)
 (personal 'diff)
 (personal 'dired)
 (personal 'disabled)
@@ -121,6 +128,7 @@
 (personal 'goto-last-change)
 (personal 'haml-mode)
 (personal 'highlight-parentheses)
+(personal 'helm)
 ;;(personal 'hippy-expand)
 (personal 'hydra)
 ;;(personal 'ido)
@@ -144,7 +152,7 @@
 (personal 'smex)
 (personal 'tabs)
 (personal 'tabbar-ruler)
-(personal 'utf-8)
+;;(personal 'utf-8) ;; emacs 26 has some problems... tbd
 (personal 'web-mode)
 ;;(personal 'ryo)
 ;;(personal 'xkeys)

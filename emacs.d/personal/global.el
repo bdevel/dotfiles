@@ -19,6 +19,7 @@
 ;; Don't show the startup screen
 (setq inhibit-startup-message t)
 
+
 ;; "y or n" instead of "yes or no"
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -27,6 +28,10 @@
 (setq transient-mark-mode t)
 (pending-delete-mode t)
 
+;; disable undo in region. YES!
+(setq undo-tree-enable-undo-in-region nil)
+
+;; store recent files
 (recentf-mode 1)
 
 ;; Display line and column numbers
@@ -124,3 +129,19 @@
                                                      plain-tex-mode))
                 (let ((mark-even-if-inactive transient-mark-mode))
                   (indent-region (region-beginning) (region-end) nil))))))
+
+
+
+;; don't ask to save buffers before grep
+(setq grep-save-buffers nil)
+
+;; Remove junk at the top of rgrep. So happy!
+;; https://stackoverflow.com/questions/16122801/remove-header-information-from-rgrep-grep-output-in-emacs
+(defun delete-grep-header ()
+  (save-excursion
+    (with-current-buffer grep-last-buffer
+      (goto-line 5)
+      (narrow-to-region (point) (point-max)))))
+
+(defadvice grep (after delete-grep-header activate) (delete-grep-header))
+(defadvice rgrep (after delete-grep-header activate) (delete-grep-header))

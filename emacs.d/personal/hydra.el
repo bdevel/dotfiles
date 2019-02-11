@@ -23,6 +23,7 @@
   ("e" hydra-edit/body "Edit")
 
   ("n" hydra-move/body "Nav")
+  ("k" hydra-macro/body "Macro") 
 
   ("p" hydra-paredit/body "Parens")
 
@@ -34,15 +35,17 @@
   ("/" isearch-forward "search fwd")
   ("\\" isearch-forward "search bwd")
 
+  ("SPC" er/expand-region "Expand Region")
+  ("S-SPC" er/contract-region "Shrink Region")
+
   ;; ("c" (progn
   ;;        (hydra-c/body)
   ;;        (hydra-push '(hydra-a/body)))
   ;;      "visit hydra-c")
   ;;("i" (message "I am a") :exit nil)
-  ("`" nil "exit" :exit t)
-  ("\=" goto-last-change "goto-last-change" :exit nil)
+  ("`" nil "exit" :exit :t)
+  ("\ " goto-last-change "goto-last-change" :exit nil)
   ("<home>" nil "exit" :exit t))
-
 
 (global-set-key (kbd "<home>") 'hydra-tymode/body)
 (global-set-key (kbd "<end>") 'smex)
@@ -55,13 +58,12 @@
 
    "File"
    ;;("<home>" hydra-tymode/body "TYMODE")
-   ("o" find-file "Open")
+   ("o" helm-projectile "Open")
    ("f" find-name-dired "Find")
    ("s" save-buffer "Save")
    ("g" rgrep "rgrep")
    ("n" rename-file-and-buffer "reNAME file")
-   ("r" recentf-open-files "recent"))
-
+   ("r" projectile-recentf "recent"))
 
 ;; TODO: Fix going to main hyra
 ;; use ty-next line prev line using arrows.
@@ -95,6 +97,19 @@
 
 (global-set-key (kbd "<H-f14>") 'hydra-mark/body)
 
+(defhydra hydra-macro (:exit t
+		                   ;;:columns 4
+                       :pre (hydra-enter)
+                       :post (hydra-exit))
+
+  "Macro"
+  ("s" kmacro-start-macro "Start")
+  ("e" kmacro-end-macro "End")
+  ("c" kmacro-call-macro "Call")
+  ("n" name-last-kbd-macro "Name Last")
+  ("i" insert-kbd-macro "Insert")
+  ("r" kmacro-to-register "Registry")
+  ("a" apply-macro-to-region-lines "ApplyRegion"))
 
 (defhydra hydra-register (:exit t
                           :pre (hydra-enter)
@@ -145,7 +160,7 @@
 
    ;; S is free still...
 
-
+   
    ;; todo, delete line
    ("i" (progn (kill-whitespace) (just-one-space)) "kill-window" :exit nil)
    ("k" kill-this-thing "kill-this" :exit nil)
@@ -219,8 +234,8 @@
   "EDIT"
   ("<home>" hydra-tymode/body "" :exit t)
 
-  ("c" comment-region "Comment region")
-
+  ("c" comment-region "Comment region" :exit t)
+ 
   ("g" right-char "Right")
   ("h" left-char "Left")
   
@@ -256,12 +271,13 @@
                         :post (hydra-exit))
   "BUFFER"
   ;("<home>" hydra-tymode/body "" :exit t)
-  ("b" switch-to-prev-buffer "switch")
+  ("b" switch-to-buffer "switch-buffer")
   ("o" switch-to-prev-buffer "other")
   ("s" save-buffer "save")
-  ("p" previous-buffer "previous ")
-  ("n" next-buffer "next")
-  ("l" buffer-menu "menu")
+  ("f" next-buffer "next")
+  ("d" previous-buffer "previous ")
+  ;; ("l" buffer-menu "menu")
+  ("l" projectile-ibuffer "project")
   ("k" kill-this-buffer "kill"))
 
 
@@ -274,6 +290,7 @@
   ("<home>" hydra-tymode/body "" :exit t)
   ("o" other-window "Other")
   ("1" delete-other-windows "Kill-others")
+  ("!" delete-other-windows "Kill-others")
   ("k" delete-window "Kill-Window")
   ("v" split-window-right "Vertical")
   ("h" split-window-below "Horiz"))
@@ -330,6 +347,7 @@
   ;; ("<down>" (progn (sp-down-sexp) (sp-mark-sexp)) "sp-down-sexp" :exit nil)
   ;; ("<up>" (progn (sp-up-sexp) (sp-mark-sexp)) "sp-up-sexp" :exit nil)
 
+  ("SPC" er/expand-region "mark" :exit nil)
 
 
   ("<right>"  sp-forward-sexp "sp-forward-sexp" :exit nil)

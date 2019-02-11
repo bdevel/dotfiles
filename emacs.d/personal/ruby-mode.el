@@ -1,6 +1,28 @@
 ;;; Ruby
 
 
+;; Use Enhanced Ruby Mode instead
+(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+
+
+
+(add-hook 'enh-ruby-mode-hook 'robe-mode)
+
+;; must start robe with M-x robe-start (Can I add a hook for rails apps?)
+;; (eval-after-load 'company
+;;   '(push 'company-robe company-backends))
+
+
+;; todo, after typing end, go prev line, indent.
+;; (add-hook 'post-self-insert-hook 'complete-end)
+
+
+;; make robe-start use rvm. Requires rvm package
+(require 'rvm)
+(defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
+  (rvm-activate-corresponding-ruby))
+
 ;; Run the current ruby buffer
 (defun ruby-eval-buffer()
    "Evaluate the buffer with ruby."
@@ -15,7 +37,7 @@
   (end-of-line))
 
 ;; Local key bindings
-(add-hook 'ruby-mode-hook
+(add-hook 'enh-ruby-mode-hook
           (lambda ()
             ;; (ruby-electric-mode)
             (electric-indent-mode t)

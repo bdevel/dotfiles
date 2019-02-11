@@ -11,8 +11,6 @@
   (require 'tabbar-ruler)
   (tabbar-ruler-group-by-projectile-project)
 
-  
-  
   ;; (set-face-attribute 'tabbar-button nil
   ;;                     :height 0.6
   ;;                     ;;:foreground "#ffffff"

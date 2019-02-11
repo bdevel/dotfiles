@@ -124,7 +124,6 @@ alias gpu='git push upstream'
 
 # Get rid of those pesky .DS_Store files recursively
 alias dstore-clean='find . -type f -name .DS_Store -print0 | xargs -0 rm'
-
 alias ecu='find . | grep ~$ | xargs rm' # clean emacs backup files
 
 
@@ -172,7 +171,8 @@ function gemdoc {
 }
 
 alias rc="rails console"
-alias tg="thor -T | grep" # (rake -T; thor -T) | grep syn
+# alias tg="thor -T | grep" # (rake -T; thor -T) | grep syn
+alias rtg="rake -T | grep"
 
 ############################################################
 ## Bundler
@@ -234,6 +234,7 @@ noindex_node_modules () {
 ############################################################
 
 alias bi="bundle install"
+alias rg="rake -T | grep"
 
 #alias tl="tail -f log/development.log"
 
@@ -251,7 +252,7 @@ alias bi="bundle install"
 ## Emacs
 ############################################################
 
-alias e="emacs"
+alias e="emacs -x"
 alias ee="e ~/.emacs"
 
 #alias e='emacs'
@@ -288,9 +289,9 @@ function flushdns {
 }
 
 alias fixtime='sudo ntpdate pool.ntp.org'
-alias whichlinux='uname -a; cat /etc/*release; cat /etc/issue'
+#alias whichlinux='uname -a; cat /etc/*release; cat /etc/issue'
 
-alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+#alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 function serve {
   local port=$1
@@ -298,14 +299,14 @@ function serve {
   ruby -rwebrick -e"s = WEBrick::HTTPServer.new(:Port => $port, :DocumentRoot => Dir.pwd, :MimeTypes => WEBrick::HTTPUtils::load_mime_types('/etc/apache2/mime.types')); trap(%q(INT)) { s.shutdown }; s.start"
 }
 
-function eachd {
-  for dir in *; do
-    cd $dir
-    echo $dir
-    $1
-    cd ..
-  done
-}
+# function eachd {
+#   for dir in *; do
+#     cd $dir
+#     echo $dir
+#     $1
+#     cd ..
+#   done
+# }
 
 function fakefile {
   let mb=$1
@@ -314,6 +315,11 @@ function fakefile {
 }
 
 ############################################################
+alias tailf='tail -f'
+alias tailn='tail -n 100'
+alias tailnn='tail -n 500'
+alias tailnnn='tail -n 2000'
+
 alias cdss='cd ~/Code/marketly/scrubm-social'
 alias grv='git remote -v'
 alias gf='git fetch'
@@ -327,3 +333,6 @@ alias gshp='git stash pop'
 alias ginit='git init .;git add *  .gitignore; git commit -am initial'
 alias rgm='rails g migration'
 alias rt='RAILS_ENV=test ruby -Itest'
+alias cux="chmod u+x"
+alias gcmd="git push && cap master deploy"
+alias gpcmd="git push && cap master deploy"

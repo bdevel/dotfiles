@@ -105,7 +105,5 @@
 ;; (add-hook 'window-setup-hook 'on-after-init)
 
 
-
-
 (when (display-graphic-p (selected-frame))
   (call-interactively 'lcd-monitor-mode))
