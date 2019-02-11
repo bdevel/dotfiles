@@ -85,7 +85,7 @@
 
 ;; makes handling lisp expressions much, much easier
 ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-;;(package 'paredit)
+(package 'paredit)
 
 (package 'projectile)
 (package 'projectile-rails)

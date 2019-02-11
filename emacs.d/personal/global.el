@@ -44,10 +44,12 @@
 ;; (display-battery-mode 1)
 
 ;; Emacs gurus don't need no stinking scroll bars
-;; (when (fboundp 'toggle-scroll-bar)
-;;   (toggle-scroll-bar -1))
-(toggle-scroll-bar nil)
-(scroll-bar-mode 0)
+ (when (fboundp 'toggle-scroll-bar)
+   (toggle-scroll-bar -1))
+;;(toggle-scroll-bar nil)
+
+ (when (fboundp 'scroll-bar-mode)
+   (scroll-bar-mode 0))
 
 ;; Explicitly show the end of a buffer
 (set-default 'indicate-empty-lines t)

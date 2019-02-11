@@ -29,7 +29,7 @@ conditionally_prefix_path /usr/local/sbin
 #conditionally_prefix_path /usr/local/mysql/bin
 #conditionally_prefix_path /usr/local/heroku/bin
 #conditionally_prefix_path /usr/texbin
-#conditionally_prefix_path ~/bin
+conditionally_prefix_path ~/bin
 #conditionally_prefix_path ~/bin/private
 
 PATH=.:./bin:${PATH}

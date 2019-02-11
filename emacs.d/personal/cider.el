@@ -3,6 +3,7 @@
 ;;;;
 
 
+
 (use-package cider
   :ensure t
   :commands (cider-connect cider-jack-in) ;;cider 
@@ -10,8 +11,9 @@
   :init;; runs before package is enabled
   (setq cider-repl-wrap-history t
         cider-repl-history-size 1000
-        cider-repl-history-file (f-expand ".cider-history" user-emacs-directory)
-
+        ;;cider-repl-history-file (f-expand ".cider-history" user-emacs-directory)
+	cider-repl-history-file (concat user-emacs-directory ".cider-history")
+	
         ;; Don't know what these do yet
         ;; cider-auto-select-error-buffer t
         ;; cider-repl-pop-to-buffer-on-connect nil
