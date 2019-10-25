@@ -1,3 +1,8 @@
+
+# completion for make
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+
+
 # # http://onrails.org/articles/2006/11/17/rake-command-completion-using-rake
 # if [ -f ~/bin/rake_completion ]; then
 #   . ~/bin/rake_completion

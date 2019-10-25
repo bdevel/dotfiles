@@ -2,12 +2,9 @@
 
 
 ;; Use Enhanced Ruby Mode instead
-(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
-
-
-
-(add-hook 'enh-ruby-mode-hook 'robe-mode)
+;;(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+;;(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+;; (add-hook 'enh-ruby-mode-hook 'robe-mode)
 
 ;; must start robe with M-x robe-start (Can I add a hook for rails apps?)
 ;; (eval-after-load 'company
@@ -37,7 +34,7 @@
   (end-of-line))
 
 ;; Local key bindings
-(add-hook 'enh-ruby-mode-hook
+(add-hook 'ruby-mode-hook
           (lambda ()
             ;; (ruby-electric-mode)
             (electric-indent-mode t)
@@ -45,6 +42,7 @@
             (local-set-key [(control meta f1)] 'xmp) ;; gem install rcodetools
             (local-set-key [(control meta shift f1)] 'ruby-eval-buffer)
             ;;(local-set-key (kbd "TAB") 'smart-tab)
+            (local-set-key (kbd "<return>") 'newline-and-indent)
             ))
 
 
@@ -81,3 +79,40 @@
     (when indent
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+;; https://github.com/zenspider/enhanced-ruby-mode/blob/master/enh-ruby-mode.el
+;; https://www.emacswiki.org/emacs/EmacsSyntaxTable
+(defvar enh-ruby-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?\' "\"" table)
+    (modify-syntax-entry ?\" "\"" table)
+    (modify-syntax-entry ?\` "\"" table)
+    (modify-syntax-entry ?#  "<"  table)
+    (modify-syntax-entry ?\n ">"  table)
+    (modify-syntax-entry ?\\ "\\" table)
+    (modify-syntax-entry ?$  "."  table)
+    (modify-syntax-entry ??  "_"  table)
+    (modify-syntax-entry ?_  "_"  table)
+    (modify-syntax-entry ?:  "."  table)
+    (modify-syntax-entry ?<  "."  table)
+    (modify-syntax-entry ?>  "."  table)
+    (modify-syntax-entry ?&  "."  table)
+    (modify-syntax-entry ?|  "."  table)
+    (modify-syntax-entry ?%  "."  table)
+    (modify-syntax-entry ?=  "."  table)
+    (modify-syntax-entry ?/  "."  table)
+    (modify-syntax-entry ?+  "."  table)
+    (modify-syntax-entry ?*  "."  table)
+    (modify-syntax-entry ?-  "."  table)
+    (modify-syntax-entry ?\; "."  table)
+    (modify-syntax-entry ?\( "()" table)
+    (modify-syntax-entry ?\) ")(" table)
+    (modify-syntax-entry ?\{ "(}" table)
+    (modify-syntax-entry ?\} "){" table)
+    (modify-syntax-entry ?\[ "(]" table)
+    (modify-syntax-entry ?\] ")[" table)
+    table)
+  "Syntax table used by enh-ruby-mode buffers.")
+
+(add-hook 'ruby-mode-hook (lambda ()
+                            (set-syntax-table enh-ruby-mode-syntax-table)))

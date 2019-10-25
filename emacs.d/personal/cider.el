@@ -23,7 +23,7 @@
         ;; nrepl-popup-stacktraces nil
         
         ;; When there's a cider error, show its buffer and switch to it
-        cider-show-error-buffer            nil
+        cider-show-error-buffer  'except-in-repl ;;t 'only-in-repl ;; nil 'except-in-repl 'only-in-repl
         cider-auto-select-error-buffer nil
         
         ;; go right to the REPL buffer when it's finished connecting
@@ -33,7 +33,7 @@
 
         ;; Change how CIDER starts a cljs-lein-repl
         ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
-        cider-cljs-lein-repl
+        cider-default-cljs-repl
         "(do (require 'figwheel-sidecar.repl-api)
            (figwheel-sidecar.repl-api/start-figwheel!)
            (figwheel-sidecar.repl-api/cljs-repl))"
@@ -58,17 +58,17 @@
               )
 
   :config ;;runs after package is loaded
-
-
-  ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-  (add-hook 'cider-repl-mode-hook
-            (lambda ()
-              (define-key cider-repl-mode-map (kbd "<up>") 'cider-repl-previous-input)
-              (define-key cider-repl-mode-map (kbd "C-p") 'cider-repl-previous-input)
-              (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
-              (define-key cider-repl-mode-map (kbd "C-n") 'cider-repl-next-input)
-              (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
-              ))
+  (progn
+    (add-to-list 'company-backends 'cider-complete-at-point)
+    ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+    (add-hook 'cider-repl-mode-hook
+              (lambda ()
+                (define-key cider-repl-mode-map (kbd "<up>") 'cider-repl-previous-input)
+                (define-key cider-repl-mode-map (kbd "C-p") 'cider-repl-previous-input)
+                (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
+                (define-key cider-repl-mode-map (kbd "C-n") 'cider-repl-next-input)
+                (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
+                )))
 
   
   )
@@ -128,3 +128,34 @@
 ;;      (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
 ;;           (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
 ;;
+
+ 
+(defun cider-repl-buffer ()
+    ""
+    (first (seq-filter (lambda (b)
+                         (and
+                          (string-match (projectile-project-name) (buffer-name b))
+                          (string-match "cider-repl" (buffer-name b))))
+                       (buffer-list))))
+
+(defun cider-switch-to-repl-buffer ()
+  ""
+  (interactive "*")
+  (let* ((b (cider-repl-buffer)))
+    (if b (switch-to-buffer b))))
+
+(defun cider-show-repl ()
+  ""
+  (interactive "*")
+  (let* ((b (cider-repl-buffer) ))
+    (if b 
+        (progn
+          (split-window-below)
+          (call-interactively 'other-window)
+          (switch-to-buffer b)
+          (call-interactively 'other-window)
+          ))))
+
+
+
+

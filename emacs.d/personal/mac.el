@@ -36,7 +36,7 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'hyper)
 (setq mac-right-option-modifier 'control)
-(global-set-key (kbd "H-SPC") 'set-mark-command) ;; C-SPC for right option get's hosed for some reason. Fixes that.
+;;(global-set-key (kbd "C-SPC") 'set-mark-command) ;; C-SPC for right option get's hosed for some reason. Fixes that.
 
 
 
@@ -63,6 +63,7 @@
 ;; Macbook keyboard
 (global-set-key (kbd "H-c") 'pbcopy) ;; [f1]
 (global-set-key (kbd "H-v") 'pbpaste)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -70,7 +71,7 @@
 (global-set-key (kbd "M-z") 'undo)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-c") 'copy-region-dont-deactivate)
-(global-set-key (kbd "M-v") 'yank)
+(global-set-key (kbd "M-v") 'scroll-down-command);;yank
 (global-set-key (kbd "M-a") 'er/expand-region)
 
 
@@ -102,4 +103,4 @@
                (mouse-movement-p drag-event))
         (mouse-set-point drag-event)))))
 
-(global-set-key (kbd "S-<down-mouse-1>") #'mouse-start-rectangle)
+(global-set-key (kbd "H-<down-mouse-1>") #'mouse-start-rectangle)

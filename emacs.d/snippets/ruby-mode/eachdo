@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: eachdo
+# key: eachdo
+# --
+each do |$1|
+  $0
+end
+

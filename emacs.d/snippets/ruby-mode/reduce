@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: reduce
+# key: reduce
+# --
+reduce($1) do |${2:out}, ${3:item}|
+  $3$0
+  out
+end
+

@@ -10,20 +10,18 @@
   )
 
 ;; Enable paredit for Clojure
-;;(add-hook 'clojure-mode-hook 'enable-paredit-mode)
 (remove-hook 'clojure-mode-hook 'enable-paredit-mode)
 
 ;; This is useful for working with camel-case tokens, like names of
 ;; Java classes (e.g. JavaClassName)
 (add-hook 'clojure-mode-hook 'subword-mode)
 (add-hook 'clojure-mode-hook 'electric-indent-mode)
+(add-hook 'clojure-mode-hook 'electric-pair-mode)
 (add-hook 'clojure-mode-hook 'idle-highlight-mode)
 
-;; don't show error popup in repl
-(setq cider-show-error-buffer nil)
 
 ;; A little more syntax highlighting
-;;(require 'clojure-mode-extra-font-locking)
+(require 'clojure-mode-extra-font-locking)
 
 (setq clojure-align-forms-automatically t)
 

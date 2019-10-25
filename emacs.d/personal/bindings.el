@@ -6,10 +6,12 @@
 ;; How to Define Keyboard Shortcuts in Emacs
 ;; http://xahlee.org/emacs/keyboard_shortcuts.html
 
+
 (global-set-key (kbd "C-x C-r") 'recentf-open-files);; recent files
 (global-set-key (kbd "H-SPC") 'er/expand-region)
 (global-set-key (kbd "C-S-SPC") 'kill-whitespace)
-(global-set-key (kbd "C-a") 'beginning-of-line-text)
+(global-set-key (kbd "C-<tab>") 'kill-whitespace)
+(global-set-key (kbd "C-a") 'back-to-indentation) ;; beginning-of-line-text
 (global-set-key (kbd "M-w") 'copy-region-dont-deactivate)
 
 ;;(global-set-key (kbd "M-<right>") (lambda ()(interactive)
@@ -19,9 +21,6 @@
 (global-set-key (kbd "S-M-<left>") 'sp-extract-before-sexp)
 (global-set-key (kbd "S-M-<right>") 'sp-extract-after-sexp)
 
-(global-set-key (kbd "M-k") (lambda ()(interactive)
-                              (beginning-of-line)
-                              ))
 
 ;; clear whole line
 (global-set-key (kbd "M-k") (lambda ()(interactive)
@@ -55,4 +54,48 @@
 (global-unset-key [M-mouse-2])
 ;; don't ask if i want to save, just exit
 ;; http://stackoverflow.com/questions/6762686/prevent-emacs-from-asking-modified-buffers-exist-exit-anyway
-;(global-set-key (kbd "C-x C-c") 'kill-emacs)
+                                        ;(global-set-key (kbd "C-x C-c") 'kill-emacs)
+
+
+
+
+(defun do-nothing ()
+  "Used to disable warning about key not being bound."
+  (interactive "*")
+  nil)
+
+(global-set-key (kbd "<f4>") 'ty-eval-buffer)
+(global-set-key (kbd "<f5>") 'ty-eval-defun)
+(global-set-key (kbd "<f6>") 'ty-eval-last-sexp)
+(global-set-key (kbd "<f7>") 'ty-eval-region)
+(global-set-key (kbd "<f8>") 'do-nothing);; undo
+(global-set-key (kbd "<f9>") 'undo)
+
+;;==========================
+;; (global-set-key (kbd "<mouse-1>")
+;;                 (lambda
+;;                   (event)
+;;                   (interactive "e")
+;;                   (mouse-set-point event)
+;;                   (if (not (save-excursion
+;;                              ;; don't mark if at blank line
+;;                              (beginning-of-line)
+;;                              (looking-at "[[:space:]]*$")))
+;;                       (progn
+;;                         (call-interactively 'er/expand-region)
+;;                         (ds-temp-region)
+;;                         (hydra-mark/body)))
+;;                   ))
+
+;; To reset mouse click
+;; (global-set-key (kbd "<mouse-1>")
+;;                 (lambda
+;;                   (event)
+;;                   (interactive "e")
+;;                   (mouse-set-point event)
+                  
+;;                   ))
+
+
+
+

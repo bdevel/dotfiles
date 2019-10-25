@@ -10,22 +10,30 @@
 (add-to-list 'load-path "/Users/tyler/.emacs.d/vendor")
 
 (load "~/.emacs.d/personal/defuns")
-(load "~/.emacs.d/vendor/init-use-package")
+
 
 
 ;; ------------------
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             ;;'("melpa-dev" . "https://melpa.org/packages/")
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
-;;(add-to-list 'package-archives
-;;             '("melpa" . "https://stable.melpa.org/packages/"))
+(setq package-archives
+      '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+        ("MELPA Stable" . "https://stable.melpa.org/packages/")
+        ("MELPA"        . "https://melpa.org/packages/")
+        )
+      package-archive-priorities
+      '(("MELPA Stable" . 10)
+        ("GNU ELPA"     . 5)
+        ("MELPA"        . 0)
+	))
 
 (package-initialize)
 ;;(package-refresh-contents)
 (when (not package-archive-contents) (package-refresh-contents))
+(load "~/.emacs.d/vendor/init-use-package")
 
+
+(personal 'theme);; might need to be called ahead of some packages like RYO
 
 ;;(require 'package)
 ;; (add-to-list 'package-archives
@@ -51,21 +59,25 @@
 
 ;; integration with a Clojure REPL
 ;; https://github.com/clojure-emacs/cider
-;;(package 'cider)
+(package 'cider)
+(package 'flycheck-joker)
 
-(package 'company) ;; completion
-(package 'csv-mode)
+
+;;(package 'company) ;; completion
 (package 'drag-stuff)
+(package 'dockerfile-mode)
 ;;(package 'dropdown-list)
 (package 'exec-path-from-shell)
 (package 'expand-region)
 (package 'fiplr)
 
-;; (package 'expand-region)
+(package 'expand-region)
 ;; (package 'flx-isearch)
 (package 'haml-mode)
 (package 'highlight-parentheses)
 (package 'helm)
+(package 'helm-swoop)
+(package 'helm-git-grep)
 (package 'hydra)
 ;;(package 'ido-ubiquitous)
 ;; (package 'htmlize)
@@ -73,11 +85,10 @@
 (package 'json-mode) 
 (package 'js2-mode)
 (package 'jsx-mode)
-;; (package 'lua-mode)
 (package 'magit)
 ;; (package 'magit-gh-pulls)
 (package 'markdown-mode)
-;; (package 'maxframe)
+;;(package 'maxframe)
 ;; (package 'motion-mode)
 (package 'multiple-cursors)
 ;; (package 'powerline)
@@ -91,7 +102,7 @@
 (package 'projectile-rails)
 (package 'helm-projectile)
 (package 'robe) ;; ruby auto-complete and docs
-(package 'enh-ruby-mode)
+;;(package 'enh-ruby-mode)
 (package 'rvm)
 ;;(package 'sass-mode)
 (package 'smex)
@@ -105,10 +116,9 @@
 (package 'yaml-mode)
 (package 'yasnippet)
 
-;; self managed
-;; ------------------
+
+;; ===============================================
 ;;(personal 'auto-complete)
-(personal 'theme);;make first as RYO looks for cursor color on setup
 
 
 (personal 'align)
@@ -120,10 +130,12 @@
 (personal 'disabled)
 (personal 'drag-stuff)
 (personal 'elisp)
-;;(personal 'ergodox)
+
+(personal 'ergodox)
 (personal 'expand-region)
-(personal 'fonts)
+(personal 'flycheck)
 (personal 'global)
+
 (personal 'grep)
 (personal 'goto-last-change)
 (personal 'haml-mode)
@@ -135,7 +147,7 @@
 (personal 'idle-highlight)
 (personal 'js2-mode)
 (personal 'jsx-mode)
-(personal 'mac)
+
 
 (personal 'multiple-cursors)
 (personal 'org)
@@ -151,7 +163,7 @@
 (personal 'smartparens)
 (personal 'smex)
 (personal 'tabs)
-(personal 'tabbar-ruler)
+
 ;;(personal 'utf-8) ;; emacs 26 has some problems... tbd
 (personal 'web-mode)
 ;;(personal 'ryo)
@@ -161,13 +173,17 @@
 
 ;;(personal 'zoom) ; code folding
 
+(personal 'tabbar-ruler)
+
 ;; needs to go last for overrides
 (personal 'bindings)
-
+(personal 'mac)
 ;;(load "midi-kbd")
 
 
 ;;(vendor 'revbufs 'revbufs)
 ;;(vendor 'ryo-modal)
 ;;(vendor 'electric-align 'electric-align-mode)
+
+
 

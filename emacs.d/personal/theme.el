@@ -1,12 +1,14 @@
 ;;; Theme customization
 
-(add-to-list 'custom-theme-load-path (concat user-emacs-directory "themes"))
-(add-to-list 'load-path (concat user-emacs-directory "themes"))
+;;(add-to-list 'custom-theme-load-path (concat user-emacs-directory "themes"))
+;;(add-to-list 'load-path (concat user-emacs-directory "themes"))
+(set 'custom-theme-directory (concat user-emacs-directory "themes/"))
 
 (defun lcd-monitor-mode ()
  (setq color-theme-is-global t)
   (interactive)
   (load-theme 'ty-lcd t)
+  ;; (load-theme 'ty-lcd-light t)
 
   (set-face-attribute 'default nil
                       :height 210
@@ -106,4 +108,9 @@
 
 
 (when (display-graphic-p (selected-frame))
-  (call-interactively 'lcd-monitor-mode))
+  (call-interactively 'lcd-monitor-mode)
+  ;;(call-interactively 'paperlike-mode)
+  )
+
+;;(load-theme 'ty-lcd t)
+;;(call-interactively 'lcd-monitor-mode)

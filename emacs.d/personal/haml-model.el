@@ -2,9 +2,9 @@
 (require 'haml-mode)
 
 (add-hook 'haml-mode-hook
-           (lambda ()
-             (electric-indent-mode -1)
-             ;;(setq indent-tabs-mode nil)
-             ;;(define-key haml-mode-map "\C-m" 'newline-and-indent)
-             ))
+          (lambda ()
+            (electric-indent-mode -1)
+            (aggressive-indent-mode -1)
+            (define-key haml-mode-map (kbd "<return>") 'newline)
+            ))
 

@@ -336,3 +336,8 @@ alias rt='RAILS_ENV=test ruby -Itest'
 alias cux="chmod u+x"
 alias gcmd="git push && cap master deploy"
 alias gpcmd="git push && cap master deploy"
+
+alias cdsc="cd /Users/tyler/Code/marketly/scrubm-clj"
+alias sshw='ssh marketly-webserver'
+alias sshs='ssh marketly-service'
+

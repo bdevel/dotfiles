@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: block
+# key: b
+# --
+`(popup-cascade-menu '(("logic" "if" "unless") ("array" "each" "reject" "map")))` do |${1:item}|
+  $1$0
+end
+

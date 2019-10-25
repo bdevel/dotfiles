@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hash-access
+# key: [
+# --
+[:$0]

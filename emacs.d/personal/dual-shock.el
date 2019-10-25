@@ -213,6 +213,7 @@
      (define-key map (kbd "<right>") 'ds-exit-region-right)
      (define-key map (kbd "<up>") 'ds-exit-region-left)
      (define-key map (kbd "<down>") 'ds-exit-region-right)
+     (define-key map (kbd "<return>") 'ds-exit-region-right)
 
      ;; Able to undo outside of selected region..
      (define-key map (kbd "C-/") 'ds-undo)

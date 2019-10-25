@@ -31,7 +31,41 @@
 ;;         (require library)))
 ;;     (personal library)))
 
+(defun ty-eval-buffer ()
+  ""
+  (interactive "*")
+  (progn
+    (save-buffer)
+    (if (equal 'clojure-mode major-mode)
+        (call-interactively 'cider-eval-buffer)
+      (call-interactively 'eval-buffer))
+    (message "Buffer saved, eval!")))
 
+(defun ty-eval-defun ()
+    ""
+  (interactive "*")
+    (progn
+      (if (equal 'clojure-mode major-mode)
+          (call-interactively 'cider-eval-defun-at-point)
+        (call-interactively 'eval-defun))))
+
+
+(defun ty-eval-last-sexp ()
+    ""
+    (interactive "*")
+    (progn
+      (if (equal 'clojure-mode major-mode)
+          (call-interactively 'cider-eval-last-sexp)
+        (call-interactively 'eval-last-sexp)) ))
+
+(defun ty-eval-region ()
+    ""
+    (interactive "*")
+    (progn
+      (if (equal 'clojure-mode major-mode)
+          (call-interactively 'cider-eval-region)
+        (call-interactively 'eval-region))
+      (message "eval region!")))
 
 
 ;; https://www.emacswiki.org/emacs/DeletingWhitespace
@@ -69,6 +103,43 @@
       (backward-word)
       (kill-ring-save (point) end)
       (query-replace (current-kill 0) replace-str) ))
+
+(defun duplicate-region ()
+  (interactive)
+  ""
+  )
+
+;; http://rejeep.github.io/emacs/elisp/2010/03/11/duplicate-current-line-or-region-in-emacs.html
+(defun duplicate-current-line-or-region (arg)
+  "Duplicates the current line or region ARG times.
+If there's no region, the current line will be duplicated. However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (dotimes (i arg)
+        (goto-char end)
+        (newline)
+        (insert region)
+        (setq end (point)))
+      (goto-char (+ origin (* (length region) arg) arg)))))
+
+(defun comment-or-uncomment-region-or-line (arg)
+    "Comments or uncomments the region or the current line if there's no active region."
+  (interactive "p")
+    (interactive)
+    (let (beg end)
+        (if (region-active-p)
+            (setq beg (region-beginning) end (region-end))
+            (setq beg (line-beginning-position) end (line-end-position)))
+        (comment-or-uncomment-region beg end)))
+
 
 
 
