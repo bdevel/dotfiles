@@ -24,7 +24,6 @@
   ("f" hydra-file/body "File")
   ("e" hydra-edit/body "Edit")
 
-  ("n" hydra-nav/body "Nav")
   ("j" goto-last-change "goto-last-change" :exit nil)
   ("m" hydra-mark/body "Mark")
   ("k" hydra-macro/body "Macro")
@@ -34,23 +33,30 @@
   ;;("r" hydra-register/body "Registers")
   ("w" hydra-window/body "Window")
   ("z" ds-undo "undo")
-  ("s" helm-occur "search")
+  ("s" helm-swoop "search") ;; similar to helm-occur
+  ("g" (progn
+	       (call-interactively 'helm-git-grep-at-point)) "grep")
   
-  ("<down>" (progn (ds-forward-symbol)
-                   (hydra-mark/body)) "Next")
-  ("<up>" (progn (ds-backward-symbol)
-                 (hydra-mark/body)) "Prev")
+  ("n" bm-toggle "BM" :exit nil)
+  ("<down>" bm-next "BM Next" :exit nil)
+  ("<up>" bm-previous "BM Prev" :exit nil)
 
   ("SPC" (progn (call-interactively 'er/expand-region)
-                (hydra-mark/body)) "Expand Region")
+                (hydra-mark/body)
+                ) "Expand Region")
   ("C-SPC" er/contract-region "Shrink Region")
 
 
   ("1" ty-eval-buffer "eval-buffer" :exit t)
   ("2" ty-eval-defun "eval-defn" :exit t)
-  ("3" ty-eval-last-sexpr "eval-last-expr" :exit t)
+  ("3" ty-eval-last-sexp "eval-last-expr" :exit t)
   ("4" ty-eval-region "eval-region" :exit t)
-
+  ;; same for ergodox
+  ("!" ty-eval-buffer "eval-buffer" :exit t)
+  ("@" ty-eval-defun "eval-defn" :exit t)
+  ("#" ty-eval-last-sexp "eval-last-expr" :exit t)
+  ("$" ty-eval-region "eval-region" :exit t)
+  
   ("`" nil "exit" :exit :t)
   ("<return>" hydra-keyboard-quit "exit")
   ("<home>" nil "exit" :exit t))
@@ -107,12 +113,12 @@
   
   ("SPC" er/expand-region "expand" :exit nil)
   ("C-SPC" er/contract-region "contract" :exit nil)
-  ("<down>" ds-forward-symbol "Next")
-  ("<up>" ds-backward-symbol "Prev")
-  ("<right>" (progn (ds-exit-region-right)
-                    (keyboard-quit)) "exit-right" :exit t)
-  ("<left>" (progn (ds-exit-region-left)
-                   (keyboard-quit)) "exit-left" :exit t)
+  ;;("<down>" ds-forward-symbol "Next")
+  ;;("<up>" ds-backward-symbol "Prev")
+  ;; ("<right>" (progn (ds-exit-region-right)
+  ;;                   (keyboard-quit)) "exit-right" :exit t)
+  ;; ("<left>" (progn (ds-exit-region-left)
+  ;;                  (keyboard-quit)) "exit-left" :exit t)
 
   ("M-<left>" ds-right-joy-left "Drag Back")
   ("M-<right>" ds-right-joy-right "Drag Foward")
@@ -298,20 +304,21 @@
                         :post (hydra-exit))
   "BUFFER"
   ("<home>" hydra-keyboard-quit "" :exit t)
-  ("b" switch-to-buffer "switch-buffer" :exit t)
+  ("<return>" hydra-keyboard-quit "exit")
+  ("b" (progn (switch-to-buffer (other-buffer (current-buffer) 1)) ) "switch-buffer" :exit t)
   ;("o" switch-to-prev-buffer "other")
   ;;("s" save-buffer "save")
   ;;("f" next-buffer "next")
   ;;("d" previous-buffer "previous ")
   ;; ("l" buffer-menu "menu")
-  ("l" buffer-menu "menu" :exit t)
+  ;;("l" buffer-menu "menu" :exit t)
+  ("l" helm-buffers-list "list")
   ("p" projectile-ibuffer "project")
 
   ("<up>" tabbar-forward-group "group-fwd" :exit nil) 
   ("<down>" tabbar-backward-group "group-back" :exit nil)
   ("<left>" tabbar-backward "tab-back" :exit nil)
   ("<right>" tabbar-forward "tab-fwd" :exit nil)
-  ("<return>" hydra-keyboard-quit "exit")
   ("k" kill-this-buffer "kill" :exit nil))
 
 
@@ -322,15 +329,18 @@
                         :post (hydra-exit))
   "Window"
   ("<home>" hydra-tymode/body "" :exit t)
-  ("o" other-window "Other")
+  ("<return>" hydra-keyboard-quit "exit")
+  ("o" other-window "Other" :exit nil)
   ("1" delete-other-windows "Kill-others")
   ("!" delete-other-windows "Kill-others")
   ("k" delete-window "Kill-Window")
-  ("v" split-window-right "Vertical")
-  ("h" split-window-below "Horiz")
+  ("v" split-window-right "Vertical" :exit nil)
+  ("h" split-window-below "Horiz" :exit nil)
 
   ("+" text-scale-increase "text-scale-up" :exit nil) 
-  ("-" text-scale-decrease "text-scale-down" :exit nil)
+  ("=" text-scale-increase "text-scale-up" :exit nil) 
+  ("<kp-subtract>" text-scale-decrease "text-scale-down" :exit nil)
+  ("_" text-scale-decrease "text-scale-down" :exit nil)
   
   ("<up>" enlarge-window "enlarge-window" :exit nil) 
   ("<down>" shrink-window "shrink window" :exit nil) 
@@ -358,8 +368,7 @@
   ("b" cider-load-buffer "Exec Buffer")
   ("q" cider-quit "Quit REPL")
   ("j" cider-jack-in "JackIn")
-  ("s" ("d" (progn (save-buffer)
-                   (cider-eval-buffer))) "Save,eval")
+  ("s" cider-show-repl)
   ("r" cider-eval-region "eval region")
   ("e" cider-eval-sexp-at-point "Eval S-exp")
   ("d" cider-eval-defun-at-point "Eval defn")

@@ -25,6 +25,9 @@
 (global-set-key [C-wheel-down] 'text-scale-increase)
 (global-set-key [C-wheel-up] 'text-scale-decrease)
 
+(global-set-key (kbd "M-=") 'text-scale-increase)
+(global-set-key (kbd "M--") 'text-scale-decrease)
+
 ;;(setq-default line-spacing 2);; this hoses up the hydra status bar
 
 ;;(global-set-key (kbd "<triple-wheel-right>") 'previous-buffer)
@@ -36,9 +39,11 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'hyper)
 (setq mac-right-option-modifier 'control)
-;;(global-set-key (kbd "C-SPC") 'set-mark-command) ;; C-SPC for right option get's hosed for some reason. Fixes that.
 
+(global-set-key (kbd "C-SPC") 'set-mark-command) ;; C-SPC for right option get's hosed for some reason. Fixes that.
 
+(setq ;;ns-option-modifier      'hyper
+      ns-right-option-modifer 'control)
 
 ;; Disable killing to Mac clipboard
 (setq x-select-enable-clipboard nil)

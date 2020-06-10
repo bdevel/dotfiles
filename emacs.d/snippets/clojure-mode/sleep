@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sleep
+# key: sleep
+# --
+(Thread/sleep $0)

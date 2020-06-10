@@ -35,27 +35,28 @@
 (recentf-mode 1)
 
 ;; Display line and column numbers
-(setq line-number-mode    t)
-(setq column-number-mode  nil)
-(global-linum-mode t)
+;;(setq line-number-mode    t)
+;; (setq column-number-mode  nil)
+;;(global-linum-mode t)
+ ;; (global-linum-mode -1)
 
 ;; Modeline info
 ;(display-time-mode 1)
 ;; (display-battery-mode 1)
 
-;; Emacs gurus don't need no stinking scroll bars
- (when (fboundp 'toggle-scroll-bar)
-   (toggle-scroll-bar -1))
+
+ ;; (when (fboundp 'toggle-scroll-bar)
+ ;;   (toggle-scroll-bar -1))
 ;;(toggle-scroll-bar nil)
 
- (when (fboundp 'scroll-bar-mode)
-   (scroll-bar-mode 0))
+ ;; (when (fboundp 'scroll-bar-mode)
+ ;;   (scroll-bar-mode 0))
 
 ;; Explicitly show the end of a buffer
 (set-default 'indicate-empty-lines t)
 
 ;; Line-wrapping
-(set-default 'fill-column 78)
+(set-default 'fill-column 80)
 
 ;; Make identifiers with hyphens to be one word
 ;;(modify-syntax-entry ?_ "w" (standard-syntax-table))
@@ -71,14 +72,14 @@
 ;;(setq backup-directory-alist "~/.emacs.d/.backups")
 
 ;; disable auto save
-(setq auto-save-default nil)
+;; (setq auto-save-default nil)
 
 ;; No need for ~ files when editing
 (setq create-lockfiles nil)
 
 ;; Don't truncate lines
-(setq truncate-lines t)
-(setq truncate-partial-width-windows nil)
+;;(setq truncate-lines t)
+;; (setq truncate-partial-width-windows nil)
 
 
 ;; Trash can support

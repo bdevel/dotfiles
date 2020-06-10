@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Sstats
+# key: ss
+# --
+Sstats.day_incr :$0

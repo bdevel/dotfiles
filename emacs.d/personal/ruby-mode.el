@@ -46,7 +46,7 @@
             ))
 
 
-(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
+;;(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Guardfile$" . ruby-mode))
@@ -116,3 +116,27 @@
 
 (add-hook 'ruby-mode-hook (lambda ()
                             (set-syntax-table enh-ruby-mode-syntax-table)))
+
+
+
+;; (defun er/mark-ruby-class ()
+;;   "Marks "
+;;   (when (looking-at "::")
+;;     (forward-char 1))
+;;   (when (er/looking-back-exact "::")
+;;     (er/mark-symbol)
+;;     (forward-char -2)))
+
+
+;; (defun er/add-ruby-mode-expansions ()
+;;   "Adds Ruby-specific expansions for buffers in ruby-mode"
+;;   (set (make-local-variable 'er/try-expand-list)
+;;        (remove 'er/mark-defun 
+;;                (append
+;;                 (default-value 'er/try-expand-list)
+;;                 '(er/mark-ruby-instance-variable
+;;                   er/mark-ruby-class
+;;                   er/mark-ruby-block-up
+;;                   er/mark-ruby-heredoc)))))
+;; (er/enable-mode-expansions 'ruby-mode 'er/add-ruby-mode-expansions)
+

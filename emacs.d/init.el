@@ -11,45 +11,6 @@
 
 (load "~/.emacs.d/personal/defuns")
 
-
-
-;; ------------------
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives
-      '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-        ("MELPA Stable" . "https://stable.melpa.org/packages/")
-        ("MELPA"        . "https://melpa.org/packages/")
-        )
-      package-archive-priorities
-      '(("MELPA Stable" . 10)
-        ("GNU ELPA"     . 5)
-        ("MELPA"        . 0)
-	))
-
-(package-initialize)
-;;(package-refresh-contents)
-(when (not package-archive-contents) (package-refresh-contents))
-(load "~/.emacs.d/vendor/init-use-package")
-
-
-(personal 'theme);; might need to be called ahead of some packages like RYO
-
-;;(require 'package)
-;; (add-to-list 'package-archives
-;;              '("melpa" . "https://melpa.org/packages/") t)
-;;(package-initialize)
-
-
-;;(package 'auto-complete)
-;;(package 'ac-cider)
-
-;;(package 'ace-jump-mode)
-;; (package 'ag)
-;; (package 'browse-kill-ring+)
-;; (package 'bundler)
-(package 'aggressive-indent)
-
 ;; key bindings and code colorization for Clojure
 ;; https://github.com/clojure-emacs/clojure-mode
 (package 'clojure-mode)
@@ -64,6 +25,9 @@
 
 
 ;;(package 'company) ;; completion
+
+;;(package 'lsp-mode)
+
 (package 'drag-stuff)
 (package 'dockerfile-mode)
 ;;(package 'dropdown-list)
@@ -116,12 +80,12 @@
 (package 'yaml-mode)
 (package 'yasnippet)
 
-
 ;; ===============================================
 ;;(personal 'auto-complete)
 
 
 (personal 'align)
+(personal 'bm)
 (personal 'clojure)
 (personal 'cider)
 (personal 'company-mode)
@@ -176,6 +140,7 @@
 (personal 'tabbar-ruler)
 
 ;; needs to go last for overrides
+(personal 'theme)
 (personal 'bindings)
 (personal 'mac)
 ;;(load "midi-kbd")

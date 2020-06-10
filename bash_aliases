@@ -340,4 +340,6 @@ alias gpcmd="git push && cap master deploy"
 alias cdsc="cd /Users/tyler/Code/marketly/scrubm-clj"
 alias sshw='ssh marketly-webserver'
 alias sshs='ssh marketly-service'
+alias sshsa='ssh marketly-service-a'
+alias sshsb='ssh marketly-service-b'
 

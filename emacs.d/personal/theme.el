@@ -4,9 +4,10 @@
 ;;(add-to-list 'load-path (concat user-emacs-directory "themes"))
 (set 'custom-theme-directory (concat user-emacs-directory "themes/"))
 
+
 (defun lcd-monitor-mode ()
- (setq color-theme-is-global t)
   (interactive)
+  (setq color-theme-is-global t)
   (load-theme 'ty-lcd t)
   ;; (load-theme 'ty-lcd-light t)
 
@@ -76,7 +77,8 @@
   ;; (set-face-background 'fringe a2-grey)
 
   ;;(set-cursor-color "#000000")
-  (set-default 'cursor-type '(hbar . 2))
+  ;;(set-default 'cursor-type '(hbar . 2))
+  (setq-default cursor-type '(bar . 2))
   (blink-cursor-mode 0)
   
   (set-face-attribute 'default nil

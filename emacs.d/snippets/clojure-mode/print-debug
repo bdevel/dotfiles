@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: print-debug
+# key: pd
+# --
+(println "$1 = " $1)

@@ -1,9 +1,13 @@
 ;;; Personal functions
 
+(package-initialize)
+(require 'package)
 ;; For loading personal configurations
 (defun personal (library)
   (load (concat "~/.emacs.d/personal/" (symbol-name library)) 'noerror))
 
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 ;; For loading packages from the Emacs Lisp Package Archive (ELPA)
 (defun package (package)
@@ -11,6 +15,9 @@
     (package-install package))
   (personal package))
 
+(package 'use-package)
+
+;; (require 'use-package)
 
 ;; For loading libraries from the vendor directory
 ;; Modified from defunkt's original version to support autoloading.
@@ -253,14 +260,14 @@ point and around or after mark are interchanged."
     (linum-mode -1)))
 
 ;; Borrowed from http://superuser.com/q/603421/8424
-(defun replace-smart-quotes (beg end)
-  "Replace 'smart quotes' in buffer or region with ascii quotes."
-  (interactive "r")
-  (format-replace-strings '(("\x201C" . "\"")
-                            ("\x201D" . "\"")
-                            ("\x2018" . "'")
-                            ("\x2019" . "'"))
-                          nil beg end))
+;;(defun replace-smart-quotes (beg end)
+;;  "Replace 'smart quotes' in buffer or region with ascii quotes."
+;;  (interactive "r")
+;;  (format-replace-strings '(("\x201C" . "\"")
+;;                            ("\x201D" . "\"")
+;;                            ("\x2018" . "'")
+;;                            ("\x2019" . "'"))
+;;                          nil beg end))
 
 (defun yank-and-replace-smart-quotes ()
   "Yank (paste) and replace smart quotes from the source with ascii quotes."

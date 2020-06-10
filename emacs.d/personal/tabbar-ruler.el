@@ -7,7 +7,9 @@
   (setq tabbar-ruler-popup-scrollbar nil) ; If you want to only show the
                                         ; scroll bar when your mouse is moving.
   (setq tabbar-ruler-use-mode-icons nil)
+  (setq tabbar-mwheel-mode nil);; annoying scroll wheen through projects
 
+ 
   (require 'tabbar-ruler)
   (tabbar-ruler-group-by-projectile-project)
 
@@ -19,8 +21,8 @@
 
   (global-unset-key (kbd "C-<left>"))
   (global-unset-key (kbd "C-<right>"))
-  (global-unset-key (kbd "C-<up>"))
-  (global-unset-key (kbd "C-<down>"))
+  ;;(global-unset-key (kbd "C-<up>"))
+  ;;(global-unset-key (kbd "C-<down>"))
 
   (global-set-key (kbd "C-<left>") 'tabbar-backward-tab)
   (global-set-key (kbd "C-<right>") 'tabbar-forward-tab)

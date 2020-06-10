@@ -3,19 +3,17 @@
 ;; make global
 ;;(company-my-backend 'prefix "foo")
 ;; (company-etags 'prefix "foo")
-(load "~/.emacs.d/vendor/company-tabnine/company-tabnine.el")
+;;(load "~/.emacs.d/vendor/company-tabnine/company-tabnine.el")
 (global-company-mode)
 ;;(add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0)
 (setq company-minimum-prefix-length 0)
 (setq company-show-numbers t)
 
-(add-hook 'cider-repl-mode-hook #'company-mode)
-(add-hook 'cider-mode-hook #'company-mode)
 
 ;;(add-to-list 'company-backends 'company-yasnippet)
 ;;(add-to-list 'company-backends #'company-tabnine)
-(setq company-backends '(company-tabnine))
+;;(setq company-backends '(company-tabnine))
 ;; Make number select work
 ;; Credit: https://oremacs.com/2017/12/27/company-numbers/
 (defun ora-company-number ()

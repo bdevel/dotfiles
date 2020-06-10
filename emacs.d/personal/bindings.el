@@ -72,28 +72,55 @@
 (global-set-key (kbd "<f9>") 'undo)
 
 ;;==========================
+
+
+;; ()
+;;
+
+;; (defun click-is-within-region (event)   
+;;   ""
+;;   (let* ((cpos (nth 1 (nth 1 event)) ))
+;;     (and (use-region-p)
+;;          (>= cpos (region-beginning))
+;;          (<= cpos (region-end)))))
+
+;; ;; Disable moving cursor to another location inside the region.
+;; ;; required for click expanding
+;; (global-set-key (kbd "<down-mouse-1>")
+;;                 (lambda
+;;                   (event)
+;;                   (interactive "e")
+;;                   (if (click-is-within-region event)
+;;                       nil
+;;                     (mouse-drag-region event))))
+
+;; (setq last-mouse-click-at 0)
+;; (setq expand-region-fast-keys-enabled nil);; prevents extra keymap on expand
 ;; (global-set-key (kbd "<mouse-1>")
 ;;                 (lambda
 ;;                   (event)
 ;;                   (interactive "e")
-;;                   (mouse-set-point event)
-;;                   (if (not (save-excursion
-;;                              ;; don't mark if at blank line
-;;                              (beginning-of-line)
-;;                              (looking-at "[[:space:]]*$")))
+;;                   (let* ((cpos (nth 1 (nth 1 event)) ))                    
+;;                     (if (or (= last-mouse-click-at cpos)
+;;                             ;;(click-is-within-region event)
+;;                             )
+;;                         ;;(call-interactively 'er/expand-region)
+;;                         (er/expand-region 1)
 ;;                       (progn
-;;                         (call-interactively 'er/expand-region)
-;;                         (ds-temp-region)
-;;                         (hydra-mark/body)))
+;;                         (deactivate-mark)
+;;                         (mouse-set-point event)))
+;;                     (setq last-mouse-click-at cpos))
+                  
 ;;                   ))
 
-;; To reset mouse click
+
+;; ;; To reset mouse click
 ;; (global-set-key (kbd "<mouse-1>")
 ;;                 (lambda
 ;;                   (event)
 ;;                   (interactive "e")
 ;;                   (mouse-set-point event)
-                  
+
 ;;                   ))
 
 

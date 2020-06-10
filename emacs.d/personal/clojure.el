@@ -3,7 +3,10 @@
 ;;;;
 
 
+;; NOTE, read the docs for flycheck-joker
+;;    Need to brew install joker
 (require 'clojure-mode)
+(require 'flycheck-joker)
 
 ;; Stop overriding { and } keys!
 (defun clojure-paredit-setup ()
@@ -18,7 +21,11 @@
 (add-hook 'clojure-mode-hook 'electric-indent-mode)
 (add-hook 'clojure-mode-hook 'electric-pair-mode)
 (add-hook 'clojure-mode-hook 'idle-highlight-mode)
+(add-hook 'clojure-mode-hook 'eldoc-mode)
+(add-hook 'clojure-mode-hook 'flycheck-mode)
 
+(require 'real-auto-save)
+(add-hook 'clojure-mode-hook 'real-auto-save-mode)
 
 ;; A little more syntax highlighting
 (require 'clojure-mode-extra-font-locking)

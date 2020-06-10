@@ -2,18 +2,71 @@
 ;; Cider
 ;;;;
 
+(defun find-buffer (name-str)
+    ""
+    (first (seq-filter (lambda (b)
+                         (and
+                          (string-match name-str (buffer-name b))))
+                       (buffer-list))))
+
+;;(find-buffer "*cider-error*")
+
+(defun kill-cider-error ()
+  "Quits the cider error pop up and kills the error buffer."
+    (let* ((b (find-buffer "*cider-error*") ))
+      (if b 
+          (progn
+            ;;(cider-popup-buffer-quit-function)
+            (kill-buffer b)))))
+
+(defun cider-keyboard-quit ()
+  "Same as C-g but also exits any error pop ups."
+  (interactive "*")
+  (kill-cider-error)
+  (keyboard-quit))
+
+(defun cider-repl-buffer ()
+  "Finds a the repl buffer based on project name. "
+  (first (seq-filter (lambda (b)
+                       (and
+                        (string-match (projectile-project-name) (buffer-name b))
+                        (string-match "cider-repl" (buffer-name b))))
+                     (buffer-list))))
+
+(defun cider-switch-to-repl-buffer ()
+  ""
+  (interactive "*")
+  (let* ((b (cider-repl-buffer)))
+    (if b (switch-to-buffer b))))
+
+(defun cider-show-repl ()
+  ""
+  (interactive "*")
+  (let* ((b (cider-repl-buffer) ))
+    (if b 
+        (progn
+          (call-interactively 'delete-other-windows)
+          (split-window-below)
+          (call-interactively 'other-window)
+          ;;(tabbar-local-mode nil)
+          (switch-to-buffer b)
+          (call-interactively 'other-window)
+          ))))
 
 
 (use-package cider
   :ensure t
-  :commands (cider-connect cider-jack-in) ;;cider 
+  :commands (cider-connect cider-jack-in);;cider 
   
   :init;; runs before package is enabled
   (setq cider-repl-wrap-history t
         cider-repl-history-size 1000
+        cider-repl-display-help-banner nil
         ;;cider-repl-history-file (f-expand ".cider-history" user-emacs-directory)
-	cider-repl-history-file (concat user-emacs-directory ".cider-history")
-	
+        cider-repl-history-file (concat user-emacs-directory ".cider-history")
+
+        cider-auto-jump-to-error nil;; leave cursor where it's at
+        
         ;; Don't know what these do yet
         ;; cider-auto-select-error-buffer t
         ;; cider-repl-pop-to-buffer-on-connect nil
@@ -33,15 +86,16 @@
 
         ;; Change how CIDER starts a cljs-lein-repl
         ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
-        cider-default-cljs-repl
-        "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel!)
-           (figwheel-sidecar.repl-api/cljs-repl))"
+        ;; cider-default-cljs-repl
+        ;; "(do (require 'figwheel-sidecar.repl-api)
+        ;;    (figwheel-sidecar.repl-api/start-figwheel!)
+        ;;    (figwheel-sidecar.repl-api/cljs-repl))"
         
         )
 
   ;; provides minibuffer documentation for the code you're typing into the repl
   ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+  ;;(add-hook 'cider-mode-hook 'eldoc-mode)
   ;; enable paredit in your REPL
   ;;(add-hook 'cider-repl-mode-hook 'paredit-mode)
 
@@ -49,6 +103,11 @@
   :bind (:map clojure-mode-map
               ("C-c C-r" . cider-namespace-refresh)
 
+              ;; TODO: C-g also calls,
+              ("C-g" . cider-keyboard-quit)
+              ;;(keyboard-quit)
+              
+              
               :map cider-repl-mode-map
               ("<up>" . cider-repl-previous-input)
               ("C-p" . cider-repl-previous-input)
@@ -59,8 +118,14 @@
 
   :config ;;runs after package is loaded
   (progn
-    (add-to-list 'company-backends 'cider-complete-at-point)
-    ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+    ;;(add-to-list 'company-backends 'cider-complete-at-point)
+    ;;(add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
+    ;;(add-hook 'cider-mode-hook      #'cider-company-enable-fuzzy-completion)
+    ;;(add-hook 'cider-mode-hook #'cider-turn-on-eldoc-mode) ;; suggest arguments at bottom ;;
+    
+    (add-hook 'cider-connected-hook (lambda ()
+                                      (tabbar-local-mode nil)
+                                      (linum-mode -1)))
     (add-hook 'cider-repl-mode-hook
               (lambda ()
                 (define-key cider-repl-mode-map (kbd "<up>") 'cider-repl-previous-input)
@@ -68,10 +133,7 @@
                 (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
                 (define-key cider-repl-mode-map (kbd "C-n") 'cider-repl-next-input)
                 (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
-                )))
-
-  
-  )
+                ))))
 
 ;;================================================
 
@@ -130,32 +192,6 @@
 ;;
 
  
-(defun cider-repl-buffer ()
-    ""
-    (first (seq-filter (lambda (b)
-                         (and
-                          (string-match (projectile-project-name) (buffer-name b))
-                          (string-match "cider-repl" (buffer-name b))))
-                       (buffer-list))))
-
-(defun cider-switch-to-repl-buffer ()
-  ""
-  (interactive "*")
-  (let* ((b (cider-repl-buffer)))
-    (if b (switch-to-buffer b))))
-
-(defun cider-show-repl ()
-  ""
-  (interactive "*")
-  (let* ((b (cider-repl-buffer) ))
-    (if b 
-        (progn
-          (split-window-below)
-          (call-interactively 'other-window)
-          (switch-to-buffer b)
-          (call-interactively 'other-window)
-          ))))
-
 
 
 
