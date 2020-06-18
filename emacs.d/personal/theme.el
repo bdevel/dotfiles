@@ -21,11 +21,11 @@
 
   ;; (set-cursor-color "#ffff00")
   (set-default 'cursor-type 'bar)
-  (blink-cursor-mode t)
+  (blink-cursor-mode -1)
 
   ;; (set-face-attribute 'region nil :background "#2a67a2")
 
-  (linum-mode t)
+  (display-line-numbers-mode t)
   ;;(idle-highlight-mode t)
   (setq linum-format "%4d")
   ;; (set-face-attribute
@@ -87,16 +87,6 @@
                       :foreground "#000000"
                       :weight 'normal
                       )
-
-  ;;(linum-mode 0)
-  ;;(setq linum-format "%4d")
-
-  ;; (set-face-attribute
-  ;;  'linum nil :background "grey70" :foreground "#000000" :height 0.8)
-
-  
-  ;;(set-face-attribute
-  ;;'font-lock-comment-face nil :foreground "#aaaaaa" :slant 'italic :weight 'normal)
 
   
   )

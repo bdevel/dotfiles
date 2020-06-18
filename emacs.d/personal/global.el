@@ -3,9 +3,9 @@
 ;; don't use desktop mode for terminal
 (if (display-graphic-p)
     (progn
-        (desktop-save-mode 1);; is x window
-        ;; For emacsclient
-        (server-start))
+      (desktop-save-mode 1);; is x window
+      ;; For emacsclient
+      (server-start))
   (progn
       ;; no menu bar for terminal
       (menu-bar-mode -1)) )
@@ -37,8 +37,7 @@
 ;; Display line and column numbers
 ;;(setq line-number-mode    t)
 ;; (setq column-number-mode  nil)
-;;(global-linum-mode t)
- ;; (global-linum-mode -1)
+;;(global-display-line-numbers-mode t)
 
 ;; Modeline info
 ;(display-time-mode 1)

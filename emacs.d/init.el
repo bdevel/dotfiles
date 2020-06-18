@@ -1,6 +1,3 @@
-(defmacro comment (&rest body)
-  "Comment out one or more s-expressions."
-  nil)
 ;; submodule managed
 ;; ------------------
 
@@ -24,7 +21,7 @@
 (package 'flycheck-joker)
 
 
-;;(package 'company) ;; completion
+(package 'company) ;; completion
 
 ;;(package 'lsp-mode)
 
@@ -48,7 +45,7 @@
 (package 'neotree)
 (package 'json-mode) 
 (package 'js2-mode)
-(package 'jsx-mode)
+;;(package 'jsx-mode)
 (package 'magit)
 ;; (package 'magit-gh-pulls)
 (package 'markdown-mode)

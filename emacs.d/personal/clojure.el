@@ -23,6 +23,7 @@
 (add-hook 'clojure-mode-hook 'idle-highlight-mode)
 (add-hook 'clojure-mode-hook 'eldoc-mode)
 (add-hook 'clojure-mode-hook 'flycheck-mode)
+(add-hook 'clojure-mode-hook 'display-line-numbers-mode)
 
 (require 'real-auto-save)
 (add-hook 'clojure-mode-hook 'real-auto-save-mode)

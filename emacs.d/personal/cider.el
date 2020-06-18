@@ -125,6 +125,7 @@
     
     (add-hook 'cider-connected-hook (lambda ()
                                       (tabbar-local-mode nil)
+                                      (display-line-numbers-mode -1)
                                       (linum-mode -1)))
     (add-hook 'cider-repl-mode-hook
               (lambda ()

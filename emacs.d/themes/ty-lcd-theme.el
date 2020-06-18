@@ -71,6 +71,10 @@
  `(fringe ((t (:foreground "white" :background ,darker-bg ))))
  `(linum ((t (:background ,bluer-bg   :foreground "#aaa" :height 0.8))))
 
+ ;; For display-line-numbers-mode which is faster
+ `(line-number ((t (:background ,darker-bg   :foreground "#aaa" :height 0.8))))
+ 
+ 
  `(bm-persistent-face        ((t (:background ,darker-bg))))
  
  '(header-line ((t (:foreground "#e7f6da" :background "#303030"))))

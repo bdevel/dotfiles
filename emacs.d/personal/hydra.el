@@ -38,6 +38,7 @@
 	       (call-interactively 'helm-git-grep-at-point)) "grep")
   
   ("n" bm-toggle "BM" :exit nil)
+  ("/" bm-toggle "BM toggle" :exit nil)
   ("<down>" bm-next "BM Next" :exit nil)
   ("<up>" bm-previous "BM Prev" :exit nil)
 

@@ -10,12 +10,23 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 ;; For loading packages from the Emacs Lisp Package Archive (ELPA)
+(setq did-refresh-packages nil)
+
 (defun package (package)
   (when (not (package-installed-p package))
+    ;; refresh list if needed
+    ;;(when (not package-archive-contents)
+    ;;  (package-refresh-contents))
+    ;; then install package
+    (unless did-refresh-packages
+      (package-refresh-contents)
+      (setq did-refresh-packages t))
     (package-install package))
   (personal package))
 
 (package 'use-package)
+
+
 
 ;; (require 'use-package)
 
@@ -37,6 +48,11 @@
 ;;             (autoload autoload-function (symbol-name library) nil t))
 ;;         (require library)))
 ;;     (personal library)))
+
+(defmacro comment (&rest body)
+  "Comment out one or more s-expressions."
+  nil)
+
 
 (defun ty-eval-buffer ()
   ""
@@ -255,9 +271,9 @@ point and around or after mark are interchanged."
   (interactive)
   (unwind-protect
       (progn
-        (linum-mode 1)
+        (display-line-numbers-mode 1)
         (goto-line (read-number "Goto line: ")))
-    (linum-mode -1)))
+    (display-line-numbers-mode -1)))
 
 ;; Borrowed from http://superuser.com/q/603421/8424
 ;;(defun replace-smart-quotes (beg end)
