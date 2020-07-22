@@ -68,7 +68,7 @@
  '(link ((t (:underline (:color foreground-color :style line) :foreground "#8ac6f2"))))
  `(link-visited ((t (:underline (:color foreground-color :style line) :foreground ,my-red))))
 
- `(fringe ((t (:foreground "white" :background ,darker-bg ))))
+ `(fringe ((t (:foreground "white" :background "grey20" ))))
  `(linum ((t (:background ,bluer-bg   :foreground "#aaa" :height 0.8))))
 
  ;; For display-line-numbers-mode which is faster
@@ -93,29 +93,31 @@
 
  
  `(tabbar-default ((t (:inherit (default)
-                                :height 0.9
+                                :family "Ubuntu Mono"
+                                :height 180
                                 :foreground "white"
-                                :background ,default-bg
+                                :background ,darker-bg
                                 ;;:underline "#2a67a2" ;;(:color )
                                 :box nil; '(:line-width 1 :color "white" :style nil)
                                 ))))
 
  ;; not selected
- '(tabbar-unselected ((t (:inherit (tabbar-default)
-                                   :background "#093d6f"
-                                   :foreground "grey70"
+ `(tabbar-unselected ((t (:inherit (tabbar-default)
+                                   :background "white"
+                                   :foreground ,default-bg
                                    ;;:underline (:color "black")
                                    ;;:box  nil;'(:line-width 3 :color "yellow" :style "released-button")
                                    ))))
  
  ;; selected
- '(tabbar-selected ((t (:inherit (tabbar-default)  
-                                        :background  "white"
-                                 :foreground "black"
+ `(tabbar-selected ((t (:inherit (tabbar-default)  
+                                 :background  ,bluer-bg
+                                 :foreground "white"
                                         ;:box '(:line-width  :color "green" :style nil)
                                  ))))
 
- '(tabbar-separator ((t (:background "black" :height 0.6))))
+ '(tabbar-separator ((t (:background "black"
+                                     :height 0.9))))
 
  ;;'(tabbar-modified ((t (:forground "red" :weight normal) )))
  '(tabbar-selected-modified ((t (:inherit (tabbar-selected)  
@@ -124,7 +126,8 @@
                                           :weight normal) )))
  
  '(tabbar-unselected-modified ((t (:inherit (tabbar-unselected)  
-                                            :foreground "#ff5526" :weight normal) )))
+                                            :foreground "#ff5526"
+                                            :weight normal) )))
 
  
  

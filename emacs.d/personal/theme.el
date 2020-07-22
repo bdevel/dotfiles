@@ -21,7 +21,7 @@
 
   ;; (set-cursor-color "#ffff00")
   (set-default 'cursor-type 'bar)
-  (blink-cursor-mode -1)
+  (blink-cursor-mode 1)
 
   ;; (set-face-attribute 'region nil :background "#2a67a2")
 
@@ -79,7 +79,7 @@
   ;;(set-cursor-color "#000000")
   ;;(set-default 'cursor-type '(hbar . 2))
   (setq-default cursor-type '(bar . 2))
-  (blink-cursor-mode 0)
+  (blink-cursor-mode 1)
   
   (set-face-attribute 'default nil
                       :height 160

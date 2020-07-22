@@ -21,7 +21,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (clojure-mode helm-bm lsp-mode 0blayout cider auto-complete bm flycheck-joker dockerfile-mode clojure-snippets maxframe yasnippet yaml-mode web-mode use-package tagedit tabbar-ruler sos smex smartparens rvm robe projectile-rails paredit neotree multiple-cursors markdown-mode magit jsx-mode json-mode js2-mode hydra highlight-parentheses helm-swoop helm-projectile helm-git-grep haml-mode fiplr expand-region exec-path-from-shell drag-stuff company clojure-mode-extra-font-locking aggressive-indent)))
+    (origami clojure-mode helm-bm lsp-mode 0blayout cider auto-complete bm flycheck-joker dockerfile-mode clojure-snippets maxframe yasnippet yaml-mode web-mode use-package tagedit tabbar-ruler sos smex smartparens rvm robe projectile-rails paredit neotree multiple-cursors markdown-mode magit jsx-mode json-mode js2-mode hydra highlight-parentheses helm-swoop helm-projectile helm-git-grep haml-mode fiplr expand-region exec-path-from-shell drag-stuff company clojure-mode-extra-font-locking aggressive-indent)))
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode (quote left)))
 

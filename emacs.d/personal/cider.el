@@ -84,6 +84,9 @@
         ;;cider-repl-pop-to-buffer-on-connect nil
         cider-repl-pop-to-buffer-on-connect 'display-only
 
+        ;; https://github.com/clojure-emacs/cider/blob/9a4d6d9c1e2e1380e7afd762674a229ef1cd8485/cider-repl-history.el#L287
+        ;; cider-repl-history-quit-action 'kill-and-delete-window
+        
         ;; Change how CIDER starts a cljs-lein-repl
         ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
         ;; cider-default-cljs-repl
@@ -134,6 +137,7 @@
                 (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
                 (define-key cider-repl-mode-map (kbd "C-n") 'cider-repl-next-input)
                 (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
+                (add-hook 'kill-buffer-hook #'delete-window t t)
                 ))))
 
 ;;================================================
@@ -157,7 +161,12 @@
 ;;             (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer)
 ;;             ))
 
-
+(comment 
+ ;;(add-hook 'cider-repl-mode-hook #'subword-mode)
+ ;; (add-hook 'kill-buffer-hook
+ ;;                        'cider-repl-history-cleanup-on-exit
+ ;;                        nil t)
+ )
 
 
 ;; key bindings

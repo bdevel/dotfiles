@@ -54,7 +54,7 @@
 (global-unset-key [M-mouse-2])
 ;; don't ask if i want to save, just exit
 ;; http://stackoverflow.com/questions/6762686/prevent-emacs-from-asking-modified-buffers-exist-exit-anyway
-                                        ;(global-set-key (kbd "C-x C-c") 'kill-emacs)
+;;(global-set-key (kbd "C-x C-c") 'kill-emacs)
 
 
 

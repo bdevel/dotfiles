@@ -28,6 +28,16 @@
 (global-set-key (kbd "M-=") 'text-scale-increase)
 (global-set-key (kbd "M--") 'text-scale-decrease)
 
+
+(defun post-text-scale-callback ()
+  ;; fix line number text size
+  (set-face-attribute 'line-number nil 
+                      :height (floor (* (face-attribute 'default :height)
+                                        (expt text-scale-mode-step text-scale-mode-amount)))))
+(add-hook 'text-scale-mode-hook 'post-text-scale-callback)
+
+;;(add-hook 'linum-before-numbering-hook 'adjust-left-margin-hook)
+
 ;;(setq-default line-spacing 2);; this hoses up the hydra status bar
 
 ;;(global-set-key (kbd "<triple-wheel-right>") 'previous-buffer)
@@ -48,7 +58,7 @@
 ;; Disable killing to Mac clipboard
 (setq x-select-enable-clipboard nil)
 
-;;;;;;;;;;;;; Make copy paste work at f1 f2 ;;;;;;;;
+;;;;;;;;;;;;; Make copy paste work at f1 f2 ;;;;;;;;;
 (defun pbcopy ()
   (interactive)
   (let ((deactivate-mark t))

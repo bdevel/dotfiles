@@ -8,6 +8,11 @@
 
 (load "~/.emacs.d/personal/defuns")
 
+
+(package 'dash)
+(package 's)
+(package 'origami)
+
 ;; key bindings and code colorization for Clojure
 ;; https://github.com/clojure-emacs/clojure-mode
 (package 'clojure-mode)

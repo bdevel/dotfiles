@@ -29,11 +29,12 @@
   ("k" hydra-macro/body "Macro")
 
   ("p" hydra-paredit/body "Parens")
+  ("o" hydra-origami/body "Origami")
 
   ;;("r" hydra-register/body "Registers")
   ("w" hydra-window/body "Window")
   ("z" ds-undo "undo")
-  ("s" helm-swoop "search") ;; similar to helm-occur
+  ("s" helm-occur "search") 
   ("g" (progn
 	       (call-interactively 'helm-git-grep-at-point)) "grep")
   
@@ -94,7 +95,7 @@
 	       (push-mark (point) t t)
          (move-end-of-line nil) ) "mark-line")
 
-  ("s" helm-swoop "search" :exit t)
+  ("s" helm-occur "search" :exit t)
   ("e" mark-sexp "mark-sexp")
   ("d" duplicate-current-line-or-region "Duplicate")
   ("p" er/mark-paragraph "mark-paragraph")
@@ -106,9 +107,9 @@
   ("g" (progn
 	       (call-interactively 'helm-git-grep-at-point)) "grep")
   ("q" keyboard-quit "quit" :exit t)
-  ("w" kill-ring-save "Kill-Ring-Save")
-  ("y" yank "Yank")
-  ("k" kill-region "Kill-Region")
+  ("w" kill-ring-save "Kill-Ring-Save" :exit t)
+  ("y" yank "Yank" :exit t)
+  ("k" kill-region "Kill-Region" :exit t)
   ("n" mc/mark-next-like-this "Next")
   ("j" goto-last-change "goto-last-change" :exit nil)
   
@@ -123,11 +124,29 @@
 
   ("M-<left>" ds-right-joy-left "Drag Back")
   ("M-<right>" ds-right-joy-right "Drag Foward")
-  
+  ("<return>" hydra-keyboard-quit "exit")
   )
 
 
 (global-set-key (kbd "<H-f14>") 'hydra-mark/body)
+
+
+(defhydra hydra-origami (:exit t
+                               ;;:columns 4
+                               :pre (hydra-enter)
+                               :post (hydra-exit))
+
+  "Origami"
+  ("t" origami-toggle-node "toggle")
+  ("o" origami-open-node "open-node")
+  ("c" origami-close-node "close-node")
+  
+  ("r" origami-reset "reset")
+  ("b"  origami-close-all-nodes "close-all")
+  ("n"  origami-open-all-nodes "open-all")
+  
+  ("<return>" hydra-keyboard-quit "exit")
+  )
 
 (defhydra hydra-macro (:exit t
 		                   ;;:columns 4
