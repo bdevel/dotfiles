@@ -14,10 +14,14 @@
 (defun kill-cider-error ()
   "Quits the cider error pop up and kills the error buffer."
     (let* ((b (find-buffer "*cider-error*") ))
-      (if b 
-          (progn
-            ;;(cider-popup-buffer-quit-function)
-            (kill-buffer b)))))
+      (if b
+          (let* ((w (get-buffer-window b) ))
+            (if w
+                (progn
+                  (select-window w)
+                  (cider-popup-buffer-quit-function)
+                  ;;(kill-buffer b);; this leaves the window open
+                  ))))))
 
 (defun cider-keyboard-quit ()
   "Same as C-g but also exits any error pop ups."
@@ -84,6 +88,9 @@
         ;;cider-repl-pop-to-buffer-on-connect nil
         cider-repl-pop-to-buffer-on-connect 'display-only
 
+        ;; Can inject different version of nrpl causing problems
+        cider-inject-dependencies-at-jack-in nil
+
         ;; https://github.com/clojure-emacs/cider/blob/9a4d6d9c1e2e1380e7afd762674a229ef1cd8485/cider-repl-history.el#L287
         ;; cider-repl-history-quit-action 'kill-and-delete-window
         
@@ -106,10 +113,7 @@
   :bind (:map clojure-mode-map
               ("C-c C-r" . cider-namespace-refresh)
 
-              ;; TODO: C-g also calls,
               ("C-g" . cider-keyboard-quit)
-              ;;(keyboard-quit)
-              
               
               :map cider-repl-mode-map
               ("<up>" . cider-repl-previous-input)
