@@ -11,7 +11,7 @@
 [include]
   path = ~/.gitconfig_local
 [credential]
-  helper = osxkeychain
+	helper = osxkeychain
 [alias]
   co = checkout
   st = status
@@ -37,3 +37,5 @@
   protocol = https
 [url "https://"]
   insteadOf = git://
+[init]
+	defaultBranch = main

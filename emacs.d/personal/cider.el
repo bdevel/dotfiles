@@ -43,6 +43,17 @@
   (let* ((b (cider-repl-buffer)))
     (if b (switch-to-buffer b))))
 
+(defun cider-switch-to-repl-window ()
+  ""
+  (interactive "*")
+  
+  (let* ((b (cider-repl-buffer)))
+    (if b
+        (let* ((w (get-buffer-window b) ))
+          (if w
+              (progn
+                (select-window w)))))))
+
 (defun cider-show-repl ()
   ""
   (interactive "*")
@@ -56,6 +67,20 @@
           (switch-to-buffer b)
           (call-interactively 'other-window)
           ))))
+
+
+(defun cider-clear-repl-eval ()
+  "evals so that printed output is at the top of repl for inspection"
+  (interactive "*")
+  (save-selected-window ;;save-mark-and-excursion
+    (call-interactively 'cider-switch-to-repl-window)
+    (call-interactively 'cider-repl-clear-buffer))
+  (call-interactively 'cider-eval-last-sexp)
+  (save-selected-window ;;save-mark-and-excursion
+    (call-interactively 'cider-switch-to-repl-window)
+    (beginning-of-buffer))
+  )
+
 
 
 (use-package cider
@@ -89,7 +114,7 @@
         cider-repl-pop-to-buffer-on-connect 'display-only
 
         ;; Can inject different version of nrpl causing problems
-        cider-inject-dependencies-at-jack-in nil
+        cider-inject-dependencies-at-jack-in t
 
         ;; https://github.com/clojure-emacs/cider/blob/9a4d6d9c1e2e1380e7afd762674a229ef1cd8485/cider-repl-history.el#L287
         ;; cider-repl-history-quit-action 'kill-and-delete-window
@@ -114,6 +139,7 @@
               ("C-c C-r" . cider-namespace-refresh)
 
               ("C-g" . cider-keyboard-quit)
+              ("C-x p" . cider-clear-repl-eval)
               
               :map cider-repl-mode-map
               ("<up>" . cider-repl-previous-input)

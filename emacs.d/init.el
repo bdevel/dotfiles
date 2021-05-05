@@ -4,7 +4,7 @@
 (setq custom-file "~/.emacs.d/personal/custom.el")
 (load custom-file)
 
-(add-to-list 'load-path "/Users/tyler/.emacs.d/vendor")
+(add-to-list 'load-path "/Users/dev/.emacs.d/vendor")
 
 (load "~/.emacs.d/personal/defuns")
 
@@ -12,6 +12,7 @@
 (package 'dash)
 (package 's)
 (package 'origami)
+(package 'org)
 
 ;; key bindings and code colorization for Clojure
 ;; https://github.com/clojure-emacs/clojure-mode
@@ -38,6 +39,7 @@
 (package 'fiplr)
 
 (package 'expand-region)
+(package 'git-gutter)
 ;; (package 'flx-isearch)
 (package 'haml-mode)
 (package 'highlight-parentheses)
@@ -67,8 +69,8 @@
 (package 'projectile)
 (package 'projectile-rails)
 (package 'helm-projectile)
-(package 'robe) ;; ruby auto-complete and docs
-;;(package 'enh-ruby-mode)
+;;(package 'robe) ;; ruby auto-complete and docs, freezes emacs in Rakefile
+;;(package 'enh-ruby-mode) ;; will use-package in personal/ruby-mode.el
 (package 'rvm)
 ;;(package 'sass-mode)
 (package 'smex)
@@ -84,9 +86,8 @@
 
 ;; ===============================================
 ;;(personal 'auto-complete)
-
-
 (personal 'align)
+(personal 'annot);; aka eval-anchor
 (personal 'bm)
 (personal 'clojure)
 (personal 'cider)
@@ -100,6 +101,7 @@
 (personal 'ergodox)
 (personal 'expand-region)
 (personal 'flycheck)
+(personal 'git-gutter)
 (personal 'global)
 
 (personal 'grep)

@@ -1,4 +1,4 @@
-;;;;
+;;;
 ;; Clojure
 ;;;;
 
@@ -25,8 +25,8 @@
 (add-hook 'clojure-mode-hook 'flycheck-mode)
 (add-hook 'clojure-mode-hook 'display-line-numbers-mode)
 
-(require 'real-auto-save)
-(add-hook 'clojure-mode-hook 'real-auto-save-mode)
+;;(require 'real-auto-save)
+;;(add-hook 'clojure-mode-hook 'real-auto-save-mode)
 
 ;; A little more syntax highlighting
 (require 'clojure-mode-extra-font-locking)
@@ -46,7 +46,13 @@
                ("(\\(background?\\)"
                 (1 font-lock-keyword-face))))
             (define-clojure-indent (fact 1))
-            (define-clojure-indent (facts 1))))
+            (define-clojure-indent (facts 1))
+
+            ;; Adds a command to switch to core and run the (-main) fn
+            (fset 'core-main-eval
+                  [?\C-x ?b ?a ?h ?o ?i ?/ ?c ?o ?r ?e ?. ?c ?l ?j return ?\M-< ?\C-s ?\( ?- ?m ?a ?i ?n ?\C-e ?\C-x ?\C-e ?\C-x ?b return])
+
+            ))
 
 
 

@@ -22,6 +22,7 @@
   ;; (set-cursor-color "#ffff00")
   (set-default 'cursor-type 'bar)
   (blink-cursor-mode 1)
+  (global-hl-line-mode 1)
 
   ;; (set-face-attribute 'region nil :background "#2a67a2")
 

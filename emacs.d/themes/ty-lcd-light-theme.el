@@ -8,11 +8,11 @@
 ;; font-lock-type-face     classes
 
 
-(let ((background "#FFFFFF")
+(let ((background "#f2f2e9")
       (contrast     "#000000")
       (selection  "#e3ff8f")
       
-      (text       "#000000")
+      (text       "#3d2b78")
       (strings    "#17a800")
       (methods    "#8fa1b3")
       (variables "#7d00d6") ; @vars
@@ -66,7 +66,9 @@
    ;; *****************************************************************************************
 
    `(bm-persistent-face        ((t (:background "#c9deff"))))
-
+   `(line-number ((t (:background "#dddddd"   :foreground "#888888" :height 0.8))))
+   `(hl-line ((t (:background "#efefef"))))
+   
 
    ;; *****************************************************************************************
     '(mode-line ((t (:foreground "black" :background "#EFEFEF"))))

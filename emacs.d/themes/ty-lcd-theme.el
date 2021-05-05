@@ -8,14 +8,13 @@
    [escape ?x ?l ?o ?a ?d return ?t ?y ?- ?l tab return ?y ?y])
 
 (setq default-bg "#0d4d8b")
-(setq dark-bg "#093d6f")
-(setq darker-bg "#224099")
-;;(setq darker-bg "#003054")
+(setq dark-bg "#224099")
+(setq darker-bg "#1D3884")
+(setq lighter-bg "#2F56D0")
+
 (setq bluer-bg "#2A4CB9")
+
 (setq lighter-blue "#4D68CB")
-
-
-
 
 (setq my-red "#e5786d")
 ;;(setq my-red "#FF961C")
@@ -72,10 +71,11 @@
  `(linum ((t (:background ,bluer-bg   :foreground "#aaa" :height 0.8))))
 
  ;; For display-line-numbers-mode which is faster
- `(line-number ((t (:background ,darker-bg   :foreground "#aaa" :height 0.8))))
+ `(line-number ((t (:background ,dark-bg   :foreground "#aaa" :height 0.8))))
+ `(hl-line ((t (:background ,dark-bg))))
  
  
- `(bm-persistent-face        ((t (:background ,darker-bg))))
+ `(bm-persistent-face        ((t (:background ,lighter-bg))))
  
  '(header-line ((t (:foreground "#e7f6da" :background "#303030"))))
  '(tooltip ((((class color)) (:inherit (variable-pitch) :foreground "black" :background "lightyellow")) (t (:inherit (variable-pitch)))))

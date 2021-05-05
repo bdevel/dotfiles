@@ -58,6 +58,11 @@
   ("@" ty-eval-defun "eval-defn" :exit t)
   ("#" ty-eval-last-sexp "eval-last-expr" :exit t)
   ("$" ty-eval-region "eval-region" :exit t)
+
+  ("+" text-scale-increase "text-scale-up" :exit nil) 
+  ("=" text-scale-increase "text-scale-up" :exit nil) 
+  ("<kp-subtract>" text-scale-decrease "text-scale-down" :exit nil)
+  ("_" text-scale-decrease "text-scale-down" :exit nil)
   
   ("`" nil "exit" :exit :t)
   ("<return>" hydra-keyboard-quit "exit")
@@ -248,7 +253,6 @@
    ("b" hydra-buffer/body "hydra-buffer" :exit t)
    ("<return>" hydra-keyboard-quit "exit")
    )
-
 
 ;; TODO:
 ;; mark

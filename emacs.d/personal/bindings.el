@@ -21,7 +21,6 @@
 (global-set-key (kbd "S-M-<left>") 'sp-extract-before-sexp)
 (global-set-key (kbd "S-M-<right>") 'sp-extract-after-sexp)
 
-
 ;; clear whole line
 (global-set-key (kbd "M-k") (lambda ()(interactive)
                               (kill-whole-line)

@@ -21,6 +21,7 @@
       (background "#1E0D4B") ;; 
       (foreground "#ffffff") ;;#c0c5ce
       (selection  "#48378c")
+      (background-alt "#221b3b") ;; 
       
       (text       "white")
       (white     "#ffffff")
@@ -51,6 +52,7 @@
    `(cursor                           ((t (:background ,white                        ))))
    `(fringe                           ((t (:background ,background   :foreground ,white))))
    `(linum                            ((t (:background ,background :foreground ,gutter-fg))))
+   `(line-number                        ((t (:foreground ,comments :background ,background-alt  ))))
    `(mode-line                        ((t (:foreground ,white :background ,gutters-active  ))))
    `(mode-line-inactive               ((t (:foreground ,gutter-fg :background ,gutters  ))))
 
@@ -68,8 +70,18 @@
    `(font-lock-function-name-face     ((t (:foreground ,functions))))
    `(font-lock-doc-string-face        ((t (:foreground ,strings))))
 
+   ;; Interface components
    ;; *****************************************************************************************
+   
+   ;; `(fringe ((t (:foreground "white" :background ,gutters ))))
+   ;; `(linum ((t (:background ,gutters   :foreground ,text :height 0.8))))
 
+   ;; ;; For display-line-numbers-mode which is faster
+   ;; `(line-number ((t (:background ,gutters   :foreground "#aaa" :height 0.8))))
+
+
+   ;; Special modes
+   ;; *****************************************************************************************
    `(bm-persistent-face        ((t (:background "#cc7b6c"))))
 
    ))

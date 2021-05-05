@@ -66,7 +66,7 @@ alias ll="ls -lh"
 alias la="ls -a"
 alias lal="ls -alh"
 
-
+alias pwdc='printf "%q\n" "$(pwd)" | pbcopy'
 
 ############################################################
 ## Git
@@ -78,12 +78,12 @@ alias gcam='git commit -am'
 alias gc='git commit'
 
 alias gco='git checkout'
-alias gcom='git checkout master'
+alias gcom='git checkout main'
 alias gcob='git checkout -b'
 
 alias gm='git merge'
 alias gfum='git fetch upstream'
-alias gmum='git merge upstream/master'
+alias gmum='git merge upstream/main'
 alias gb='git branch'
 alias gs='git status'
 alias gl='git log'
@@ -334,10 +334,9 @@ alias ginit='git init .;git add *  .gitignore; git commit -am initial'
 alias rgm='rails g migration'
 alias rt='RAILS_ENV=test ruby -Itest'
 alias cux="chmod u+x"
-alias gcmd="git push && cap master deploy"
-alias gpcmd="git push && cap master deploy"
+alias gcpd="git push && cap production deploy"
 
-alias cdsc="cd /Users/tyler/Code/marketly/scrubm-clj"
+alias cdsc="cd ~/Code/marketly/scrubm-clj"
 alias sshw='ssh marketly-webserver'
 alias sshs='ssh marketly-service'
 alias sshsa='ssh marketly-service-a'
